@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Points and Directions</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Points and Directions</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Points and Directions</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">types</span>)</span><br/>
+<span class="in1"></span><span class="type">struct</span> <span class="type">Tuple</span> {<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">x</span>, <span class="var">y</span>, <span class="var">z</span>, <span class="var">w</span>;<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="fn">is_point</span>() <span class="type">const</span> {<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">1</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="fn">is_vector</span>() <span class="type">const</span> {<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">0</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@End(<span class="name">types</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">includes</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">cassert</span>&gt;<br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">cmath</span>&gt;<br/>
+<span class="macro">@End(<span class="name">includes</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#define</span> <span class="fn">assert_eq</span>(<span class="var">a</span>, <span class="var">b</span>) \<br/>
+<span class="in2"></span><span class="fn">assert</span>(<span class="type">std</span>::<span class="fn">fabs</span>( \<br/>
+<span class="in3"></span>(<span class="var">a</span>) - (<span class="var">b</span>)) &lt; <span class="num">1e</span>-<span class="num">6</span> \<br/>
+<span class="in2"></span>)<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">a</span> { <span class="num">4</span>.<span class="num">3</span>, -<span class="num">4</span>.<span class="num">2</span>, <span class="num">3</span>.<span class="num">1</span>, <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">a</span>.<span class="var">x</span>, <span class="num">4</span>.<span class="num">3</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">a</span>.<span class="var">y</span>, -<span class="num">4</span>.<span class="num">2</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">a</span>.<span class="var">z</span>, <span class="num">3</span>.<span class="num">1</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span>.<span class="var">w</span> == <span class="num">1</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span>.<span class="fn">is_point</span>());<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="var">a</span>.<span class="fn">is_vector</span>());<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">a</span> { <span class="num">4</span>.<span class="num">3</span>, -<span class="num">4</span>.<span class="num">2</span>, <span class="num">3</span>.<span class="num">1</span>, <span class="num">0</span> };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">a</span>.<span class="var">x</span>, <span class="num">4</span>.<span class="num">3</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">a</span>.<span class="var">y</span>, -<span class="num">4</span>.<span class="num">2</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">a</span>.<span class="var">z</span>, <span class="num">3</span>.<span class="num">1</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span>.<span class="var">w</span> == <span class="num">0</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="var">a</span>.<span class="fn">is_point</span>());<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span>.<span class="fn">is_vector</span>());<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>
