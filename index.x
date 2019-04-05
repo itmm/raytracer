@@ -21,3 +21,10 @@
 @inc(tupels.x)
 ```
 
+```
+@inc(colors.x)
+```
+
+```
+@inc(ppm.x)
+```
