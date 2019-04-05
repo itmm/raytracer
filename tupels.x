@@ -20,7 +20,7 @@
 
 ```
 @Def(functions)
-	inline bool eq(float a, float b) {
+	inline constexpr bool eq(float a, float b) {
 		return std::fabs(a - b) < 1e-5;
 	}
 @End(functions)

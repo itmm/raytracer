@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Matrices</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Matrices</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Matrices</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">types</span>)</span><br/>
+<span class="in1"></span><span class="keyword">class</span> <span class="type">Matrix</span> {<br/>
+<span class="in2"></span><span class="keyword">public</span>:<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">methods</span>)</span>;<br/>
+<span class="in2"></span><span class="keyword">private</span>:<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">_v</span>[<span class="num">16</span>];<br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@End(<span class="name">types</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="fn">Matrix</span>(<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m00</span>, <span class="var">float</span> <span class="var">m01</span>,<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">m02</span>, <span class="var">float</span> <span class="var">m03</span>,<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m10</span>, <span class="var">float</span> <span class="var">m11</span>,<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">m12</span>, <span class="var">float</span> <span class="var">m13</span>,<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m20</span>, <span class="var">float</span> <span class="var">m21</span>,<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">m22</span>, <span class="var">float</span> <span class="var">m23</span>,<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m30</span>, <span class="var">float</span> <span class="var">m31</span>,<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">m32</span>, <span class="var">float</span> <span class="var">m33</span><br/>
+<span class="in1"></span>): <span class="var">_v</span> {<br/>
+<span class="in2"></span><span class="var">m00</span>, <span class="var">m01</span>, <span class="var">m02</span>, <span class="var">m03</span>,<br/>
+<span class="in2"></span><span class="var">m10</span>, <span class="var">m11</span>, <span class="var">m12</span>, <span class="var">m13</span>,<br/>
+<span class="in2"></span><span class="var">m20</span>, <span class="var">m21</span>, <span class="var">m22</span>, <span class="var">m23</span>,<br/>
+<span class="in2"></span><span class="var">m30</span>, <span class="var">m31</span>, <span class="var">m32</span>, <span class="var">m33</span><br/>
+<span class="in1"></span>} {}<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="var">float</span> <span class="fn">operator</span>()(<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">r</span>, <span class="type">int</span> <span class="var">c</span><br/>
+<span class="in1"></span>) <span class="type">const</span> {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">_v</span>[<span class="var">r</span> * <span class="num">4</span> + <span class="var">c</span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="var">float</span> &amp;<span class="fn">operator</span>()(<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">r</span>, <span class="type">int</span> <span class="var">c</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">_v</span>[<span class="var">r</span> * <span class="num">4</span> + <span class="var">c</span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">m</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="num">5</span>.<span class="num">5</span>, <span class="num">6</span>.<span class="num">5</span>, <span class="num">7</span>.<span class="num">5</span>, <span class="num">8</span>.<span class="num">5</span>,<br/>
+<span class="in2"></span><span class="num">9</span>, <span class="num">10</span>, <span class="num">11</span>, <span class="num">12</span>,<br/>
+<span class="in2"></span><span class="num">13</span>.<span class="num">5</span>, <span class="num">14</span>.<span class="num">5</span>, <span class="num">15</span>.<span class="num">5</span>, <span class="num">16</span>.<span class="num">5</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">0</span>, <span class="num">0</span>), <span class="num">1</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">0</span>, <span class="num">3</span>), <span class="num">4</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">1</span>, <span class="num">0</span>), <span class="num">5</span>.<span class="num">5</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">1</span>, <span class="num">2</span>), <span class="num">7</span>.<span class="num">5</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">2</span>, <span class="num">2</span>), <span class="num">11</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">3</span>, <span class="num">0</span>), <span class="num">13</span>.<span class="num">5</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">3</span>, <span class="num">2</span>), <span class="num">15</span>.<span class="num">5</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="fn">Matrix</span>(<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m00</span>, <span class="var">float</span> <span class="var">m01</span>,<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m10</span>, <span class="var">float</span> <span class="var">m11</span><br/>
+<span class="in1"></span>): <span class="var">_v</span> {<br/>
+<span class="in2"></span><span class="var">m00</span>, <span class="var">m01</span>, <span class="num">0</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="var">m10</span>, <span class="var">m11</span>, <span class="num">0</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span><br/>
+<span class="in1"></span>} {}<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">m</span> {<br/>
+<span class="in2"></span>-<span class="num">3</span>, <span class="num">5</span>,<br/>
+<span class="in2"></span><span class="num">1</span>, -<span class="num">2</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">0</span>, <span class="num">0</span>), -<span class="num">3</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">0</span>, <span class="num">1</span>), <span class="num">5</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">1</span>, <span class="num">0</span>), <span class="num">1</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">1</span>, <span class="num">1</span>), -<span class="num">2</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="fn">Matrix</span>(<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m00</span>, <span class="var">float</span> <span class="var">m01</span>, <span class="var">float</span> <span class="var">m02</span>,<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m10</span>, <span class="var">float</span> <span class="var">m11</span>, <span class="var">float</span> <span class="var">m12</span>,<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m20</span>, <span class="var">float</span> <span class="var">m21</span>, <span class="var">float</span> <span class="var">m22</span><br/>
+<span class="in1"></span>): <span class="var">_v</span> {<br/>
+<span class="in2"></span><span class="var">m00</span>, <span class="var">m01</span>, <span class="var">m02</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="var">m10</span>, <span class="var">m11</span>, <span class="var">m12</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="var">m20</span>, <span class="var">m21</span>, <span class="var">m22</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span><br/>
+<span class="in1"></span>} {}<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">m</span> {<br/>
+<span class="in2"></span>-<span class="num">3</span>, <span class="num">5</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">1</span>, -<span class="num">2</span>, -<span class="num">7</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">1</span>, <span class="num">1</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">0</span>, <span class="num">0</span>), -<span class="num">3</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">1</span>, <span class="num">1</span>), -<span class="num">2</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">m</span>(<span class="num">2</span>, <span class="num">2</span>), <span class="num">1</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="var">friend</span> <span class="var">constexpr</span> <span class="type">bool</span> <span class="var">operator</span>==(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">b</span><br/>
+<span class="in1"></span>);<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">bool</span> <span class="var">operator</span>==(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">b</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="type">const</span> <span class="var">float</span> *<span class="var">ai</span> = <span class="var">a</span>.<span class="var">_v</span>;<br/>
+<span class="in2"></span><span class="type">const</span> <span class="var">float</span> *<span class="var">bi</span> = <span class="var">b</span>.<span class="var">_v</span>;<br/>
+<span class="in2"></span><span class="type">const</span> <span class="var">float</span> *<span class="var">ae</span> = <span class="var">ai</span> + <span class="num">16</span>;<br/>
+<span class="in2"></span><span class="keyword">for</span> (; <span class="var">ai</span> &lt; <span class="var">ae</span>; ++<span class="var">ai</span>, ++<span class="var">bi</span>) {<br/>
+<span class="in3"></span><span class="keyword">if</span> (! <span class="fn">eq</span>(*<span class="var">ai</span>, *<span class="var">bi</span>)) {<br/>
+<span class="in4"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="num">true</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>,<br/>
+<span class="in2"></span><span class="num">9</span>, <span class="num">8</span>, <span class="num">7</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">b</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>,<br/>
+<span class="in2"></span><span class="num">9</span>, <span class="num">8</span>, <span class="num">7</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span> == <span class="var">b</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">bool</span> <span class="var">operator</span>!=(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">b</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> !(<span class="var">a</span> == <span class="var">b</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>,<br/>
+<span class="in2"></span><span class="num">9</span>, <span class="num">8</span>, <span class="num">7</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">b</span> {<br/>
+<span class="in2"></span><span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>,<br/>
+<span class="in2"></span><span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span>,<br/>
+<span class="in2"></span><span class="num">8</span>, <span class="num">7</span>, <span class="num">6</span>, <span class="num">5</span>,<br/>
+<span class="in2"></span><span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span>, <span class="num">1</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span> != <span class="var">b</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="fn">Matrix</span>() = <span class="keyword">default</span>;<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="var">float</span> <span class="fn">mult_line</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">b</span>,<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">r</span>, <span class="type">int</span> <span class="var">c</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">a</span>(<span class="var">r</span>, <span class="num">0</span>) * <span class="fn">b</span>(<span class="num">0</span>, <span class="var">c</span>) +<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="var">r</span>, <span class="num">1</span>) * <span class="fn">b</span>(<span class="num">1</span>, <span class="var">c</span>) +<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="var">r</span>, <span class="num">2</span>) * <span class="fn">b</span>(<span class="num">2</span>, <span class="var">c</span>) +<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="var">r</span>, <span class="num">3</span>) * <span class="fn">b</span>(<span class="num">3</span>, <span class="var">c</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">Matrix</span> <span class="var">operator</span>*(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">b</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> {<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">0</span>, <span class="num">0</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">0</span>, <span class="num">1</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">0</span>, <span class="num">2</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">0</span>, <span class="num">3</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">1</span>, <span class="num">0</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">1</span>, <span class="num">1</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">1</span>, <span class="num">2</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">1</span>, <span class="num">3</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">2</span>, <span class="num">0</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">2</span>, <span class="num">1</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">2</span>, <span class="num">2</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">2</span>, <span class="num">3</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">3</span>, <span class="num">0</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">3</span>, <span class="num">1</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">3</span>, <span class="num">2</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">b</span>, <span class="num">3</span>, <span class="num">3</span>)<br/>
+<span class="in2"></span>};<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">ostream</span> &amp;<span class="var">operator</span>&lt;&lt;(<span class="type">std</span>::<span class="type">ostream</span> &amp;<span class="var">o</span>, <span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">m</span>) {<br/>
+<span class="in2"></span><span class="var">o</span> &lt;&lt; <span class="str">"(\n"</span>;<br/>
+<span class="in2"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">r</span> = <span class="num">0</span>; <span class="var">r</span> &lt; <span class="num">4</span>; ++<span class="var">r</span>) {<br/>
+<span class="in3"></span><span class="var">o</span> &lt;&lt; <span class="str">"  ("</span>;<br/>
+<span class="in3"></span><span class="var">o</span> &lt;&lt; <span class="fn">m</span>(<span class="var">r</span>, <span class="num">0</span>);<br/>
+<span class="in3"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">c</span> = <span class="num">1</span>; <span class="var">c</span> &lt; <span class="num">4</span>; ++<span class="var">c</span>) {<br/>
+<span class="in4"></span><span class="var">o</span> &lt;&lt; <span class="str">"  "</span> &lt;&lt; <span class="fn">m</span>(<span class="var">r</span>, <span class="var">c</span>);<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="var">o</span> &lt;&lt; <span class="str">")\n"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="var">o</span> &lt;&lt; <span class="str">')'</span>;<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">o</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">6</span>, <span class="num">7</span>, <span class="num">8</span>,<br/>
+<span class="in2"></span><span class="num">9</span>, <span class="num">8</span>, <span class="num">7</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span><span class="num">5</span>, <span class="num">4</span>, <span class="num">3</span>, <span class="num">2</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">b</span> {<br/>
+<span class="in2"></span>-<span class="num">2</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>,<br/>
+<span class="in2"></span><span class="num">3</span>, <span class="num">2</span>, <span class="num">1</span>, -<span class="num">1</span>,<br/>
+<span class="in2"></span><span class="num">4</span>, <span class="num">3</span>, <span class="num">6</span>, <span class="num">5</span>,<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">7</span>, <span class="num">8</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">e</span> {<br/>
+<span class="in2"></span><span class="num">20</span>, <span class="num">22</span>, <span class="num">50</span>, <span class="num">48</span>,<br/>
+<span class="in2"></span><span class="num">44</span>, <span class="num">54</span>, <span class="num">114</span>, <span class="num">108</span>,<br/>
+<span class="in2"></span><span class="num">40</span>, <span class="num">58</span>, <span class="num">110</span>, <span class="num">102</span>,<br/>
+<span class="in2"></span><span class="num">16</span>, <span class="num">26</span>, <span class="num">46</span>, <span class="num">42</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span> * <span class="var">b</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="var">float</span> <span class="fn">mult_line</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>,<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">r</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">a</span>(<span class="var">r</span>, <span class="num">0</span>) * <span class="var">t</span>.<span class="var">x</span> +<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="var">r</span>, <span class="num">1</span>) * <span class="var">t</span>.<span class="var">y</span> +<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="var">r</span>, <span class="num">2</span>) * <span class="var">t</span>.<span class="var">z</span> +<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="var">r</span>, <span class="num">3</span>) * <span class="var">t</span>.<span class="var">w</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">Tuple</span> <span class="var">operator</span>*(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> {<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">t</span>, <span class="num">0</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">t</span>, <span class="num">1</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">t</span>, <span class="num">2</span>),<br/>
+<span class="in3"></span><span class="fn">mult_line</span>(<span class="var">a</span>, <span class="var">t</span>, <span class="num">3</span>)<br/>
+<span class="in2"></span>};<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="num">2</span>, <span class="num">4</span>, <span class="num">4</span>, <span class="num">2</span>,<br/>
+<span class="in2"></span><span class="num">8</span>, <span class="num">6</span>, <span class="num">4</span>, <span class="num">1</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">t</span> { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">e</span> { <span class="num">18</span>, <span class="num">24</span>, <span class="num">33</span>, <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span> * <span class="var">t</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">types</span>)</span><br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="type">Matrix</span> <span class="var">identity</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span><br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@End(<span class="name">types</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">1</span>, <span class="num">2</span>, <span class="num">4</span>,<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">4</span>, <span class="num">8</span>,<br/>
+<span class="in2"></span><span class="num">2</span>, <span class="num">4</span>, <span class="num">8</span>, <span class="num">16</span>,<br/>
+<span class="in2"></span><span class="num">4</span>, <span class="num">8</span>, <span class="num">16</span>, <span class="num">32</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span> * <span class="var">identity</span> == <span class="var">a</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">t</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">identity</span> * <span class="var">t</span> == <span class="var">t</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">Matrix</span> <span class="fn">trans</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> {<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="num">0</span>, <span class="num">0</span>), <span class="fn">a</span>(<span class="num">1</span>, <span class="num">0</span>),<br/>
+<span class="in4"></span><span class="fn">a</span>(<span class="num">2</span>, <span class="num">0</span>), <span class="fn">a</span>(<span class="num">3</span>, <span class="num">0</span>),<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="num">0</span>, <span class="num">1</span>), <span class="fn">a</span>(<span class="num">1</span>, <span class="num">1</span>),<br/>
+<span class="in4"></span><span class="fn">a</span>(<span class="num">2</span>, <span class="num">1</span>), <span class="fn">a</span>(<span class="num">3</span>, <span class="num">1</span>),<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="num">0</span>, <span class="num">2</span>), <span class="fn">a</span>(<span class="num">1</span>, <span class="num">2</span>),<br/>
+<span class="in4"></span><span class="fn">a</span>(<span class="num">2</span>, <span class="num">2</span>), <span class="fn">a</span>(<span class="num">3</span>, <span class="num">2</span>),<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="num">0</span>, <span class="num">3</span>), <span class="fn">a</span>(<span class="num">1</span>, <span class="num">3</span>),<br/>
+<span class="in4"></span><span class="fn">a</span>(<span class="num">2</span>, <span class="num">3</span>), <span class="fn">a</span>(<span class="num">3</span>, <span class="num">3</span>)<br/>
+<span class="in2"></span>};<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">9</span>, <span class="num">3</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">9</span>, <span class="num">8</span>, <span class="num">0</span>, <span class="num">8</span>,<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">8</span>, <span class="num">5</span>, <span class="num">3</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">5</span>, <span class="num">8</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">e</span> {<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">9</span>, <span class="num">1</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">9</span>, <span class="num">8</span>, <span class="num">8</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">3</span>, <span class="num">0</span>, <span class="num">5</span>, <span class="num">5</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">8</span>, <span class="num">3</span>, <span class="num">8</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">trans</span>(<span class="var">a</span>) == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">trans</span>(<span class="var">identity</span>) == <span class="var">identity</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="var">float</span> <span class="fn">det2</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">a</span>(<span class="num">0</span>, <span class="num">0</span>) * <span class="fn">a</span>(<span class="num">1</span>, <span class="num">1</span>) -<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="num">0</span>, <span class="num">1</span>) * <span class="fn">a</span>(<span class="num">1</span>, <span class="num">0</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">5</span>,<br/>
+<span class="in2"></span>-<span class="num">3</span>, <span class="num">2</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="num">17</span>, <span class="fn">det2</span>(<span class="var">a</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="fn">sub</span>(<span class="type">Matrix</span> <span class="var">a</span>, <span class="type">int</span> <span class="var">r</span>, <span class="type">int</span> <span class="var">c</span>) {<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">r</span> &lt; <span class="num">3</span>) {<br/>
+<span class="in3"></span><span class="type">int</span> <span class="var">i</span> = <span class="var">r</span> + <span class="num">1</span>;<br/>
+<span class="in3"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">k</span> = <span class="num">3</span>; <span class="var">k</span> &gt;= <span class="num">0</span>; --<span class="var">k</span>) {<br/>
+<span class="in4"></span><span class="fn">a</span>(<span class="var">r</span>, <span class="var">k</span>) = <span class="fn">a</span>(<span class="var">i</span>, <span class="var">k</span>);<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="var">r</span> = <span class="var">i</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">c</span> &lt; <span class="num">3</span>) {<br/>
+<span class="in3"></span><span class="type">int</span> <span class="var">i</span> = <span class="var">c</span> + <span class="num">1</span>;<br/>
+<span class="in3"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">k</span> = <span class="num">3</span>; <span class="var">k</span> &gt;= <span class="num">0</span>; --<span class="var">k</span>) {<br/>
+<span class="in4"></span><span class="fn">a</span>(<span class="var">k</span>, <span class="var">c</span>) = <span class="fn">a</span>(<span class="var">k</span>, <span class="var">i</span>);<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="var">c</span> = <span class="var">i</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> = <span class="num">3</span>; <span class="var">i</span> &gt;= <span class="num">0</span>; --<span class="var">i</span>) {<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="var">i</span>, <span class="num">3</span>) = <span class="num">0</span>;<br/>
+<span class="in3"></span><span class="fn">a</span>(<span class="num">3</span>, <span class="var">i</span>) = <span class="num">0</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">a</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">1</span>, <span class="num">5</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span>-<span class="num">3</span>, <span class="num">2</span>, <span class="num">7</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">6</span>, -<span class="num">3</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">e</span> {<br/>
+<span class="in2"></span>-<span class="num">3</span>, <span class="num">2</span>,<br/>
+<span class="in2"></span><span class="num">0</span>, <span class="num">6</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">sub</span>(<span class="var">a</span>, <span class="num">0</span>, <span class="num">2</span>) == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span>-<span class="num">6</span>, <span class="num">1</span>, <span class="num">1</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span>-<span class="num">8</span>, <span class="num">5</span>, <span class="num">8</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span>-<span class="num">1</span>, <span class="num">0</span>, <span class="num">8</span>, <span class="num">2</span>,<br/>
+<span class="in2"></span>-<span class="num">7</span>, <span class="num">1</span>, -<span class="num">1</span>, <span class="num">1</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">e</span> {<br/>
+<span class="in2"></span>-<span class="num">6</span>, <span class="num">1</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span>-<span class="num">8</span>, <span class="num">8</span>, <span class="num">6</span>,<br/>
+<span class="in2"></span>-<span class="num">7</span>, -<span class="num">1</span>, <span class="num">1</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">sub</span>(<span class="var">a</span>, <span class="num">2</span>, <span class="num">1</span>) == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">float</span> <span class="fn">minor3</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">int</span> <span class="var">r</span>, <span class="type">int</span> <span class="var">c</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">det2</span>(<span class="fn">sub</span>(<span class="var">a</span>, <span class="var">r</span>, <span class="var">c</span>));<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">3</span>, <span class="num">5</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">2</span>, -<span class="num">1</span>, -<span class="num">7</span>,<br/>
+<span class="in2"></span><span class="num">6</span>, -<span class="num">1</span>, <span class="num">5</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">det2</span>(<span class="fn">sub</span>(<span class="var">a</span>, <span class="num">1</span>, <span class="num">0</span>)), <span class="num">25</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">minor3</span>(<span class="var">a</span>, <span class="num">1</span>, <span class="num">0</span>), <span class="num">25</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">float</span> <span class="fn">cofactor3</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">a</span>, <span class="type">int</span> <span class="var">r</span>, <span class="type">int</span> <span class="var">c</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m</span> = <span class="fn">minor3</span>(<span class="var">a</span>, <span class="var">r</span>, <span class="var">c</span>);<br/>
+<span class="in2"></span><span class="keyword">return</span> ((<span class="var">r</span> + <span class="var">c</span>) &amp; <span class="num">1</span>) ? -<span class="var">m</span> : <span class="var">m</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">a</span> {<br/>
+<span class="in2"></span><span class="num">3</span>, <span class="num">5</span>, <span class="num">0</span>,<br/>
+<span class="in2"></span><span class="num">2</span>, -<span class="num">1</span>, -<span class="num">7</span>,<br/>
+<span class="in2"></span><span class="num">6</span>, -<span class="num">1</span>, <span class="num">5</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">minor3</span>(<span class="var">a</span>, <span class="num">0</span>, <span class="num">0</span>), -<span class="num">12</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">cofactor3</span>(<span class="var">a</span>, <span class="num">0</span>, <span class="num">0</span>), -<span class="num">12</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">minor3</span>(<span class="var">a</span>, <span class="num">1</span>, <span class="num">0</span>), <span class="num">25</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">cofactor3</span>(<span class="var">a</span>, <span class="num">1</span>, <span class="num">0</span>), -<span class="num">25</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>
