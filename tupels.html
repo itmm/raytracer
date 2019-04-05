@@ -58,7 +58,7 @@
 <div><div>
 <code>
 <span class="macro">@def(<span class="name">methods</span>)</span><br/>
-<span class="in1"></span><span class="type">bool</span> <span class="fn">is_point</span>() <span class="type">const</span> {<br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="type">bool</span> <span class="fn">is_point</span>() <span class="type">const</span> {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">1</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">methods</span>)</span><br/>
@@ -67,7 +67,7 @@
 <div><div>
 <code>
 <span class="macro">@add(<span class="name">methods</span>)</span><br/>
-<span class="in1"></span><span class="type">bool</span> <span class="fn">is_vector</span>() <span class="type">const</span> {<br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="type">bool</span> <span class="fn">is_vector</span>() <span class="type">const</span> {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">0</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">methods</span>)</span><br/>
@@ -110,7 +110,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="fn">mk_point</span>(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="fn">mk_point</span>(<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">x</span>, <span class="var">float</span> <span class="var">y</span>, <span class="var">float</span> <span class="var">z</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="type">Tuple</span> { <span class="var">x</span>, <span class="var">y</span>, <span class="var">z</span>, <span class="num">1</span> };<br/>
@@ -121,7 +121,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="type">bool</span> <span class="var">operator</span>==(<br/>
+<span class="in1"></span><span class="var">constexpr</span> <span class="type">bool</span> <span class="var">operator</span>==(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">b</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="var">a</span>.<span class="var">w</span> == <span class="var">b</span>.<span class="var">w</span> &amp;&amp;<br/>
@@ -144,7 +144,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="fn">mk_vector</span>(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="fn">mk_vector</span>(<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">x</span>, <span class="var">float</span> <span class="var">y</span>, <span class="var">float</span> <span class="var">z</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="type">Tuple</span> { <span class="var">x</span>, <span class="var">y</span>, <span class="var">z</span>, <span class="num">0</span> };<br/>
@@ -172,7 +172,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>+(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="var">operator</span>+(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">b</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="type">Tuple</span> {<br/>
@@ -204,7 +204,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>-(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="var">operator</span>-(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">b</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="type">Tuple</span> {<br/>
@@ -266,7 +266,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>*(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="var">operator</span>*(<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">f</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="type">Tuple</span> {<br/>
@@ -280,7 +280,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>-(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="var">operator</span>-(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> -<span class="num">1</span> * <span class="var">t</span>;<br/>
@@ -326,7 +326,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>/(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="var">operator</span>/(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>, <span class="var">float</span> <span class="var">f</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> (<span class="num">1</span>/<span class="var">f</span>) * <span class="var">t</span>;<br/>
@@ -354,7 +354,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="var">float</span> <span class="fn">abs</span>(<span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>) {<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="var">float</span> <span class="fn">abs</span>(<span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="fn">sqrtf</span>(<br/>
 <span class="in3"></span><span class="var">t</span>.<span class="var">x</span> * <span class="var">t</span>.<span class="var">x</span> + <span class="var">t</span>.<span class="var">y</span> * <span class="var">t</span>.<span class="var">y</span> +<br/>
 <span class="in3"></span><span class="var">t</span>.<span class="var">z</span> * <span class="var">t</span>.<span class="var">z</span> + <span class="var">t</span>.<span class="var">w</span> * <span class="var">t</span>.<span class="var">w</span><br/>
@@ -414,7 +414,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">Tuple</span> <span class="fn">norm</span>(<span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>) {<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">Tuple</span> <span class="fn">norm</span>(<span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>) {<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">m</span> = <span class="fn">abs</span>(<span class="var">t</span>);<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="fn">eq</span>(<span class="var">m</span>, <span class="num">1</span>) ? <span class="var">t</span> : <span class="var">t</span>/<span class="var">m</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -460,7 +460,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="var">float</span> <span class="fn">dot</span>(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="var">float</span> <span class="fn">dot</span>(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">b</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="var">a</span>.<span class="var">x</span> * <span class="var">b</span>.<span class="var">x</span> + <span class="var">a</span>.<span class="var">y</span> * <span class="var">b</span>.<span class="var">y</span> +<br/>
@@ -489,7 +489,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="fn">cross</span>(<br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">auto</span> <span class="fn">cross</span>(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">b</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="fn">mk_vector</span>(<br/>

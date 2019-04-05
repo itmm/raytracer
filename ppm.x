@@ -80,7 +80,7 @@
 	for (int y = 0; y < h; ++y) {
 		std::string line = {};
 		for (int x = 0; x < w; ++x) {
-			auto c = t(x, y, w, h);
+			auto c = t(x, y);
 			add_color(o, line, c);
 		}
 		if (! line.empty()) {
@@ -100,7 +100,7 @@
 @Add(unit-tests) {
 	std::ostringstream oss;
 	mk_ppm(oss, 5, 3,
-		[](int x, int y, int, int) {
+		[](int x, int y) {
 			Color res { 0, 0, 0 };
 			if (x == 0 && y == 0) {
 				res = { 1.5, 0, 0 };
@@ -130,7 +130,7 @@
 @Add(unit-tests) {
 	std::ostringstream oss;
 	mk_ppm(oss, 10, 2,
-		[](int, int, int, int) {
+		[](int, int) {
 			return Color { 1, 0.8, 0.6 };
 		}
 	);

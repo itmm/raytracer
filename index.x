@@ -37,3 +37,6 @@
 @inc(transforms.x)
 ```
 
+```
+@inc(rays.x)
+```

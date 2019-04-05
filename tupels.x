@@ -35,7 +35,7 @@
 
 ```
 @def(methods)
-	bool is_point() const {
+	constexpr bool is_point() const {
 		return w == 1;
 	}
 @end(methods)
@@ -43,7 +43,7 @@
 
 ```
 @add(methods)
-	bool is_vector() const {
+	constexpr bool is_vector() const {
 		return w == 0;
 	}
 @end(methods)
@@ -77,7 +77,7 @@
 
 ```
 @Add(functions)
-	inline auto mk_point(
+	inline constexpr auto mk_point(
 		float x, float y, float z
 	) {
 		return Tuple { x, y, z, 1 };
@@ -87,7 +87,7 @@
 
 ```
 @Add(functions)
-	bool operator==(
+	constexpr bool operator==(
 		const Tuple &a, const Tuple &b
 	) {
 		return a.w == b.w &&
@@ -108,7 +108,7 @@
 
 ```
 @Add(functions)
-	inline auto mk_vector(
+	inline constexpr auto mk_vector(
 		float x, float y, float z
 	) {
 		return Tuple { x, y, z, 0 };
@@ -128,7 +128,7 @@
 
 ```
 @Add(functions)
-	inline auto operator+(
+	inline constexpr auto operator+(
 		const Tuple &a, const Tuple &b
 	) {
 		return Tuple {
@@ -152,7 +152,7 @@
 
 ```
 @Add(functions)
-	inline auto operator-(
+	inline constexpr auto operator-(
 		const Tuple &a, const Tuple &b
 	) {
 		return Tuple {
@@ -203,7 +203,7 @@
 
 ```
 @Add(functions)
-	inline auto operator*(
+	inline constexpr auto operator*(
 		float f, const Tuple &t
 	) {
 		return Tuple {
@@ -216,7 +216,7 @@
 
 ```
 @Add(functions)
-	inline auto operator-(
+	inline constexpr auto operator-(
 		const Tuple &t
 	) {
 		return -1 * t;
@@ -252,7 +252,7 @@
 
 ```
 @Add(functions)
-	inline auto operator/(
+	inline constexpr auto operator/(
 		const Tuple &t, float f
 	) {
 		return (1/f) * t;
@@ -272,7 +272,7 @@
 
 ```
 @Add(functions)
-	inline float abs(const Tuple &t) {
+	inline constexpr float abs(const Tuple &t) {
 		return sqrtf(
 			t.x * t.x + t.y * t.y +
 			t.z * t.z + t.w * t.w
@@ -320,7 +320,7 @@
 
 ```
 @Add(functions)
-	inline Tuple norm(const Tuple &t) {
+	inline constexpr Tuple norm(const Tuple &t) {
 		float m = abs(t);
 		return eq(m, 1) ? t : t/m;
 	}
@@ -356,7 +356,7 @@
 
 ```
 @Add(functions)
-	inline float dot(
+	inline constexpr float dot(
 		const Tuple &a, const Tuple &b
 	) {
 		return a.x * b.x + a.y * b.y +
@@ -377,7 +377,7 @@
 
 ```
 @Add(functions)
-	inline auto cross(
+	inline constexpr auto cross(
 		const Tuple &a, const Tuple &b
 	) {
 		return mk_vector(
