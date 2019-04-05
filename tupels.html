@@ -253,12 +253,24 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>*(<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">f</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="type">Tuple</span> {<br/>
+<span class="in3"></span><span class="var">f</span> * <span class="var">t</span>.<span class="var">x</span>, <span class="var">f</span> * <span class="var">t</span>.<span class="var">y</span>,<br/>
+<span class="in3"></span><span class="var">f</span> * <span class="var">t</span>.<span class="var">z</span>, <span class="var">f</span> * <span class="var">t</span>.<span class="var">w</span><br/>
+<span class="in2"></span>};<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
 <span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>-(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span><br/>
 <span class="in1"></span>) {<br/>
-<span class="in2"></span><span class="keyword">return</span> <span class="type">Tuple</span> {<br/>
-<span class="in3"></span>-<span class="var">t</span>.<span class="var">x</span>, -<span class="var">t</span>.<span class="var">y</span>, -<span class="var">t</span>.<span class="var">z</span>, -<span class="var">t</span>.<span class="var">w</span><br/>
-<span class="in2"></span>};<br/>
+<span class="in2"></span><span class="keyword">return</span> -<span class="num">1</span> * <span class="var">t</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">functions</span>)</span><br/>
 </code></div>
@@ -269,6 +281,52 @@
 <span class="in1"></span><span class="type">Tuple</span> <span class="var">a</span> { <span class="num">1</span>, -<span class="num">2</span>, <span class="num">3</span>, -<span class="num">4</span> };<br/>
 <span class="in1"></span><span class="type">Tuple</span> <span class="var">e</span> { -<span class="num">1</span>, <span class="num">2</span>, -<span class="num">3</span>, <span class="num">4</span> };<br/>
 <span class="in1"></span><span class="fn">assert</span>(-<span class="var">a</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</div>
+<h2>Scalar Multiplication</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Scalar Multiplication</h2>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">a</span> { <span class="num">1</span>, -<span class="num">2</span>, <span class="num">3</span>, -<span class="num">4</span> };<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">e</span> { <span class="num">3</span>.<span class="num">5</span>, -<span class="num">7</span>, <span class="num">10</span>.<span class="num">5</span>, -<span class="num">14</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="num">3</span>.<span class="num">5</span> * <span class="var">a</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">a</span> { <span class="num">1</span>, -<span class="num">2</span>, <span class="num">3</span>, -<span class="num">4</span> };<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">e</span> { <span class="num">0</span>.<span class="num">5</span>, -<span class="num">1</span>, <span class="num">1</span>.<span class="num">5</span>, -<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="num">0</span>.<span class="num">5</span> * <span class="var">a</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="var">operator</span>/(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>, <span class="var">float</span> <span class="var">f</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> (<span class="num">1</span>/<span class="var">f</span>) * <span class="var">t</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">a</span> { <span class="num">1</span>, -<span class="num">2</span>, <span class="num">3</span>, -<span class="num">4</span> };<br/>
+<span class="in1"></span><span class="type">Tuple</span> <span class="var">e</span> { <span class="num">0</span>.<span class="num">5</span>, -<span class="num">1</span>, <span class="num">1</span>.<span class="num">5</span>, -<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span>/<span class="num">2</span> == <span class="var">e</span>);<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>

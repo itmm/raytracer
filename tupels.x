@@ -192,12 +192,23 @@
 
 ```
 @Add(functions)
+	inline auto operator*(
+		float f, const Tuple &t
+	) {
+		return Tuple {
+			f * t.x, f * t.y,
+			f * t.z, f * t.w
+		};
+	}
+@End(functions)
+```
+
+```
+@Add(functions)
 	inline auto operator-(
 		const Tuple &t
 	) {
-		return Tuple {
-			-t.x, -t.y, -t.z, -t.w
-		};
+		return -1 * t;
 	}
 @End(functions)
 ```
@@ -208,3 +219,40 @@
 	Tuple e { -1, 2, -3, 4 };
 	assert(-a == e);
 } @End(unit-tests)
+```
+
+## Scalar Multiplication
+
+```
+@Add(unit-tests) {
+	Tuple a { 1, -2, 3, -4 };
+	Tuple e { 3.5, -7, 10.5, -14 };
+	assert(3.5 * a == e);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	Tuple a { 1, -2, 3, -4 };
+	Tuple e { 0.5, -1, 1.5, -2 };
+	assert(0.5 * a == e);
+} @End(unit-tests)
+```
+
+```
+@Add(functions)
+	inline auto operator/(
+		const Tuple &t, float f
+	) {
+		return (1/f) * t;
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	Tuple a { 1, -2, 3, -4 };
+	Tuple e { 0.5, -1, 1.5, -2 };
+	assert(a/2 == e);
+} @End(unit-tests)
+```
