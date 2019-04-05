@@ -1,5 +1,7 @@
 # Points and Vectors
 
+## Definition
+
 ```
 @Def(types)
 	struct Tuple {
@@ -60,9 +62,11 @@
 } @End(unit-tests)
 ```
 
+## Create Points and Vectors
+
 ```
 @Add(functions)
-	inline Tuple mk_point(
+	inline auto mk_point(
 		float x, float y, float z
 	) {
 		return Tuple { x, y, z, 1 };
@@ -85,15 +89,15 @@
 
 ```
 @Add(unit-tests) {
-	auto p = mk_point(4, -4, 3);
-	auto e = Tuple { 4, -4, 3, 1 };
+	auto p { mk_point(4, -4, 3) };
+	Tuple e { 4, -4, 3, 1 };
 	assert(p == e);
 } @End(unit-tests)
 ```
 
 ```
 @Add(functions)
-	inline Tuple mk_vector(
+	inline auto mk_vector(
 		float x, float y, float z
 	) {
 		return Tuple { x, y, z, 0 };
@@ -103,8 +107,104 @@
 
 ```
 @Add(unit-tests) {
-	auto v = mk_vector(4, -4, 3);
-	auto e = Tuple { 4, -4, 3, 0 };
+	auto v { mk_vector(4, -4, 3) };
+	Tuple e { 4, -4, 3, 0 };
 	assert(v == e);
 } @End(unit-tests)
 ```
+
+## Adding Tupels
+
+```
+@Add(functions)
+	inline auto operator+(
+		const Tuple &a, const Tuple &b
+	) {
+		return Tuple {
+			a.x + b.x, a.y + b.y,
+			a.z + b.z, a.w + b.w
+		};
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	auto p { mk_point(3, -2, 5) };
+	auto v { mk_vector(-2, 3, 1) };
+	Tuple e { 1, 1, 6, 1 };
+	assert(p + v == e);
+} @End(unit-tests)
+```
+
+## Subtracting Tupels
+
+```
+@Add(functions)
+	inline auto operator-(
+		const Tuple &a, const Tuple &b
+	) {
+		return Tuple {
+			a.x - b.x, a.y - b.y,
+			a.z - b.z, a.w - b.w
+		};
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	auto p1 { mk_point(3, 2, 1) };
+	auto p2 { mk_point(5, 6, 7) };
+	auto e { mk_vector(-2, -4, -6) };
+	assert(p1 - p2 == e);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto p { mk_point(3, 2, 1) };
+	auto v { mk_vector(5, 6, 7) };
+	auto e { mk_point(-2, -4, -6) };
+	assert(p - v == e);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto v1 { mk_vector(3, 2, 1) };
+	auto v2 { mk_vector(5, 6, 7) };
+	auto e { mk_vector(-2, -4, -6) };
+	assert(v1 - v2 == e);
+} @End(unit-tests)
+```
+
+## Negating a Tuple
+
+```
+@Add(unit-tests) {
+	auto zero { mk_vector(0, 0, 0) };
+	auto v { mk_vector(1, -2, 3) };
+	auto e { mk_vector(-1, 2, -3) };
+	assert(zero - v == e);
+} @End(unit-tests)
+```
+
+```
+@Add(functions)
+	inline auto operator-(
+		const Tuple &t
+	) {
+		return Tuple {
+			-t.x, -t.y, -t.z, -t.w
+		};
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	Tuple a { 1, -2, 3, -4 };
+	Tuple e { -1, 2, -3, 4 };
+	assert(-a == e);
+} @End(unit-tests)
