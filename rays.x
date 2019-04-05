@@ -390,6 +390,7 @@
 
 ```
 @Add(main)
+	#if 0
 	auto ray_origin { mk_point(0, 0, -5) };
 	float wall_z { 10 };
 	float wall_size { 7 };
@@ -410,5 +411,6 @@
 			return hit(xs) == xs.end() ? black : red;
 		}
 	);
+	#endif
 @End(main)
 ```

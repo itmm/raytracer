@@ -438,6 +438,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#if</span> <span class="num">0</span><br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">ray_origin</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">5</span>) };<br/>
 <span class="in1"></span><span class="var">float</span> <span class="var">wall_z</span> { <span class="num">10</span> };<br/>
 <span class="in1"></span><span class="var">float</span> <span class="var">wall_size</span> { <span class="num">7</span> };<br/>
@@ -458,6 +459,7 @@
 <span class="in3"></span><span class="keyword">return</span> <span class="fn">hit</span>(<span class="var">xs</span>) == <span class="var">xs</span>.<span class="fn">end</span>() ? <span class="var">black</span> : <span class="var">red</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>);<br/>
+<span class="in1"></span><span class="keyword">#endif</span><br/>
 <span class="macro">@End(<span class="name">main</span>)</span><br/>
 </code></div>
 </div>

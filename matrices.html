@@ -722,6 +722,7 @@
 <span class="in2"></span><span class="type">Matrix</span> <span class="var">res</span> {};<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">d</span> { <span class="fn">det4</span>(<span class="var">a</span>) };<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="fn">eq</span>(<span class="var">d</span>, <span class="num">0</span>)) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="var">a</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
 <span class="in3"></span><span class="keyword">throw</span> <span class="type">std</span>::<span class="fn">invalid_argument</span>(<span class="str">"inv"</span>);<br/>
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">r</span> = <span class="num">3</span>; <span class="var">r</span> &gt;= <span class="num">0</span>; --<span class="var">r</span>) {<br/>

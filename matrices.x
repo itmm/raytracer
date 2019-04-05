@@ -662,6 +662,7 @@
 		Matrix res {};
 		float d { det4(a) };
 		if (eq(d, 0)) {
+			std::cerr << a << '\n';
 			throw std::invalid_argument("inv");
 		}
 		for (int r = 3; r >= 0; --r) {
