@@ -25,12 +25,7 @@
 <span class="macro">@Def(<span class="name">types</span>)</span><br/>
 <span class="in1"></span><span class="type">struct</span> <span class="type">Tuple</span> {<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">x</span>, <span class="var">y</span>, <span class="var">z</span>, <span class="var">w</span>;<br/>
-<span class="in2"></span><span class="type">bool</span> <span class="fn">is_point</span>() <span class="type">const</span> {<br/>
-<span class="in3"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">1</span>;<br/>
-<span class="in2"></span>}<br/>
-<span class="in2"></span><span class="type">bool</span> <span class="fn">is_vector</span>() <span class="type">const</span> {<br/>
-<span class="in3"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">0</span>;<br/>
-<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">methods</span>)</span>;<br/>
 <span class="in1"></span>};<br/>
 <span class="macro">@End(<span class="name">types</span>)</span><br/>
 </code></div>
@@ -58,6 +53,24 @@
 <span class="in1"></span><span class="keyword">#define</span> <span class="fn">assert_eq</span>(<span class="var">a</span>, <span class="var">b</span>) \<br/>
 <span class="in2"></span><span class="fn">assert</span>(<span class="fn">eq</span>((<span class="var">a</span>), (<span class="var">b</span>)))<br/>
 <span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@def(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="type">bool</span> <span class="fn">is_point</span>() <span class="type">const</span> {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">1</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@add(<span class="name">methods</span>)</span><br/>
+<span class="in1"></span><span class="type">bool</span> <span class="fn">is_vector</span>() <span class="type">const</span> {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">w</span> == <span class="num">0</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">methods</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
@@ -327,6 +340,175 @@
 <span class="in1"></span><span class="type">Tuple</span> <span class="var">a</span> { <span class="num">1</span>, -<span class="num">2</span>, <span class="num">3</span>, -<span class="num">4</span> };<br/>
 <span class="in1"></span><span class="type">Tuple</span> <span class="var">e</span> { <span class="num">0</span>.<span class="num">5</span>, -<span class="num">1</span>, <span class="num">1</span>.<span class="num">5</span>, -<span class="num">2</span> };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">a</span>/<span class="num">2</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</div>
+<h2>Magnitude</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Magnitude</h2>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">float</span> <span class="fn">abs</span>(<span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">sqrtf</span>(<br/>
+<span class="in3"></span><span class="var">t</span>.<span class="var">x</span> * <span class="var">t</span>.<span class="var">x</span> + <span class="var">t</span>.<span class="var">y</span> * <span class="var">t</span>.<span class="var">y</span> +<br/>
+<span class="in3"></span><span class="var">t</span>.<span class="var">z</span> * <span class="var">t</span>.<span class="var">z</span> + <span class="var">t</span>.<span class="var">w</span> * <span class="var">t</span>.<span class="var">w</span><br/>
+<span class="in2"></span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="num">1</span>, <span class="fn">abs</span>(<span class="var">v</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="num">1</span>, <span class="fn">abs</span>(<span class="var">v</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="num">1</span>, <span class="fn">abs</span>(<span class="var">v</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>) };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">sqrtf</span>(<span class="num">14</span>), <span class="fn">abs</span>(<span class="var">v</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(-<span class="num">1</span>, -<span class="num">2</span>, -<span class="num">3</span>) };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="fn">sqrtf</span>(<span class="num">14</span>), <span class="fn">abs</span>(<span class="var">v</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</div>
+<h1>Normalization</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Normalization</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="type">Tuple</span> <span class="fn">norm</span>(<span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">t</span>) {<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">m</span> = <span class="fn">abs</span>(<span class="var">t</span>);<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">eq</span>(<span class="var">m</span>, <span class="num">1</span>) ? <span class="var">t</span> : <span class="var">t</span>/<span class="var">m</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(<span class="num">4</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">e</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">norm</span>(<span class="var">v</span>) == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">e</span> { <span class="fn">mk_vector</span>(<br/>
+<span class="in2"></span><span class="num">0</span>.<span class="num">26726</span>, <span class="num">0</span>.<span class="num">53452</span>, <span class="num">0</span>.<span class="num">80178</span><br/>
+<span class="in1"></span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">norm</span>(<span class="var">v</span>) == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">v</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>) };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="num">1</span>, <span class="fn">abs</span>(<span class="fn">norm</span>(<span class="var">v</span>)));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</div>
+<h2>Dot Product</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Dot Product</h2>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="var">float</span> <span class="fn">dot</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">b</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="var">a</span>.<span class="var">x</span> * <span class="var">b</span>.<span class="var">x</span> + <span class="var">a</span>.<span class="var">y</span> * <span class="var">b</span>.<span class="var">y</span> +<br/>
+<span class="in3"></span><span class="var">a</span>.<span class="var">z</span> * <span class="var">b</span>.<span class="var">z</span> + <span class="var">a</span>.<span class="var">w</span> * <span class="var">b</span>.<span class="var">w</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">a</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">b</span> { <span class="fn">mk_vector</span>(<span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>) };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="num">20</span>, <span class="fn">dot</span>(<span class="var">a</span>, <span class="var">b</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</div>
+<h2>Cross Product</h2>
+<div class="slides">
+<div>
+<div>
+<h2>Cross Product</h2>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="var">inline</span> <span class="type">auto</span> <span class="fn">cross</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">a</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">b</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">mk_vector</span>(<br/>
+<span class="in3"></span><span class="var">a</span>.<span class="var">y</span> * <span class="var">b</span>.<span class="var">z</span> - <span class="var">a</span>.<span class="var">z</span> * <span class="var">b</span>.<span class="var">y</span>,<br/>
+<span class="in3"></span><span class="var">a</span>.<span class="var">z</span> * <span class="var">b</span>.<span class="var">x</span> - <span class="var">a</span>.<span class="var">x</span> * <span class="var">b</span>.<span class="var">z</span>,<br/>
+<span class="in3"></span><span class="var">a</span>.<span class="var">x</span> * <span class="var">b</span>.<span class="var">y</span> - <span class="var">a</span>.<span class="var">y</span> * <span class="var">b</span>.<span class="var">x</span><br/>
+<span class="in2"></span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">a</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">b</span> { <span class="fn">mk_vector</span>(<span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">e</span> { <span class="fn">mk_vector</span>(-<span class="num">1</span>, <span class="num">2</span>, -<span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">cross</span>(<span class="var">a</span>, <span class="var">b</span>) == <span class="var">e</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">cross</span>(<span class="var">b</span>, <span class="var">a</span>) == -<span class="var">e</span>);<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>

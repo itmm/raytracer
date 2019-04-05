@@ -6,12 +6,7 @@
 @Def(types)
 	struct Tuple {
 		float x, y, z, w;
-		bool is_point() const {
-			return w == 1;
-		}
-		bool is_vector() const {
-			return w == 0;
-		}
+		@put(methods);
 	};
 @End(types)
 ```
@@ -36,6 +31,22 @@
 	#define assert_eq(a, b) \
 		assert(eq((a), (b)))
 @End(functions)
+```
+
+```
+@def(methods)
+	bool is_point() const {
+		return w == 1;
+	}
+@end(methods)
+```
+
+```
+@add(methods)
+	bool is_vector() const {
+		return w == 0;
+	}
+@end(methods)
 ```
 
 ```
@@ -254,5 +265,136 @@
 	Tuple a { 1, -2, 3, -4 };
 	Tuple e { 0.5, -1, 1.5, -2 };
 	assert(a/2 == e);
+} @End(unit-tests)
+```
+
+## Magnitude
+
+```
+@Add(functions)
+	inline float abs(const Tuple &t) {
+		return sqrtf(
+			t.x * t.x + t.y * t.y +
+			t.z * t.z + t.w * t.w
+		);
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(1, 0, 0) };
+	assert_eq(1, abs(v));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(0, 1, 0) };
+	assert_eq(1, abs(v));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(0, 0, 1) };
+	assert_eq(1, abs(v));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(1, 2, 3) };
+	assert_eq(sqrtf(14), abs(v));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(-1, -2, -3) };
+	assert_eq(sqrtf(14), abs(v));
+} @End(unit-tests)
+```
+
+# Normalization
+
+```
+@Add(functions)
+	inline Tuple norm(const Tuple &t) {
+		float m = abs(t);
+		return eq(m, 1) ? t : t/m;
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(4, 0, 0) };
+	auto e { mk_vector(1, 0, 0) };
+	assert(norm(v) == e);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(1, 2, 3) };
+	auto e { mk_vector(
+		0.26726, 0.53452, 0.80178
+	) };
+	assert(norm(v) == e);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto v { mk_vector(1, 2, 3) };
+	assert_eq(1, abs(norm(v)));
+} @End(unit-tests)
+```
+
+## Dot Product
+
+```
+@Add(functions)
+	inline float dot(
+		const Tuple &a, const Tuple &b
+	) {
+		return a.x * b.x + a.y * b.y +
+			a.z * b.z + a.w * b.w;
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	auto a { mk_vector(1, 2, 3) };
+	auto b { mk_vector(2, 3, 4) };
+	assert_eq(20, dot(a, b));
+} @End(unit-tests)
+```
+
+## Cross Product
+
+```
+@Add(functions)
+	inline auto cross(
+		const Tuple &a, const Tuple &b
+	) {
+		return mk_vector(
+			a.y * b.z - a.z * b.y,
+			a.z * b.x - a.x * b.z,
+			a.x * b.y - a.y * b.x
+		);
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	auto a { mk_vector(1, 2, 3) };
+	auto b { mk_vector(2, 3, 4) };
+	auto e { mk_vector(-1, 2, -1) };
+	assert(cross(a, b) == e);
+	assert(cross(b, a) == -e);
 } @End(unit-tests)
 ```
