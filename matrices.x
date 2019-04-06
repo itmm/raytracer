@@ -656,9 +656,7 @@
 
 ```
 @Add(functions)
-	Matrix inv(
-		const Matrix &a
-	) {
+	Matrix inv(const Matrix &a) {
 		Matrix res {};
 		float d { det4(a) };
 		if (eq(d, 0)) {

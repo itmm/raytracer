@@ -51,10 +51,12 @@
 
 ```
 @Add(types)
-	struct Object {};
-	@Put(needed by sphere);
-	struct Sphere: Object {
+	@Put(needed by object);
+	struct Object {
 		Matrix transform = identity;
+		@Put(object attribs);
+	};
+	struct Sphere: Object {
 		@Put(sphere attribs);
 	};
 @End(types)

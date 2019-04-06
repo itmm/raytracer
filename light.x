@@ -1,11 +1,27 @@
 # Lighting
 
 ```
+@Def(object attribs)
+	virtual Tuple normal_at(
+		const Tuple &w
+	) = 0;
+@End(object attribs)
+```
+
+```
+@Def(sphere attribs)
+	Tuple normal_at(
+		const Tuple &w
+	) override;
+@End(sphere attribs)
+```
+
+```
 @Add(functions)
-	inline Tuple normal_at(
-		Sphere &s, const Tuple &w
+	Tuple Sphere::normal_at(
+		const Tuple &w
 	) {
-		auto i { inv(s.transform) };
+		auto i { inv(transform) };
 		auto o { i * w };
 		auto on { o - mk_point(0, 0, 0) };
 		auto wn { trans(i) * on };
@@ -19,7 +35,7 @@
 @Add(unit-tests) {
 	Sphere s;
 	auto p { mk_point(1, 0, 0) } ;
-	auto n { normal_at(s, p) };
+	auto n { s.normal_at(p) };
 	auto e { mk_vector(1, 0, 0) };
 	assert(n == e);
 } @End(unit-tests)
@@ -29,7 +45,7 @@
 @Add(unit-tests) {
 	Sphere s;
 	auto p { mk_point(0, 1, 0) } ;
-	auto n { normal_at(s, p) };
+	auto n { s.normal_at(p) };
 	auto e { mk_vector(0, 1, 0) };
 	assert(n == e);
 } @End(unit-tests)
@@ -39,7 +55,7 @@
 @Add(unit-tests) {
 	Sphere s;
 	auto p { mk_point(0, 0, 1) } ;
-	auto n { normal_at(s, p) };
+	auto n { s.normal_at(p) };
 	auto e { mk_vector(0, 0, 1) };
 	assert(n == e);
 } @End(unit-tests)
@@ -50,7 +66,7 @@
 	Sphere s;
 	float f { sqrtf(3)/3 };
 	auto p { mk_point(f, f, f) } ;
-	auto n { normal_at(s, p) };
+	auto n { s.normal_at(p) };
 	auto e { mk_vector(f, f, f) };
 	assert(n == e);
 } @End(unit-tests)
@@ -61,7 +77,7 @@
 	Sphere s;
 	float f { sqrtf(3)/3 };
 	auto p { mk_point(f, f, f) } ;
-	auto n { normal_at(s, p) };
+	auto n { s.normal_at(p) };
 	assert(n == norm(n));
 } @End(unit-tests)
 ```
@@ -70,7 +86,7 @@
 @Add(unit-tests) {
 	Sphere s;
 	s.transform = translation(0, 1, 0);
-	auto n { normal_at(s, mk_point(0, 1.70711, -0.70711)) };
+	auto n { s.normal_at(mk_point(0, 1.70711, -0.70711)) };
 	auto e { mk_vector(0, 0.70711, -0.70711) };
 	assert(e == n);
 } @End(unit-tests)
@@ -81,7 +97,7 @@
 	Sphere s;
 	s.transform = scaling(1, 0.5, 1) * rotate_z(M_PI/5);
 	float f { sqrtf(2)/2 };
-	auto n { normal_at(s, mk_point(0, f, -f)) };
+	auto n { s.normal_at(mk_point(0, f, -f)) };
 	auto e { mk_vector(0, 0.97014, -0.24254) };
 	assert(e == n);
 } @End(unit-tests)
@@ -136,7 +152,7 @@
 ```
 
 ```
-@Def(needed by sphere)
+@Def(needed by object)
 	struct Material {
 		Color color { 1, 1, 1 };
 		float ambient { 0.1 };
@@ -144,7 +160,7 @@
 		float specular { 0.9 };
 		float shininess { 200 };
 	};
-@End(needed by sphere)
+@End(needed by object)
 ```
 
 ```
@@ -160,9 +176,9 @@
 ```
 
 ```
-@Def(sphere attribs)
+@Add(object attribs)
 	Material material;
-@End(sphere attribs)
+@End(object attribs)
 ```
 
 ```
@@ -347,9 +363,9 @@
 			auto i { hit(xs) };
 			if (i == xs.end()) { return black; }
 			auto hp { r.pos(i->t) };
-			auto n { normal_at(*(Sphere *) i->object, hp) };
+			auto n { i->object->normal_at(hp) };
 			auto e { -r.direction };
-			auto c { lighting(((Sphere *) i->object)->material, light, hp, e, n) };
+			auto c { lighting(i->object->material, light, hp, e, n) };
 			return c;
 		}
 	);
