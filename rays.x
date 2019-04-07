@@ -69,23 +69,24 @@
 ```
 
 ```
-@Add(types)
+@Def(needed by object)
+	struct Object;
 	struct Intersection {
 		float t;
 		Object *object;
 	};
-@End(types)
+@End(needed by object)
 ```
 
 ```
-@Add(types)
+@Add(needed by object)
 	class Intersections:
 		public std::vector<Intersection>
 	{
 		public:
 			@put(xs methods);
 	};
-@End(types)
+@End(needed by object)
 ```
 
 ```
@@ -120,15 +121,31 @@
 ```
 
 ```
+@Def(object attribs)
+	virtual Intersections intersect(
+		const Ray &r
+	) = 0;
+@End(object attribs)
+```
+
+```
+@Def(sphere attribs)
+	Intersections intersect(
+		const Ray &r
+	) override;
+@End(sphere attribs)
+```
+
+```
 @Add(functions)
 	inline constexpr Ray transform(
 		const Ray &r, const Matrix &m
 	);
 
-	inline Intersections intersect(
-		Sphere &s, const Ray &r
+	Intersections Sphere::intersect(
+		const Ray &r
 	) {
-		auto r2 { transform(r, inv(s.transform)) };
+		auto r2 { ::transform(r, inv(transform)) };
 		auto s2r { r2.origin - mk_point(0, 0, 0) };
 		auto a { dot(r2.direction, r2.direction) };
 		auto b { 2 * dot(r2.direction, s2r) };
@@ -139,8 +156,8 @@
 		}
 		auto sd { sqrtf(discr) };
 		return {
-			{(-b - sd)/(2 * a), &s},
-			{(-b + sd)/(2 * a), &s}
+			{(-b - sd)/(2 * a), this},
+			{(-b + sd)/(2 * a), this}
 		};
 	}
 @End(functions)
@@ -152,7 +169,7 @@
 	auto d { mk_vector(0, 0, 1) };
 	Ray r { o, d };
 	Sphere s;
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 2);
 	assert_eq(xs[0].t, 4);
 	assert_eq(xs[1].t, 6);
@@ -165,7 +182,7 @@
 	auto d { mk_vector(0, 0, 1) };
 	Ray r { o, d };
 	Sphere s;
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 2);
 	assert_eq(xs[0].t, 5);
 	assert_eq(xs[1].t, 5);
@@ -178,7 +195,7 @@
 	auto d { mk_vector(0, 0, 1) };
 	Ray r { o, d };
 	Sphere s;
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 0);
 } @End(unit-tests)
 ```
@@ -189,7 +206,7 @@
 	auto d { mk_vector(0, 0, 1) };
 	Ray r { o, d };
 	Sphere s;
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 2);
 	assert_eq(xs[0].t, -1);
 	assert_eq(xs[1].t, 1);
@@ -202,7 +219,7 @@
 	auto d { mk_vector(0, 0, 1) };
 	Ray r { o, d };
 	Sphere s;
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 2);
 	assert_eq(xs[0].t, -6);
 	assert_eq(xs[1].t, -4);
@@ -227,7 +244,7 @@
 	auto d { mk_vector(0, 0, 1) };
 	Ray r { o, d };
 	Sphere s;
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 2);
 	assert(xs[0].object == &s);
 	assert(xs[1].object == &s);
@@ -367,7 +384,7 @@
 	Ray r { o, d };
 	Sphere s;
 	s.transform = scaling(2, 2, 2);
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 2);
 	assert_eq(xs[0].t, 3);
 	assert_eq(xs[1].t, 7);
@@ -381,7 +398,7 @@
 	Ray r { o, d };
 	Sphere s;
 	s.transform = translation(5, 0, 0);
-	auto xs { intersect(s, r) };
+	auto xs { s.intersect(r) };
 	assert(xs.size() == 0);
 } @End(unit-tests)
 ```
@@ -411,7 +428,7 @@
 			float world_x { -half + pixel_size * x };
 			auto pos { mk_point(world_x, world_y, wall_z) };
 			Ray r { ray_origin, norm(pos - ray_origin) };
-			auto xs { intersect(shape, r) };
+			auto xs { shape.intersect(r) };
 			return hit(xs) == xs.end() ? black : red;
 		}
 	);

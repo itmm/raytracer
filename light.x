@@ -1,7 +1,7 @@
 # Lighting
 
 ```
-@Def(object attribs)
+@Add(object attribs)
 	virtual Tuple normal_at(
 		const Tuple &w
 	) = 0;
@@ -9,7 +9,7 @@
 ```
 
 ```
-@Def(sphere attribs)
+@Add(sphere attribs)
 	Tuple normal_at(
 		const Tuple &w
 	) override;
@@ -137,6 +137,7 @@
 	struct Point_Light {
 		Tuple position;
 		Color intensity;
+		@Put(point light elements);
 	};
 @End(types)
 ```
@@ -152,7 +153,7 @@
 ```
 
 ```
-@Def(needed by object)
+@Add(needed by object)
 	struct Material {
 		Color color { 1, 1, 1 };
 		float ambient { 0.1 };
@@ -337,7 +338,7 @@
 
 ```
 @Add(main)
-	#if 1
+	#if 0
 	auto ray_origin { mk_point(0, 0, -5) };
 	float wall_z { 10 };
 	float wall_size { 7 };
@@ -359,7 +360,7 @@
 			float world_x { -half + pixel_size * x };
 			auto pos { mk_point(world_x, world_y, wall_z) };
 			Ray r { ray_origin, norm(pos - ray_origin) };
-			auto xs { intersect(shape, r) };
+			auto xs { shape.intersect(r) };
 			auto i { hit(xs) };
 			if (i == xs.end()) { return black; }
 			auto hp { r.pos(i->t) };

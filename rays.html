@@ -89,24 +89,25 @@
 </div>
 <div><div>
 <code>
-<span class="macro">@Add(<span class="name">types</span>)</span><br/>
+<span class="macro">@Def(<span class="name">needed by object</span>)</span><br/>
+<span class="in1"></span><span class="type">struct</span> <span class="type">Object</span>;<br/>
 <span class="in1"></span><span class="type">struct</span> <span class="type">Intersection</span> {<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">t</span>;<br/>
 <span class="in2"></span><span class="type">Object</span> *<span class="var">object</span>;<br/>
 <span class="in1"></span>};<br/>
-<span class="macro">@End(<span class="name">types</span>)</span><br/>
+<span class="macro">@End(<span class="name">needed by object</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
 <code>
-<span class="macro">@Add(<span class="name">types</span>)</span><br/>
+<span class="macro">@Add(<span class="name">needed by object</span>)</span><br/>
 <span class="in1"></span><span class="keyword">class</span> <span class="type">Intersections</span>:<br/>
 <span class="in2"></span><span class="keyword">public</span> <span class="type">std</span>::<span class="type">vector</span>&lt;<span class="type">Intersection</span>&gt;<br/>
 <span class="in1"></span>{<br/>
 <span class="in2"></span><span class="keyword">public</span>:<br/>
 <span class="in3"></span><span class="macro">@put(<span class="name">xs methods</span>)</span>;<br/>
 <span class="in1"></span>};<br/>
-<span class="macro">@End(<span class="name">types</span>)</span><br/>
+<span class="macro">@End(<span class="name">needed by object</span>)</span><br/>
 </code></div>
 </div>
 <div><div>
@@ -146,15 +147,33 @@
 </div>
 <div><div>
 <code>
+<span class="macro">@Def(<span class="name">object attribs</span>)</span><br/>
+<span class="in1"></span><span class="var">virtual</span> <span class="type">Intersections</span> <span class="fn">intersect</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Ray</span> &amp;<span class="var">r</span><br/>
+<span class="in1"></span>) = <span class="num">0</span>;<br/>
+<span class="macro">@End(<span class="name">object attribs</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Def(<span class="name">sphere attribs</span>)</span><br/>
+<span class="in1"></span><span class="type">Intersections</span> <span class="fn">intersect</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Ray</span> &amp;<span class="var">r</span><br/>
+<span class="in1"></span>) <span class="var">override</span>;<br/>
+<span class="macro">@End(<span class="name">sphere attribs</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
 <span class="in1"></span><span class="var">inline</span> <span class="var">constexpr</span> <span class="type">Ray</span> <span class="fn">transform</span>(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Ray</span> &amp;<span class="var">r</span>, <span class="type">const</span> <span class="type">Matrix</span> &amp;<span class="var">m</span><br/>
 <span class="in1"></span>);<br/>
 <br/>
-<span class="in1"></span><span class="var">inline</span> <span class="type">Intersections</span> <span class="fn">intersect</span>(<br/>
-<span class="in2"></span><span class="type">Sphere</span> &amp;<span class="var">s</span>, <span class="type">const</span> <span class="type">Ray</span> &amp;<span class="var">r</span><br/>
+<span class="in1"></span><span class="type">Intersections</span> <span class="type">Sphere</span>::<span class="fn">intersect</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Ray</span> &amp;<span class="var">r</span><br/>
 <span class="in1"></span>) {<br/>
-<span class="in2"></span><span class="type">auto</span> <span class="var">r2</span> { <span class="fn">transform</span>(<span class="var">r</span>, <span class="fn">inv</span>(<span class="var">s</span>.<span class="var">transform</span>)) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">r2</span> { ::<span class="fn">transform</span>(<span class="var">r</span>, <span class="fn">inv</span>(<span class="var">transform</span>)) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">s2r</span> { <span class="var">r2</span>.<span class="var">origin</span> - <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">a</span> { <span class="fn">dot</span>(<span class="var">r2</span>.<span class="var">direction</span>, <span class="var">r2</span>.<span class="var">direction</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">b</span> { <span class="num">2</span> * <span class="fn">dot</span>(<span class="var">r2</span>.<span class="var">direction</span>, <span class="var">s2r</span>) };<br/>
@@ -165,8 +184,8 @@
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">sd</span> { <span class="fn">sqrtf</span>(<span class="var">discr</span>) };<br/>
 <span class="in2"></span><span class="keyword">return</span> {<br/>
-<span class="in3"></span>{(-<span class="var">b</span> - <span class="var">sd</span>)/(<span class="num">2</span> * <span class="var">a</span>), &amp;<span class="var">s</span>},<br/>
-<span class="in3"></span>{(-<span class="var">b</span> + <span class="var">sd</span>)/(<span class="num">2</span> * <span class="var">a</span>), &amp;<span class="var">s</span>}<br/>
+<span class="in3"></span>{(-<span class="var">b</span> - <span class="var">sd</span>)/(<span class="num">2</span> * <span class="var">a</span>), <span class="var">this</span>},<br/>
+<span class="in3"></span>{(-<span class="var">b</span> + <span class="var">sd</span>)/(<span class="num">2</span> * <span class="var">a</span>), <span class="var">this</span>}<br/>
 <span class="in2"></span>};<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">functions</span>)</span><br/>
@@ -179,7 +198,7 @@
 <span class="in1"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">2</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">0</span>].<span class="var">t</span>, <span class="num">4</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">1</span>].<span class="var">t</span>, <span class="num">6</span>);<br/>
@@ -193,7 +212,7 @@
 <span class="in1"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">2</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">0</span>].<span class="var">t</span>, <span class="num">5</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">1</span>].<span class="var">t</span>, <span class="num">5</span>);<br/>
@@ -207,7 +226,7 @@
 <span class="in1"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">0</span>);<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
@@ -219,7 +238,7 @@
 <span class="in1"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">2</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">0</span>].<span class="var">t</span>, -<span class="num">1</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">1</span>].<span class="var">t</span>, <span class="num">1</span>);<br/>
@@ -233,7 +252,7 @@
 <span class="in1"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">2</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">0</span>].<span class="var">t</span>, -<span class="num">6</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">1</span>].<span class="var">t</span>, -<span class="num">4</span>);<br/>
@@ -260,7 +279,7 @@
 <span class="in1"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">2</span>);<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>[<span class="num">0</span>].<span class="var">object</span> == &amp;<span class="var">s</span>);<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>[<span class="num">1</span>].<span class="var">object</span> == &amp;<span class="var">s</span>);<br/>
@@ -412,7 +431,7 @@
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">scaling</span>(<span class="num">2</span>, <span class="num">2</span>, <span class="num">2</span>);<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">2</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">0</span>].<span class="var">t</span>, <span class="num">3</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">1</span>].<span class="var">t</span>, <span class="num">7</span>);<br/>
@@ -427,7 +446,7 @@
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">5</span>, <span class="num">0</span>, <span class="num">0</span>);<br/>
-<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">s</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">0</span>);<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
@@ -459,7 +478,7 @@
 <span class="in3"></span><span class="var">float</span> <span class="var">world_x</span> { -<span class="var">half</span> + <span class="var">pixel_size</span> * <span class="var">x</span> };<br/>
 <span class="in3"></span><span class="type">auto</span> <span class="var">pos</span> { <span class="fn">mk_point</span>(<span class="var">world_x</span>, <span class="var">world_y</span>, <span class="var">wall_z</span>) };<br/>
 <span class="in3"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">ray_origin</span>, <span class="fn">norm</span>(<span class="var">pos</span> - <span class="var">ray_origin</span>) };<br/>
-<span class="in3"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect</span>(<span class="var">shape</span>, <span class="var">r</span>) };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">shape</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in3"></span><span class="keyword">return</span> <span class="fn">hit</span>(<span class="var">xs</span>) == <span class="var">xs</span>.<span class="fn">end</span>() ? <span class="var">black</span> : <span class="var">red</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>);<br/>

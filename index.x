@@ -45,3 +45,7 @@
 @inc(light.x)
 ```
 
+```
+@inc(scene.x)
+```
+
