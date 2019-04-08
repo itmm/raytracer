@@ -276,12 +276,115 @@
 ```
 
 ```
+@Add(functions)
+	Color color_at(
+		const World &w,
+		const Ray &r
+	) {
+		auto xs { intersect_world(w, r) };
+		auto i { hit(xs) };
+		if (i == xs.end()) {
+			return { 0, 0, 0 };
+		}
+		auto pc { prepare_computation(*i, r) };
+		return shade_hit(w, pc);
+	}
+@End(functions)
+```
+
+```
 @Add(unit-tests) {
 	auto w { default_world() };
 	Ray r { mk_point(0, 0, -5), mk_vector(0, 1, 0) };
 	auto c { color_at(w, r) };
 	Color e { 0, 0, 0 };
 	assert(c == e);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto w { default_world() };
+	Ray r { mk_point(0, 0, -5), mk_vector(0, 0, 1) };
+	auto c { color_at(w, r) };
+	Color e { 0.38066, 0.47583, 0.2855 };
+	assert(c == e);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto w { default_world() };
+	auto &outer { *w.objects[0] };
+	outer.material.ambient = 1;
+	auto &inner { *w.objects[1] };
+	inner.material.ambient = 1;
+	Ray r { mk_point(0, 0, 0.75), mk_vector(0, 0, -1) };
+	auto c { color_at(w, r) };
+	assert(c == inner.material.color);
+} @End(unit-tests)
+```
+
+```
+@Add(functions)
+	Matrix view_transform(
+		const Tuple &from,
+		const Tuple &to,
+		const Tuple &up
+	) {
+		auto forward { norm(to - from) };
+		auto upn { norm(up) };
+		auto left { cross(forward, upn) };
+		auto true_up { cross(left, forward) };
+		return Matrix {
+			left.x, left.y, left.z, 0,
+			true_up.x, true_up.y, true_up.z, 0,
+			-forward.x, -forward.y, -forward.z, 0,
+			0, 0, 0, 1
+		} * translation(-from.x, -from.y, -from.z);
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	auto from { mk_point(0, 0, 0) };
+	auto to { mk_point(0, 0, -1) };
+	auto up { mk_vector(0, 1, 0) };
+	assert(view_transform(from, to, up) == identity);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto from { mk_point(0, 0, 0) };
+	auto to { mk_point(0, 0, 1) };
+	auto up { mk_vector(0, 1, 0) };
+	assert(view_transform(from, to, up) == scaling(-1, 1, -1));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto from { mk_point(0, 0, 8) };
+	auto to { mk_point(0, 0, 1) };
+	auto up { mk_vector(0, 1, 0) };
+	assert(view_transform(from, to, up) == translation(0, 0, -8));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	auto from { mk_point(1, 3, 2) };
+	auto to { mk_point(4, -2, 8) };
+	auto up { mk_vector(1, 1, 0) };
+	Matrix e {
+		-0.50709, 0.50709, 0.67612, -2.36643,
+		0.76772, 0.60609, 0.12122, -2.82843,
+		-0.35857, 0.59761, -0.71714, 0.00000,
+		0.00000, 0.00000, 0.00000, 1.00000
+	};
+	assert(view_transform(from, to, up) == e );
 } @End(unit-tests)
 ```
 

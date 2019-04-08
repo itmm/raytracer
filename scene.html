@@ -308,12 +308,123 @@
 </div>
 <div><div>
 <code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="type">Color</span> <span class="fn">color_at</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">World</span> &amp;<span class="var">w</span>,<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Ray</span> &amp;<span class="var">r</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect_world</span>(<span class="var">w</span>, <span class="var">r</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">i</span> { <span class="fn">hit</span>(<span class="var">xs</span>) };<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">i</span> == <span class="var">xs</span>.<span class="fn">end</span>()) {<br/>
+<span class="in3"></span><span class="keyword">return</span> { <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span> };<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">pc</span> { <span class="fn">prepare_computation</span>(*<span class="var">i</span>, <span class="var">r</span>) };<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="fn">shade_hit</span>(<span class="var">w</span>, <span class="var">pc</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">w</span> { <span class="fn">default_world</span>() };<br/>
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">5</span>), <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>) };<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">c</span> { <span class="fn">color_at</span>(<span class="var">w</span>, <span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="type">Color</span> <span class="var">e</span> { <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span> };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">c</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">w</span> { <span class="fn">default_world</span>() };<br/>
+<span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">5</span>), <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">c</span> { <span class="fn">color_at</span>(<span class="var">w</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="type">Color</span> <span class="var">e</span> { <span class="num">0</span>.<span class="num">38066</span>, <span class="num">0</span>.<span class="num">47583</span>, <span class="num">0</span>.<span class="num">2855</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">c</span> == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">w</span> { <span class="fn">default_world</span>() };<br/>
+<span class="in1"></span><span class="type">auto</span> &amp;<span class="var">outer</span> { *<span class="var">w</span>.<span class="var">objects</span>[<span class="num">0</span>] };<br/>
+<span class="in1"></span><span class="var">outer</span>.<span class="var">material</span>.<span class="var">ambient</span> = <span class="num">1</span>;<br/>
+<span class="in1"></span><span class="type">auto</span> &amp;<span class="var">inner</span> { *<span class="var">w</span>.<span class="var">objects</span>[<span class="num">1</span>] };<br/>
+<span class="in1"></span><span class="var">inner</span>.<span class="var">material</span>.<span class="var">ambient</span> = <span class="num">1</span>;<br/>
+<span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>.<span class="num">75</span>), <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">c</span> { <span class="fn">color_at</span>(<span class="var">w</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">c</span> == <span class="var">inner</span>.<span class="var">material</span>.<span class="var">color</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="fn">view_transform</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">from</span>,<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">to</span>,<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">up</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">forward</span> { <span class="fn">norm</span>(<span class="var">to</span> - <span class="var">from</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">upn</span> { <span class="fn">norm</span>(<span class="var">up</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">left</span> { <span class="fn">cross</span>(<span class="var">forward</span>, <span class="var">upn</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">true_up</span> { <span class="fn">cross</span>(<span class="var">left</span>, <span class="var">forward</span>) };<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="type">Matrix</span> {<br/>
+<span class="in3"></span><span class="var">left</span>.<span class="var">x</span>, <span class="var">left</span>.<span class="var">y</span>, <span class="var">left</span>.<span class="var">z</span>, <span class="num">0</span>,<br/>
+<span class="in3"></span><span class="var">true_up</span>.<span class="var">x</span>, <span class="var">true_up</span>.<span class="var">y</span>, <span class="var">true_up</span>.<span class="var">z</span>, <span class="num">0</span>,<br/>
+<span class="in3"></span>-<span class="var">forward</span>.<span class="var">x</span>, -<span class="var">forward</span>.<span class="var">y</span>, -<span class="var">forward</span>.<span class="var">z</span>, <span class="num">0</span>,<br/>
+<span class="in3"></span><span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span><br/>
+<span class="in2"></span>} * <span class="fn">translation</span>(-<span class="var">from</span>.<span class="var">x</span>, -<span class="var">from</span>.<span class="var">y</span>, -<span class="var">from</span>.<span class="var">z</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">from</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">to</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">up</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">view_transform</span>(<span class="var">from</span>, <span class="var">to</span>, <span class="var">up</span>) == <span class="var">identity</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">from</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">to</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">up</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">view_transform</span>(<span class="var">from</span>, <span class="var">to</span>, <span class="var">up</span>) == <span class="fn">scaling</span>(-<span class="num">1</span>, <span class="num">1</span>, -<span class="num">1</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">from</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">8</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">to</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">up</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">view_transform</span>(<span class="var">from</span>, <span class="var">to</span>, <span class="var">up</span>) == <span class="fn">translation</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">8</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">from</span> { <span class="fn">mk_point</span>(<span class="num">1</span>, <span class="num">3</span>, <span class="num">2</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">to</span> { <span class="fn">mk_point</span>(<span class="num">4</span>, -<span class="num">2</span>, <span class="num">8</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">up</span> { <span class="fn">mk_vector</span>(<span class="num">1</span>, <span class="num">1</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="type">Matrix</span> <span class="var">e</span> {<br/>
+<span class="in2"></span>-<span class="num">0</span>.<span class="num">50709</span>, <span class="num">0</span>.<span class="num">50709</span>, <span class="num">0</span>.<span class="num">67612</span>, -<span class="num">2</span>.<span class="num">36643</span>,<br/>
+<span class="in2"></span><span class="num">0</span>.<span class="num">76772</span>, <span class="num">0</span>.<span class="num">60609</span>, <span class="num">0</span>.<span class="num">12122</span>, -<span class="num">2</span>.<span class="num">82843</span>,<br/>
+<span class="in2"></span>-<span class="num">0</span>.<span class="num">35857</span>, <span class="num">0</span>.<span class="num">59761</span>, -<span class="num">0</span>.<span class="num">71714</span>, <span class="num">0</span>.<span class="num">00000</span>,<br/>
+<span class="in2"></span><span class="num">0</span>.<span class="num">00000</span>, <span class="num">0</span>.<span class="num">00000</span>, <span class="num">0</span>.<span class="num">00000</span>, <span class="num">1</span>.<span class="num">00000</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">view_transform</span>(<span class="var">from</span>, <span class="var">to</span>, <span class="var">up</span>) == <span class="var">e</span> );<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>
