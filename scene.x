@@ -388,3 +388,153 @@
 } @End(unit-tests)
 ```
 
+```
+@Add(types)
+	struct Camera {
+		int hsize;
+		int vsize;
+		float field_of_view;
+		Matrix transform = identity;
+		float half_width;
+		float half_height;
+		float pixel_size;
+
+		Camera(int hs, int vs, float fov):
+			hsize(hs), vsize(vs), field_of_view(fov)
+		{
+			float half_view = tan(fov/2);
+			float aspect = ((float) hs)/vs;
+			if (aspect >= 1) {
+				half_width = half_view;
+				half_height = half_view/aspect;
+			} else {
+				half_width = half_view * aspect;
+				half_height = half_view;
+			}
+			pixel_size = half_width * 2 / hs;
+		}
+	};
+@End(types)
+```
+
+```
+@Add(unit-tests) {
+	Camera c { 160, 120, M_PI/2 };
+	assert(c.hsize == 160);
+	assert(c.vsize == 120);
+	assert_eq(c.field_of_view, M_PI/2);
+	assert(c.transform == identity);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	Camera c { 200, 125, M_PI/2 };
+	assert_eq(c.pixel_size, 0.01);
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	Camera c { 125, 200, M_PI/2 };
+	assert_eq(c.pixel_size, 0.01);
+} @End(unit-tests)
+```
+
+```
+@Add(functions)
+	Ray ray_for_pixel(
+		const Camera &c, int px, int py
+	) {
+		float xo = (px + 0.5) * c.pixel_size;
+		float yo = (py + 0.5) * c.pixel_size;
+		float wx = c.half_width - xo;
+		float wy = c.half_height - yo;
+		auto i { inv(c.transform) };
+		auto p { i * mk_point(wx, wy, -1) };
+		auto o { i * mk_point(0, 0, 0) };
+		auto d { norm(p - o) };
+		return Ray { o, d };
+	}
+@End(functions)
+```
+
+```
+@Add(unit-tests) {
+	Camera c { 201, 101, M_PI/2 };
+	auto r { ray_for_pixel(c, 100, 50) };
+	assert(r.origin == mk_point(0, 0, 0));
+	assert(r.direction == mk_vector(0, 0, -1));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	Camera c { 201, 101, M_PI/2 };
+	auto r { ray_for_pixel(c, 0, 0) };
+	assert(r.origin == mk_point(0, 0, 0));
+	assert(r.direction == mk_vector(0.66519, 0.33259, -0.66851));
+} @End(unit-tests)
+```
+
+```
+@Add(unit-tests) {
+	Camera c { 201, 101, M_PI/2 };
+	c.transform = rotate_y(M_PI/4) * translation(0, -2, 5);
+	auto r { ray_for_pixel(c, 100, 50) };
+	assert(r.origin == mk_point(0, 2, -5));
+	float f { sqrtf(2)/2 };
+	assert(r.direction == mk_vector(f, 0, -f));
+} @End(unit-tests)
+```
+
+```
+@Add(functions)
+	void render(std::ostream &o, const Camera &c, const World &w) {
+		mk_ppm(o, c.hsize, c.vsize,
+			[&](int x, int y) {
+				auto r { ray_for_pixel(c, x, y) };
+				return color_at(w, r);
+			}
+		);
+	}
+@End(functions)
+```
+
+```
+@Add(main)
+	#if 0
+	auto ray_origin { mk_point(0, 0, -5) };
+	float wall_z { 10 };
+	float wall_size { 7 };
+	int canvas_pixels { 100 };
+	float pixel_size { wall_size / canvas_pixels };
+	float half { wall_size / 2 };
+	Color red { 1, 0, 0 };
+	Color black { 0, 0, 0 };
+	Sphere shape;
+	shape.material.color = { 1, 0.2, 1 };
+	Point_Light light {
+		mk_point(-10, 10, -10),
+		{ 1, 1, 1 }
+	};
+	std::ofstream o("ball.ppm");
+	mk_ppm(o, canvas_pixels, canvas_pixels,
+		[&](int x, int y) {
+			float world_y { half - pixel_size * y };
+			float world_x { -half + pixel_size * x };
+			auto pos { mk_point(world_x, world_y, wall_z) };
+			Ray r { ray_origin, norm(pos - ray_origin) };
+			auto xs { shape.intersect(r) };
+			auto i { hit(xs) };
+			if (i == xs.end()) { return black; }
+			auto hp { r.pos(i->t) };
+			auto n { i->object->normal_at(hp) };
+			auto e { -r.direction };
+			auto c { lighting(i->object->material, light, hp, e, n) };
+			return c;
+		}
+	);
+	#endif
+@End(main)
+```

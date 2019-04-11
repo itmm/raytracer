@@ -428,5 +428,166 @@
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">types</span>)</span><br/>
+<span class="in1"></span><span class="type">struct</span> <span class="type">Camera</span> {<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">hsize</span>;<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">vsize</span>;<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">field_of_view</span>;<br/>
+<span class="in2"></span><span class="type">Matrix</span> <span class="var">transform</span> = <span class="var">identity</span>;<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">half_width</span>;<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">half_height</span>;<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">pixel_size</span>;<br/>
+<br/>
+<span class="in2"></span><span class="fn">Camera</span>(<span class="type">int</span> <span class="var">hs</span>, <span class="type">int</span> <span class="var">vs</span>, <span class="var">float</span> <span class="var">fov</span>):<br/>
+<span class="in3"></span><span class="fn">hsize</span>(<span class="var">hs</span>), <span class="fn">vsize</span>(<span class="var">vs</span>), <span class="fn">field_of_view</span>(<span class="var">fov</span>)<br/>
+<span class="in2"></span>{<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">half_view</span> = <span class="fn">tan</span>(<span class="var">fov</span>/<span class="num">2</span>);<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">aspect</span> = ((<span class="var">float</span>) <span class="var">hs</span>)/<span class="var">vs</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">aspect</span> &gt;= <span class="num">1</span>) {<br/>
+<span class="in4"></span><span class="var">half_width</span> = <span class="var">half_view</span>;<br/>
+<span class="in4"></span><span class="var">half_height</span> = <span class="var">half_view</span>/<span class="var">aspect</span>;<br/>
+<span class="in3"></span>} <span class="keyword">else</span> {<br/>
+<span class="in4"></span><span class="var">half_width</span> = <span class="var">half_view</span> * <span class="var">aspect</span>;<br/>
+<span class="in4"></span><span class="var">half_height</span> = <span class="var">half_view</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="var">pixel_size</span> = <span class="var">half_width</span> * <span class="num">2</span> / <span class="var">hs</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>};<br/>
+<span class="macro">@End(<span class="name">types</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Camera</span> <span class="var">c</span> { <span class="num">160</span>, <span class="num">120</span>, <span class="var">M_PI</span>/<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">c</span>.<span class="var">hsize</span> == <span class="num">160</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">c</span>.<span class="var">vsize</span> == <span class="num">120</span>);<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">c</span>.<span class="var">field_of_view</span>, <span class="var">M_PI</span>/<span class="num">2</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">c</span>.<span class="var">transform</span> == <span class="var">identity</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Camera</span> <span class="var">c</span> { <span class="num">200</span>, <span class="num">125</span>, <span class="var">M_PI</span>/<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">c</span>.<span class="var">pixel_size</span>, <span class="num">0</span>.<span class="num">01</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Camera</span> <span class="var">c</span> { <span class="num">125</span>, <span class="num">200</span>, <span class="var">M_PI</span>/<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">c</span>.<span class="var">pixel_size</span>, <span class="num">0</span>.<span class="num">01</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="type">Ray</span> <span class="fn">ray_for_pixel</span>(<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Camera</span> &amp;<span class="var">c</span>, <span class="type">int</span> <span class="var">px</span>, <span class="type">int</span> <span class="var">py</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">xo</span> = (<span class="var">px</span> + <span class="num">0</span>.<span class="num">5</span>) * <span class="var">c</span>.<span class="var">pixel_size</span>;<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">yo</span> = (<span class="var">py</span> + <span class="num">0</span>.<span class="num">5</span>) * <span class="var">c</span>.<span class="var">pixel_size</span>;<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">wx</span> = <span class="var">c</span>.<span class="var">half_width</span> - <span class="var">xo</span>;<br/>
+<span class="in2"></span><span class="var">float</span> <span class="var">wy</span> = <span class="var">c</span>.<span class="var">half_height</span> - <span class="var">yo</span>;<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">i</span> { <span class="fn">inv</span>(<span class="var">c</span>.<span class="var">transform</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">p</span> { <span class="var">i</span> * <span class="fn">mk_point</span>(<span class="var">wx</span>, <span class="var">wy</span>, -<span class="num">1</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">o</span> { <span class="var">i</span> * <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">norm</span>(<span class="var">p</span> - <span class="var">o</span>) };<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="type">Ray</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Camera</span> <span class="var">c</span> { <span class="num">201</span>, <span class="num">101</span>, <span class="var">M_PI</span>/<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">r</span> { <span class="fn">ray_for_pixel</span>(<span class="var">c</span>, <span class="num">100</span>, <span class="num">50</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">r</span>.<span class="var">origin</span> == <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>));<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">r</span>.<span class="var">direction</span> == <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">1</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Camera</span> <span class="var">c</span> { <span class="num">201</span>, <span class="num">101</span>, <span class="var">M_PI</span>/<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">r</span> { <span class="fn">ray_for_pixel</span>(<span class="var">c</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">r</span>.<span class="var">origin</span> == <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>));<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">r</span>.<span class="var">direction</span> == <span class="fn">mk_vector</span>(<span class="num">0</span>.<span class="num">66519</span>, <span class="num">0</span>.<span class="num">33259</span>, -<span class="num">0</span>.<span class="num">66851</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Camera</span> <span class="var">c</span> { <span class="num">201</span>, <span class="num">101</span>, <span class="var">M_PI</span>/<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="var">c</span>.<span class="var">transform</span> = <span class="fn">rotate_y</span>(<span class="var">M_PI</span>/<span class="num">4</span>) * <span class="fn">translation</span>(<span class="num">0</span>, -<span class="num">2</span>, <span class="num">5</span>);<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">r</span> { <span class="fn">ray_for_pixel</span>(<span class="var">c</span>, <span class="num">100</span>, <span class="num">50</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">r</span>.<span class="var">origin</span> == <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">2</span>, -<span class="num">5</span>));<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">f</span> { <span class="fn">sqrtf</span>(<span class="num">2</span>)/<span class="num">2</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">r</span>.<span class="var">direction</span> == <span class="fn">mk_vector</span>(<span class="var">f</span>, <span class="num">0</span>, -<span class="var">f</span>));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">render</span>(<span class="type">std</span>::<span class="type">ostream</span> &amp;<span class="var">o</span>, <span class="type">const</span> <span class="type">Camera</span> &amp;<span class="var">c</span>, <span class="type">const</span> <span class="type">World</span> &amp;<span class="var">w</span>) {<br/>
+<span class="in2"></span><span class="fn">mk_ppm</span>(<span class="var">o</span>, <span class="var">c</span>.<span class="var">hsize</span>, <span class="var">c</span>.<span class="var">vsize</span>,<br/>
+<span class="in3"></span>[&amp;](<span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span>) {<br/>
+<span class="in4"></span><span class="type">auto</span> <span class="var">r</span> { <span class="fn">ray_for_pixel</span>(<span class="var">c</span>, <span class="var">x</span>, <span class="var">y</span>) };<br/>
+<span class="in4"></span><span class="keyword">return</span> <span class="fn">color_at</span>(<span class="var">w</span>, <span class="var">r</span>);<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#if</span> <span class="num">0</span><br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">ray_origin</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">5</span>) };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">wall_z</span> { <span class="num">10</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">wall_size</span> { <span class="num">7</span> };<br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">canvas_pixels</span> { <span class="num">100</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">pixel_size</span> { <span class="var">wall_size</span> / <span class="var">canvas_pixels</span> };<br/>
+<span class="in1"></span><span class="var">float</span> <span class="var">half</span> { <span class="var">wall_size</span> / <span class="num">2</span> };<br/>
+<span class="in1"></span><span class="type">Color</span> <span class="var">red</span> { <span class="num">1</span>, <span class="num">0</span>, <span class="num">0</span> };<br/>
+<span class="in1"></span><span class="type">Color</span> <span class="var">black</span> { <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span> };<br/>
+<span class="in1"></span><span class="type">Sphere</span> <span class="var">shape</span>;<br/>
+<span class="in1"></span><span class="var">shape</span>.<span class="var">material</span>.<span class="var">color</span> = { <span class="num">1</span>, <span class="num">0</span>.<span class="num">2</span>, <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="type">Point_Light</span> <span class="var">light</span> {<br/>
+<span class="in2"></span><span class="fn">mk_point</span>(-<span class="num">10</span>, <span class="num">10</span>, -<span class="num">10</span>),<br/>
+<span class="in2"></span>{ <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span> }<br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">ofstream</span> <span class="fn">o</span>(<span class="str">"ball.ppm"</span>);<br/>
+<span class="in1"></span><span class="fn">mk_ppm</span>(<span class="var">o</span>, <span class="var">canvas_pixels</span>, <span class="var">canvas_pixels</span>,<br/>
+<span class="in2"></span>[&amp;](<span class="type">int</span> <span class="var">x</span>, <span class="type">int</span> <span class="var">y</span>) {<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">world_y</span> { <span class="var">half</span> - <span class="var">pixel_size</span> * <span class="var">y</span> };<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">world_x</span> { -<span class="var">half</span> + <span class="var">pixel_size</span> * <span class="var">x</span> };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">pos</span> { <span class="fn">mk_point</span>(<span class="var">world_x</span>, <span class="var">world_y</span>, <span class="var">wall_z</span>) };<br/>
+<span class="in3"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">ray_origin</span>, <span class="fn">norm</span>(<span class="var">pos</span> - <span class="var">ray_origin</span>) };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">shape</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">i</span> { <span class="fn">hit</span>(<span class="var">xs</span>) };<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">i</span> == <span class="var">xs</span>.<span class="fn">end</span>()) { <span class="keyword">return</span> <span class="var">black</span>; }<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">hp</span> { <span class="var">r</span>.<span class="fn">pos</span>(<span class="var">i</span>-&gt;<span class="var">t</span>) };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">n</span> { <span class="var">i</span>-&gt;<span class="var">object</span>-&gt;<span class="fn">normal_at</span>(<span class="var">hp</span>) };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">e</span> { -<span class="var">r</span>.<span class="var">direction</span> };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">c</span> { <span class="fn">lighting</span>(<span class="var">i</span>-&gt;<span class="var">object</span>-&gt;<span class="var">material</span>, <span class="var">light</span>, <span class="var">hp</span>, <span class="var">e</span>, <span class="var">n</span>) };<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="var">c</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>);<br/>
+<span class="in1"></span><span class="keyword">#endif</span><br/>
+<span class="macro">@End(<span class="name">main</span>)</span><br/>
+</code></div>
+</div>
 </body>
 </html>
