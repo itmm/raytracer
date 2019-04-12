@@ -29,7 +29,7 @@
 <div><div>
 <code>
 <span class="macro">@Add(<span class="name">functions</span>)</span><br/>
-<span class="in1"></span><span class="type">bool</span> <span class="fn">is_shadowed</span>(<span class="type">const</span> <span class="type">World</span> &amp;<span class="var">w</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">p</span>) {<br/>
+<span class="in1"></span><span class="type">bool</span> <span class="fn">is_shadowed</span>(<span class="type">const</span> <span class="type">World</span> &amp;<span class="var">w</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">p</span>, <span class="type">Object</span> *<span class="var">o</span>) {<br/>
 <span class="in2"></span><span class="keyword">for</span> (<span class="type">auto</span> &amp;<span class="var">l</span> : <span class="var">w</span>.<span class="var">lights</span>) {<br/>
 <span class="in3"></span><span class="type">auto</span> <span class="var">v</span> = <span class="var">l</span>-&gt;<span class="var">position</span> - <span class="var">p</span>;<br/>
 <span class="in3"></span><span class="var">float</span> <span class="var">dist</span> = <span class="fn">abs</span>(<span class="var">v</span>);<br/>
@@ -37,6 +37,7 @@
 <span class="in3"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">p</span>, <span class="var">dir</span> };<br/>
 <span class="in3"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect_world</span>(<span class="var">w</span>, <span class="var">r</span>) };<br/>
 <span class="in3"></span><span class="type">auto</span> <span class="var">h</span> { <span class="fn">hit</span>(<span class="var">xs</span>) };<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">h</span> != <span class="var">xs</span>.<span class="fn">end</span>() &amp;&amp; <span class="var">h</span>-&gt;<span class="var">object</span> == <span class="var">o</span>) { ++<span class="var">h</span>; }<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">h</span> != <span class="var">xs</span>.<span class="fn">end</span>() &amp;&amp; <span class="var">h</span>-&gt;<span class="var">t</span> &lt; <span class="var">dist</span>) {<br/>
 <span class="in4"></span><span class="keyword">return</span> <span class="num">true</span>;<br/>
 <span class="in3"></span>}<br/>
@@ -50,7 +51,7 @@
 <code>
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
-<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">10</span>, <span class="num">0</span>)));<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">10</span>, <span class="num">0</span>), <span class="num">nullptr</span>));<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>
@@ -58,7 +59,7 @@
 <code>
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
-<span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(<span class="num">10</span>, -<span class="num">10</span>, <span class="num">10</span>)));<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(<span class="num">10</span>, -<span class="num">10</span>, <span class="num">10</span>), <span class="num">nullptr</span>));<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>
@@ -66,7 +67,7 @@
 <code>
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
-<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(-<span class="num">20</span>, <span class="num">20</span>, -<span class="num">20</span>)));<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(-<span class="num">20</span>, <span class="num">20</span>, -<span class="num">20</span>), <span class="num">nullptr</span>));<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>
@@ -74,7 +75,7 @@
 <code>
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
-<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(-<span class="num">2</span>, <span class="num">2</span>, -<span class="num">2</span>)));<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(-<span class="num">2</span>, <span class="num">2</span>, -<span class="num">2</span>), <span class="num">nullptr</span>));<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
 </div>

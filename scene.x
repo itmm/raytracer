@@ -242,7 +242,7 @@
 
 ```
 @Add(functions)
-	bool is_shadowed(const World &w, const Tuple &p);
+	bool is_shadowed(const World &w, const Tuple &p, Object *o);
 	Color shade_hit(
 		const World &w,
 		const Computation &cmp
@@ -254,7 +254,7 @@
 				*l,
 				cmp.point, cmp.eyev,
 				cmp.normalv,
-				is_shadowed(w, cmp.over_point)
+				is_shadowed(w, cmp.point, cmp.object)
 			);
 		}
 		return res;

@@ -15,7 +15,7 @@
 
 ```
 @Add(functions)
-	bool is_shadowed(const World &w, const Tuple &p) {
+	bool is_shadowed(const World &w, const Tuple &p, Object *o) {
 		for (auto &l : w.lights) {
 			auto v = l->position - p;
 			float dist = abs(v);
@@ -23,6 +23,7 @@
 			Ray r { p, dir };
 			auto xs { intersect_world(w, r) };
 			auto h { hit(xs) };
+			if (h != xs.end() && h->object == o) { ++h; }
 			if (h != xs.end() && h->t < dist) {
 				return true;
 			}
@@ -35,28 +36,28 @@
 ```
 @Add(unit-tests) {
 	auto w = default_world();
-	assert(! is_shadowed(w, mk_point(0, 10, 0)));
+	assert(! is_shadowed(w, mk_point(0, 10, 0), nullptr));
 } @End(unit-tests)
 ```
 
 ```
 @Add(unit-tests) {
 	auto w = default_world();
-	assert(is_shadowed(w, mk_point(10, -10, 10)));
+	assert(is_shadowed(w, mk_point(10, -10, 10), nullptr));
 } @End(unit-tests)
 ```
 
 ```
 @Add(unit-tests) {
 	auto w = default_world();
-	assert(! is_shadowed(w, mk_point(-20, 20, -20)));
+	assert(! is_shadowed(w, mk_point(-20, 20, -20), nullptr));
 } @End(unit-tests)
 ```
 
 ```
 @Add(unit-tests) {
 	auto w = default_world();
-	assert(! is_shadowed(w, mk_point(-2, 2, -2)));
+	assert(! is_shadowed(w, mk_point(-2, 2, -2), nullptr));
 } @End(unit-tests)
 ```
 
