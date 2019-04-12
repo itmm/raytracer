@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Shadows</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Shadows</h1>
+<div class="slides">
+<div>
+<div>
+<h1>Shadows</h1>
+</div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Material</span> <span class="var">m</span>;<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">pos</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">eyev</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">normalv</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">Point_Light</span> <span class="var">l</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">10</span>), { <span class="num">1</span>, <span class="num">1</span>, <span class="num">1</span> } };<br/>
+<span class="in1"></span><span class="type">bool</span> <span class="var">in_shadow</span> = <span class="num">true</span>;<br/>
+<span class="in1"></span><span class="type">Color</span> <span class="var">e</span> { <span class="num">0</span>.<span class="num">1</span>, <span class="num">0</span>.<span class="num">1</span>, <span class="num">0</span>.<span class="num">1</span> };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">lighting</span>(<span class="var">m</span>, <span class="var">l</span>, <span class="var">pos</span>, <span class="var">eyev</span>, <span class="var">normalv</span>, <span class="var">in_shadow</span>) == <span class="var">e</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">functions</span>)</span><br/>
+<span class="in1"></span><span class="type">bool</span> <span class="fn">is_shadowed</span>(<span class="type">const</span> <span class="type">World</span> &amp;<span class="var">w</span>, <span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">p</span>) {<br/>
+<span class="in2"></span><span class="keyword">for</span> (<span class="type">auto</span> &amp;<span class="var">l</span> : <span class="var">w</span>.<span class="var">lights</span>) {<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">v</span> = <span class="var">l</span>-&gt;<span class="var">position</span> - <span class="var">p</span>;<br/>
+<span class="in3"></span><span class="var">float</span> <span class="var">dist</span> = <span class="fn">abs</span>(<span class="var">v</span>);<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">dir</span> { <span class="fn">norm</span>(<span class="var">v</span>) };<br/>
+<span class="in3"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">p</span>, <span class="var">dir</span> };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="fn">intersect_world</span>(<span class="var">w</span>, <span class="var">r</span>) };<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">h</span> { <span class="fn">hit</span>(<span class="var">xs</span>) };<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">h</span> != <span class="var">xs</span>.<span class="fn">end</span>() &amp;&amp; <span class="var">h</span>-&gt;<span class="var">t</span> &lt; <span class="var">dist</span>) {<br/>
+<span class="in4"></span><span class="keyword">return</span> <span class="num">true</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="num">false</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@End(<span class="name">functions</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">10</span>, <span class="num">0</span>)));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(<span class="num">10</span>, -<span class="num">10</span>, <span class="num">10</span>)));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(-<span class="num">20</span>, <span class="num">20</span>, -<span class="num">20</span>)));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">w</span> = <span class="fn">default_world</span>();<br/>
+<span class="in1"></span><span class="fn">assert</span>(! <span class="fn">is_shadowed</span>(<span class="var">w</span>, <span class="fn">mk_point</span>(-<span class="num">2</span>, <span class="num">2</span>, -<span class="num">2</span>)));<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+<div><div>
+<code>
+<span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
+<span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">5</span>), <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
+<span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
+<span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>);<br/>
+<span class="in1"></span><span class="type">Intersection</span> <span class="var">i</span> { <span class="num">5</span>, &amp;<span class="var">s</span> };<br/>
+<span class="in1"></span><span class="type">auto</span> <span class="var">cmps</span> { <span class="fn">prepare_computation</span>(<span class="var">i</span>, <span class="var">r</span>) };<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">cmps</span>.<span class="var">over_point</span>.<span class="var">z</span> &lt; -<span class="num">1e</span>-<span class="num">5</span>/<span class="num">2</span>);<br/>
+<span class="in1"></span><span class="fn">assert</span>(<span class="var">cmps</span>.<span class="var">point</span>.<span class="var">z</span> &gt; <span class="var">cmps</span>.<span class="var">over_point</span>.<span class="var">z</span>);<br/>
+} <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
+</code></div>
+</div>
+</body>
+</html>

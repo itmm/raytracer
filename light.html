@@ -270,7 +270,8 @@
 <span class="in2"></span><span class="type">const</span> <span class="type">Point_Light</span> &amp;<span class="var">l</span>,<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">p</span>,<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">e</span>,<br/>
-<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">n</span><br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">n</span>,<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">in_shadow</span> = <span class="num">false</span><br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="type">Color</span> <span class="var">res</span> { <span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span> };<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">lighting</span>)</span>;<br/>
@@ -301,7 +302,7 @@
 <span class="in1"></span><span class="var">res</span> = <span class="var">ec</span> * <span class="var">m</span>.<span class="var">ambient</span>;<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">lv</span> { <span class="fn">norm</span>(<span class="var">l</span>.<span class="var">position</span> - <span class="var">p</span>) };<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">ldn</span> { <span class="fn">dot</span>(<span class="var">lv</span>, <span class="var">n</span>) };<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">ldn</span> &gt;= <span class="num">0</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">ldn</span> &gt;= <span class="num">0</span> &amp;&amp; ! <span class="var">in_shadow</span>) {<br/>
 <span class="in2"></span><span class="var">res</span> = <span class="var">res</span> + <span class="var">ec</span> * <span class="var">m</span>.<span class="var">diffuse</span> * <span class="var">ldn</span>;<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">r</span> { <span class="fn">reflect</span>(-<span class="var">lv</span>, <span class="var">n</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">rde</span> { <span class="fn">dot</span>(<span class="var">r</span>, <span class="var">e</span>) };<br/>

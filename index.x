@@ -49,3 +49,7 @@
 @inc(scene.x)
 ```
 
+```
+@inc(shadows.x)
+```
+

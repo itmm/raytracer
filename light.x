@@ -235,7 +235,8 @@
 		const Point_Light &l,
 		const Tuple &p,
 		const Tuple &e,
-		const Tuple &n
+		const Tuple &n,
+		bool in_shadow = false
 	) {
 		Color res { 0, 0, 0 };
 		@put(lighting);
@@ -264,7 +265,7 @@
 	res = ec * m.ambient;
 	auto lv { norm(l.position - p) };
 	auto ldn { dot(lv, n) };
-	if (ldn >= 0) {
+	if (ldn >= 0 && ! in_shadow) {
 		res = res + ec * m.diffuse * ldn;
 		auto r { reflect(-lv, n) };
 		auto rde { dot(r, e) };

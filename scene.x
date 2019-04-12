@@ -141,6 +141,7 @@
 		Tuple eyev;
 		Tuple normalv;
 		bool inside;
+		Tuple over_point;
 	};
 @End(types)
 ```
@@ -163,6 +164,7 @@
 		if (c.inside) {
 			c.normalv = -c.normalv;
 		}
+		c.over_point = c.point + 1e-5 * c.normalv;
 		return c;
 	}
 @End(functions)
@@ -240,6 +242,7 @@
 
 ```
 @Add(functions)
+	bool is_shadowed(const World &w, const Tuple &p);
 	Color shade_hit(
 		const World &w,
 		const Computation &cmp
@@ -250,7 +253,8 @@
 				cmp.object->material,
 				*l,
 				cmp.point, cmp.eyev,
-				cmp.normalv
+				cmp.normalv,
+				is_shadowed(w, cmp.over_point)
 			);
 		}
 		return res;
@@ -503,7 +507,7 @@
 
 ```
 @Add(main)
-	#if 0
+	#if 1
 	World w;
 
 	auto floor { std::make_unique<Sphere>() };
