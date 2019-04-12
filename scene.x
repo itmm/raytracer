@@ -504,37 +504,68 @@
 ```
 @Add(main)
 	#if 0
-	auto ray_origin { mk_point(0, 0, -5) };
-	float wall_z { 10 };
-	float wall_size { 7 };
-	int canvas_pixels { 100 };
-	float pixel_size { wall_size / canvas_pixels };
-	float half { wall_size / 2 };
-	Color red { 1, 0, 0 };
-	Color black { 0, 0, 0 };
-	Sphere shape;
-	shape.material.color = { 1, 0.2, 1 };
-	Point_Light light {
+	World w;
+
+	auto floor { std::make_unique<Sphere>() };
+	floor->transform = scaling(10, 0.01, 10);
+	floor->material = Material {};
+	floor->material.color = { 1, 0.9, 0.9 };
+	floor->material.specular = 0;
+
+	auto left_wall { std::make_unique<Sphere>() };
+	left_wall->transform = translation(0, 0, 5) *
+		rotate_y(-M_PI/4) * rotate_x(M_PI/2) *
+		scaling(10, 0.01, 10);
+	left_wall->material = floor->material;
+
+	auto right_wall { std::make_unique<Sphere>() };
+	right_wall->transform = translation(0, 0, 5) *
+		rotate_y(M_PI/4) * rotate_x(M_PI/2) *
+		scaling(10, 0.01, 10);
+	right_wall->material = floor->material;
+
+	auto middle { std::make_unique<Sphere>() };
+	middle->transform = translation(-0.5, 1, 0.5);
+	middle->material = {};
+	middle->material.color = { 0.1, 1, 0.5 };
+	middle->material.diffuse = 0.7;
+	middle->material.specular = 0.3;
+
+	auto right { std::make_unique<Sphere>() };
+	right->transform = translation(1.5, 0.5, -0.5) * scaling(0.5, 0.5, 0.5);
+	right->material = {};
+	right->material.color = { 0.5, 1, 0.1 };
+	right->material.diffuse = 0.7;
+	right->material.specular = 0.3;
+
+	auto left { std::make_unique<Sphere>() };
+	left->transform = translation(-1.5, 0.33, -0.775) * scaling(0.33, 0.33, 0.33);
+	left->material = {};
+	left->material.color = { 1, 0.8, 0.1 };
+	left->material.diffuse = 0.7;
+	left->material.specular = 0.3;
+
+	w.objects.push_back(std::move(floor));
+	w.objects.push_back(std::move(left_wall));
+	w.objects.push_back(std::move(right_wall));
+	w.objects.push_back(std::move(middle));
+	w.objects.push_back(std::move(right));
+	w.objects.push_back(std::move(left));
+
+	w.lights.push_back(std::move(std::make_unique<Point_Light>(
 		mk_point(-10, 10, -10),
-		{ 1, 1, 1 }
-	};
-	std::ofstream o("ball.ppm");
-	mk_ppm(o, canvas_pixels, canvas_pixels,
-		[&](int x, int y) {
-			float world_y { half - pixel_size * y };
-			float world_x { -half + pixel_size * x };
-			auto pos { mk_point(world_x, world_y, wall_z) };
-			Ray r { ray_origin, norm(pos - ray_origin) };
-			auto xs { shape.intersect(r) };
-			auto i { hit(xs) };
-			if (i == xs.end()) { return black; }
-			auto hp { r.pos(i->t) };
-			auto n { i->object->normal_at(hp) };
-			auto e { -r.direction };
-			auto c { lighting(i->object->material, light, hp, e, n) };
-			return c;
-		}
+		Color {1, 1, 1}
+	)));
+
+	Camera c { 400, 200, M_PI/3 };
+	c.transform = view_transform(
+		mk_point(0, 1.5, -5),
+		mk_point(0, 1, 0),
+		mk_vector(0, 1, 0)
 	);
+
+	std::ofstream o("balls.ppm");
+	render(o, c, w);
 	#endif
 @End(main)
 ```

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#cat
+# cat
 c++ -x c++ -o raytracer -
 if [ $? -eq 0 ]; then
 	./raytracer
