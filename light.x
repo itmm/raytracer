@@ -21,7 +21,7 @@
 	Tuple Sphere::normal_at(
 		const Tuple &w
 	) {
-		auto i { inv(transform) };
+		auto i { inv_transform };
 		auto o { i * w };
 		auto on { o - mk_point(0, 0, 0) };
 		auto wn { trans(i) * on };
@@ -86,6 +86,7 @@
 @Add(unit-tests) {
 	Sphere s;
 	s.transform = translation(0, 1, 0);
+	s.inv_transform = inv(s.transform);
 	auto n { s.normal_at(mk_point(0, 1.70711, -0.70711)) };
 	auto e { mk_vector(0, 0.70711, -0.70711) };
 	assert(e == n);
@@ -96,6 +97,7 @@
 @Add(unit-tests) {
 	Sphere s;
 	s.transform = scaling(1, 0.5, 1) * rotate_z(M_PI/5);
+	s.inv_transform = inv(s.transform);
 	float f { sqrtf(2)/2 };
 	auto n { s.normal_at(mk_point(0, f, -f)) };
 	auto e { mk_vector(0, 0.97014, -0.24254) };

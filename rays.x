@@ -54,6 +54,7 @@
 	@Put(needed by object);
 	struct Object {
 		Matrix transform = identity;
+		Matrix inv_transform = identity;
 		@Put(object attribs);
 	};
 	struct Sphere: Object {
@@ -145,7 +146,7 @@
 	Intersections Sphere::intersect(
 		const Ray &r
 	) {
-		auto r2 { ::transform(r, inv(transform)) };
+		auto r2 { ::transform(r, inv_transform) };
 		auto s2r { r2.origin - mk_point(0, 0, 0) };
 		auto a { dot(r2.direction, r2.direction) };
 		auto b { 2 * dot(r2.direction, s2r) };
@@ -373,6 +374,7 @@
 	Sphere s;
 	auto m { translation(2, 3, 4) };
 	s.transform = m;
+	s.inv_transform = inv(m);
 	assert(s.transform == m);
 } @End(unit-tests)
 ```
@@ -384,6 +386,7 @@
 	Ray r { o, d };
 	Sphere s;
 	s.transform = scaling(2, 2, 2);
+	s.inv_transform = inv(s.transform);
 	auto xs { s.intersect(r) };
 	assert(xs.size() == 2);
 	assert_eq(xs[0].t, 3);
@@ -398,6 +401,7 @@
 	Ray r { o, d };
 	Sphere s;
 	s.transform = translation(5, 0, 0);
+	s.inv_transform = inv(s.transform);
 	auto xs { s.intersect(r) };
 	assert(xs.size() == 0);
 } @End(unit-tests)

@@ -72,6 +72,7 @@
 <span class="in1"></span><span class="macro">@Put(<span class="name">needed by object</span>)</span>;<br/>
 <span class="in1"></span><span class="type">struct</span> <span class="type">Object</span> {<br/>
 <span class="in2"></span><span class="type">Matrix</span> <span class="var">transform</span> = <span class="var">identity</span>;<br/>
+<span class="in2"></span><span class="type">Matrix</span> <span class="var">inv_transform</span> = <span class="var">identity</span>;<br/>
 <span class="in2"></span><span class="macro">@Put(<span class="name">object attribs</span>)</span>;<br/>
 <span class="in1"></span>};<br/>
 <span class="in1"></span><span class="type">struct</span> <span class="type">Sphere</span>: <span class="type">Object</span> {<br/>
@@ -173,7 +174,7 @@
 <span class="in1"></span><span class="type">Intersections</span> <span class="type">Sphere</span>::<span class="fn">intersect</span>(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Ray</span> &amp;<span class="var">r</span><br/>
 <span class="in1"></span>) {<br/>
-<span class="in2"></span><span class="type">auto</span> <span class="var">r2</span> { ::<span class="fn">transform</span>(<span class="var">r</span>, <span class="fn">inv</span>(<span class="var">transform</span>)) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">r2</span> { ::<span class="fn">transform</span>(<span class="var">r</span>, <span class="var">inv_transform</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">s2r</span> { <span class="var">r2</span>.<span class="var">origin</span> - <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">a</span> { <span class="fn">dot</span>(<span class="var">r2</span>.<span class="var">direction</span>, <span class="var">r2</span>.<span class="var">direction</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">b</span> { <span class="num">2</span> * <span class="fn">dot</span>(<span class="var">r2</span>.<span class="var">direction</span>, <span class="var">s2r</span>) };<br/>
@@ -419,6 +420,7 @@
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">m</span> { <span class="fn">translation</span>(<span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>) };<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="var">m</span>;<br/>
+<span class="in1"></span><span class="var">s</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">m</span>);<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">s</span>.<span class="var">transform</span> == <span class="var">m</span>);<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
@@ -431,6 +433,7 @@
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">scaling</span>(<span class="num">2</span>, <span class="num">2</span>, <span class="num">2</span>);<br/>
+<span class="in1"></span><span class="var">s</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">s</span>.<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">2</span>);<br/>
 <span class="in1"></span><span class="fn">assert_eq</span>(<span class="var">xs</span>[<span class="num">0</span>].<span class="var">t</span>, <span class="num">3</span>);<br/>
@@ -446,6 +449,7 @@
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="var">o</span>, <span class="var">d</span> };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">5</span>, <span class="num">0</span>, <span class="num">0</span>);<br/>
+<span class="in1"></span><span class="var">s</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">s</span>.<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">xs</span> { <span class="var">s</span>.<span class="fn">intersect</span>(<span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">xs</span>.<span class="fn">size</span>() == <span class="num">0</span>);<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>

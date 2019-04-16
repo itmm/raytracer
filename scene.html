@@ -66,6 +66,7 @@
 <span class="in2"></span><span class="var">w</span>.<span class="var">objects</span>.<span class="fn">push_back</span>(<span class="type">std</span>::<span class="fn">move</span>(<span class="var">s1</span>));<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">unique_ptr</span>&lt;<span class="type">Object</span>&gt; <span class="var">s2</span> { <span class="keyword">new</span> <span class="fn">Sphere</span>() };<br/>
 <span class="in2"></span><span class="var">s2</span>-&gt;<span class="var">transform</span> = <span class="fn">scaling</span>(<span class="num">0</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">5</span>);<br/>
+<span class="in2"></span><span class="var">s2</span>-&gt;<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">s2</span>-&gt;<span class="var">transform</span>);<br/>
 <span class="in2"></span><span class="var">w</span>.<span class="var">objects</span>.<span class="fn">push_back</span>(<span class="type">std</span>::<span class="fn">move</span>(<span class="var">s2</span>));<br/>
 <span class="in2"></span><span class="keyword">return</span> <span class="var">w</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -117,6 +118,7 @@
 <span class="in1"></span><span class="fn">assert</span>(*<span class="var">w</span>.<span class="var">objects</span>[<span class="num">0</span>] == <span class="var">s1</span>);<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s2</span>;<br/>
 <span class="in1"></span><span class="var">s2</span>.<span class="var">transform</span> = <span class="fn">scaling</span>(<span class="num">0</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">5</span>);<br/>
+<span class="in1"></span><span class="var">s2</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">s2</span>.<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="fn">assert</span>(*<span class="var">w</span>.<span class="var">objects</span>[<span class="num">1</span>] == <span class="var">s2</span>);<br/>
 } <span class="macro">@End(<span class="name">unit-tests</span>)</span><br/>
 </code></div>
@@ -440,6 +442,7 @@
 <span class="in2"></span><span class="type">int</span> <span class="var">vsize</span>;<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">field_of_view</span>;<br/>
 <span class="in2"></span><span class="type">Matrix</span> <span class="var">transform</span> = <span class="var">identity</span>;<br/>
+<span class="in2"></span><span class="type">Matrix</span> <span class="var">inv_transform</span> = <span class="var">identity</span>;<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">half_width</span>;<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">half_height</span>;<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">pixel_size</span>;<br/>
@@ -499,7 +502,7 @@
 <span class="in2"></span><span class="var">float</span> <span class="var">yo</span> = (<span class="var">py</span> + <span class="num">0</span>.<span class="num">5</span>) * <span class="var">c</span>.<span class="var">pixel_size</span>;<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">wx</span> = <span class="var">c</span>.<span class="var">half_width</span> - <span class="var">xo</span>;<br/>
 <span class="in2"></span><span class="var">float</span> <span class="var">wy</span> = <span class="var">c</span>.<span class="var">half_height</span> - <span class="var">yo</span>;<br/>
-<span class="in2"></span><span class="type">auto</span> <span class="var">i</span> { <span class="fn">inv</span>(<span class="var">c</span>.<span class="var">transform</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">i</span> { <span class="var">c</span>.<span class="var">inv_transform</span> };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">p</span> { <span class="var">i</span> * <span class="fn">mk_point</span>(<span class="var">wx</span>, <span class="var">wy</span>, -<span class="num">1</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">o</span> { <span class="var">i</span> * <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">d</span> { <span class="fn">norm</span>(<span class="var">p</span> - <span class="var">o</span>) };<br/>
@@ -533,6 +536,7 @@
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">Camera</span> <span class="var">c</span> { <span class="num">201</span>, <span class="num">101</span>, <span class="var">M_PI</span>/<span class="num">2</span> };<br/>
 <span class="in1"></span><span class="var">c</span>.<span class="var">transform</span> = <span class="fn">rotate_y</span>(<span class="var">M_PI</span>/<span class="num">4</span>) * <span class="fn">translation</span>(<span class="num">0</span>, -<span class="num">2</span>, <span class="num">5</span>);<br/>
+<span class="in1"></span><span class="var">c</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">c</span>.<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">r</span> { <span class="fn">ray_for_pixel</span>(<span class="var">c</span>, <span class="num">100</span>, <span class="num">50</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">r</span>.<span class="var">origin</span> == <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">2</span>, -<span class="num">5</span>));<br/>
 <span class="in1"></span><span class="var">float</span> <span class="var">f</span> { <span class="fn">sqrtf</span>(<span class="num">2</span>)/<span class="num">2</span> };<br/>
@@ -562,6 +566,7 @@
 <br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">floor</span> { <span class="type">std</span>::<span class="var">make_unique</span>&lt;<span class="type">Sphere</span>&gt;() };<br/>
 <span class="in1"></span><span class="var">floor</span>-&gt;<span class="var">transform</span> = <span class="fn">scaling</span>(<span class="num">10</span>, <span class="num">0</span>.<span class="num">01</span>, <span class="num">10</span>);<br/>
+<span class="in1"></span><span class="var">floor</span>-&gt;<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">floor</span>-&gt;<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="var">floor</span>-&gt;<span class="var">material</span> = <span class="type">Material</span> {};<br/>
 <span class="in1"></span><span class="var">floor</span>-&gt;<span class="var">material</span>.<span class="var">color</span> = { <span class="num">1</span>, <span class="num">0</span>.<span class="num">9</span>, <span class="num">0</span>.<span class="num">9</span> };<br/>
 <span class="in1"></span><span class="var">floor</span>-&gt;<span class="var">material</span>.<span class="var">specular</span> = <span class="num">0</span>;<br/>
@@ -570,16 +575,19 @@
 <span class="in1"></span><span class="var">left_wall</span>-&gt;<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">5</span>) *<br/>
 <span class="in2"></span><span class="fn">rotate_y</span>(-<span class="var">M_PI</span>/<span class="num">4</span>) * <span class="fn">rotate_x</span>(<span class="var">M_PI</span>/<span class="num">2</span>) *<br/>
 <span class="in2"></span><span class="fn">scaling</span>(<span class="num">10</span>, <span class="num">0</span>.<span class="num">01</span>, <span class="num">10</span>);<br/>
+<span class="in1"></span><span class="var">left_wall</span>-&gt;<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">left_wall</span>-&gt;<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="var">left_wall</span>-&gt;<span class="var">material</span> = <span class="var">floor</span>-&gt;<span class="var">material</span>;<br/>
 <br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">right_wall</span> { <span class="type">std</span>::<span class="var">make_unique</span>&lt;<span class="type">Sphere</span>&gt;() };<br/>
 <span class="in1"></span><span class="var">right_wall</span>-&gt;<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">5</span>) *<br/>
 <span class="in2"></span><span class="fn">rotate_y</span>(<span class="var">M_PI</span>/<span class="num">4</span>) * <span class="fn">rotate_x</span>(<span class="var">M_PI</span>/<span class="num">2</span>) *<br/>
 <span class="in2"></span><span class="fn">scaling</span>(<span class="num">10</span>, <span class="num">0</span>.<span class="num">01</span>, <span class="num">10</span>);<br/>
+<span class="in1"></span><span class="var">right_wall</span>-&gt;<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">right_wall</span>-&gt;<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="var">right_wall</span>-&gt;<span class="var">material</span> = <span class="var">floor</span>-&gt;<span class="var">material</span>;<br/>
 <br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">middle</span> { <span class="type">std</span>::<span class="var">make_unique</span>&lt;<span class="type">Sphere</span>&gt;() };<br/>
 <span class="in1"></span><span class="var">middle</span>-&gt;<span class="var">transform</span> = <span class="fn">translation</span>(-<span class="num">0</span>.<span class="num">5</span>, <span class="num">1</span>, <span class="num">0</span>.<span class="num">5</span>);<br/>
+<span class="in1"></span><span class="var">middle</span>-&gt;<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">middle</span>-&gt;<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="var">middle</span>-&gt;<span class="var">material</span> = {};<br/>
 <span class="in1"></span><span class="var">middle</span>-&gt;<span class="var">material</span>.<span class="var">color</span> = { <span class="num">0</span>.<span class="num">1</span>, <span class="num">1</span>, <span class="num">0</span>.<span class="num">5</span> };<br/>
 <span class="in1"></span><span class="var">middle</span>-&gt;<span class="var">material</span>.<span class="var">diffuse</span> = <span class="num">0</span>.<span class="num">7</span>;<br/>
@@ -587,6 +595,7 @@
 <br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">right</span> { <span class="type">std</span>::<span class="var">make_unique</span>&lt;<span class="type">Sphere</span>&gt;() };<br/>
 <span class="in1"></span><span class="var">right</span>-&gt;<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">1</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">5</span>, -<span class="num">0</span>.<span class="num">5</span>) * <span class="fn">scaling</span>(<span class="num">0</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">5</span>);<br/>
+<span class="in1"></span><span class="var">right</span>-&gt;<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">right</span>-&gt;<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="var">right</span>-&gt;<span class="var">material</span> = {};<br/>
 <span class="in1"></span><span class="var">right</span>-&gt;<span class="var">material</span>.<span class="var">color</span> = { <span class="num">0</span>.<span class="num">5</span>, <span class="num">1</span>, <span class="num">0</span>.<span class="num">1</span> };<br/>
 <span class="in1"></span><span class="var">right</span>-&gt;<span class="var">material</span>.<span class="var">diffuse</span> = <span class="num">0</span>.<span class="num">7</span>;<br/>
@@ -594,6 +603,7 @@
 <br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">left</span> { <span class="type">std</span>::<span class="var">make_unique</span>&lt;<span class="type">Sphere</span>&gt;() };<br/>
 <span class="in1"></span><span class="var">left</span>-&gt;<span class="var">transform</span> = <span class="fn">translation</span>(-<span class="num">1</span>.<span class="num">5</span>, <span class="num">0</span>.<span class="num">33</span>, -<span class="num">0</span>.<span class="num">775</span>) * <span class="fn">scaling</span>(<span class="num">0</span>.<span class="num">33</span>, <span class="num">0</span>.<span class="num">33</span>, <span class="num">0</span>.<span class="num">33</span>);<br/>
+<span class="in1"></span><span class="var">left</span>-&gt;<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">left</span>-&gt;<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="var">left</span>-&gt;<span class="var">material</span> = {};<br/>
 <span class="in1"></span><span class="var">left</span>-&gt;<span class="var">material</span>.<span class="var">color</span> = { <span class="num">1</span>, <span class="num">0</span>.<span class="num">8</span>, <span class="num">0</span>.<span class="num">1</span> };<br/>
 <span class="in1"></span><span class="var">left</span>-&gt;<span class="var">material</span>.<span class="var">diffuse</span> = <span class="num">0</span>.<span class="num">7</span>;<br/>
@@ -617,6 +627,7 @@
 <span class="in2"></span><span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>),<br/>
 <span class="in2"></span><span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>)<br/>
 <span class="in1"></span>);<br/>
+<span class="in1"></span><span class="var">c</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">c</span>.<span class="var">transform</span>);<br/>
 <br/>
 <span class="in1"></span><span class="type">std</span>::<span class="type">ofstream</span> <span class="fn">o</span>(<span class="str">"balls.ppm"</span>);<br/>
 <span class="in1"></span><span class="fn">render</span>(<span class="var">o</span>, <span class="var">c</span>, <span class="var">w</span>);<br/>

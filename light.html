@@ -36,7 +36,7 @@
 <span class="in1"></span><span class="type">Tuple</span> <span class="type">Sphere</span>::<span class="fn">normal_at</span>(<br/>
 <span class="in2"></span><span class="type">const</span> <span class="type">Tuple</span> &amp;<span class="var">w</span><br/>
 <span class="in1"></span>) {<br/>
-<span class="in2"></span><span class="type">auto</span> <span class="var">i</span> { <span class="fn">inv</span>(<span class="var">transform</span>) };<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">i</span> { <span class="var">inv_transform</span> };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">o</span> { <span class="var">i</span> * <span class="var">w</span> };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">on</span> { <span class="var">o</span> - <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">0</span>) };<br/>
 <span class="in2"></span><span class="type">auto</span> <span class="var">wn</span> { <span class="fn">trans</span>(<span class="var">i</span>) * <span class="var">on</span> };<br/>
@@ -107,6 +107,7 @@
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span>);<br/>
+<span class="in1"></span><span class="var">s</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">s</span>.<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">n</span> { <span class="var">s</span>.<span class="fn">normal_at</span>(<span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">1</span>.<span class="num">70711</span>, -<span class="num">0</span>.<span class="num">70711</span>)) };<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">e</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>.<span class="num">70711</span>, -<span class="num">0</span>.<span class="num">70711</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">e</span> == <span class="var">n</span>);<br/>
@@ -118,6 +119,7 @@
 <span class="macro">@Add(<span class="name">unit-tests</span>)</span> {<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">scaling</span>(<span class="num">1</span>, <span class="num">0</span>.<span class="num">5</span>, <span class="num">1</span>) * <span class="fn">rotate_z</span>(<span class="var">M_PI</span>/<span class="num">5</span>);<br/>
+<span class="in1"></span><span class="var">s</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">s</span>.<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="var">float</span> <span class="var">f</span> { <span class="fn">sqrtf</span>(<span class="num">2</span>)/<span class="num">2</span> };<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">n</span> { <span class="var">s</span>.<span class="fn">normal_at</span>(<span class="fn">mk_point</span>(<span class="num">0</span>, <span class="var">f</span>, -<span class="var">f</span>)) };<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">e</span> { <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>.<span class="num">97014</span>, -<span class="num">0</span>.<span class="num">24254</span>) };<br/>

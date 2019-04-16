@@ -49,6 +49,7 @@
 		w.objects.push_back(std::move(s1));
 		std::unique_ptr<Object> s2 { new Sphere() };
 		s2->transform = scaling(0.5, 0.5, 0.5);
+		s2->inv_transform = inv(s2->transform);
 		w.objects.push_back(std::move(s2));
 		return w;
 	}
@@ -97,6 +98,7 @@
 	assert(*w.objects[0] == s1);
 	Sphere s2;
 	s2.transform = scaling(0.5, 0.5, 0.5);
+	s2.inv_transform = inv(s2.transform);
 	assert(*w.objects[1] == s2);
 } @End(unit-tests)
 ```
@@ -399,6 +401,7 @@
 		int vsize;
 		float field_of_view;
 		Matrix transform = identity;
+		Matrix inv_transform = identity;
 		float half_width;
 		float half_height;
 		float pixel_size;
@@ -454,7 +457,7 @@
 		float yo = (py + 0.5) * c.pixel_size;
 		float wx = c.half_width - xo;
 		float wy = c.half_height - yo;
-		auto i { inv(c.transform) };
+		auto i { c.inv_transform };
 		auto p { i * mk_point(wx, wy, -1) };
 		auto o { i * mk_point(0, 0, 0) };
 		auto d { norm(p - o) };
@@ -485,6 +488,7 @@
 @Add(unit-tests) {
 	Camera c { 201, 101, M_PI/2 };
 	c.transform = rotate_y(M_PI/4) * translation(0, -2, 5);
+	c.inv_transform = inv(c.transform);
 	auto r { ray_for_pixel(c, 100, 50) };
 	assert(r.origin == mk_point(0, 2, -5));
 	float f { sqrtf(2)/2 };
@@ -512,6 +516,7 @@
 
 	auto floor { std::make_unique<Sphere>() };
 	floor->transform = scaling(10, 0.01, 10);
+	floor->inv_transform = inv(floor->transform);
 	floor->material = Material {};
 	floor->material.color = { 1, 0.9, 0.9 };
 	floor->material.specular = 0;
@@ -520,16 +525,19 @@
 	left_wall->transform = translation(0, 0, 5) *
 		rotate_y(-M_PI/4) * rotate_x(M_PI/2) *
 		scaling(10, 0.01, 10);
+	left_wall->inv_transform = inv(left_wall->transform);
 	left_wall->material = floor->material;
 
 	auto right_wall { std::make_unique<Sphere>() };
 	right_wall->transform = translation(0, 0, 5) *
 		rotate_y(M_PI/4) * rotate_x(M_PI/2) *
 		scaling(10, 0.01, 10);
+	right_wall->inv_transform = inv(right_wall->transform);
 	right_wall->material = floor->material;
 
 	auto middle { std::make_unique<Sphere>() };
 	middle->transform = translation(-0.5, 1, 0.5);
+	middle->inv_transform = inv(middle->transform);
 	middle->material = {};
 	middle->material.color = { 0.1, 1, 0.5 };
 	middle->material.diffuse = 0.7;
@@ -537,6 +545,7 @@
 
 	auto right { std::make_unique<Sphere>() };
 	right->transform = translation(1.5, 0.5, -0.5) * scaling(0.5, 0.5, 0.5);
+	right->inv_transform = inv(right->transform);
 	right->material = {};
 	right->material.color = { 0.5, 1, 0.1 };
 	right->material.diffuse = 0.7;
@@ -544,6 +553,7 @@
 
 	auto left { std::make_unique<Sphere>() };
 	left->transform = translation(-1.5, 0.33, -0.775) * scaling(0.33, 0.33, 0.33);
+	left->inv_transform = inv(left->transform);
 	left->material = {};
 	left->material.color = { 1, 0.8, 0.1 };
 	left->material.diffuse = 0.7;
@@ -567,6 +577,7 @@
 		mk_point(0, 1, 0),
 		mk_vector(0, 1, 0)
 	);
+	c.inv_transform = inv(c.transform);
 
 	std::ofstream o("balls.ppm");
 	render(o, c, w);

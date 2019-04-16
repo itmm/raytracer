@@ -66,6 +66,7 @@
 	Ray r { mk_point(0, 0, -5), mk_vector(0, 0, 1) };
 	Sphere s;
 	s.transform = translation(0, 0, 1);
+	s.inv_transform = inv(s.transform);
 	Intersection i { 5, &s };
 	auto cmps { prepare_computation(i, r) };
 	assert(cmps.over_point.z < -1e-5/2);

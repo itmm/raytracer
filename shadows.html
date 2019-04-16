@@ -85,6 +85,7 @@
 <span class="in1"></span><span class="type">Ray</span> <span class="var">r</span> { <span class="fn">mk_point</span>(<span class="num">0</span>, <span class="num">0</span>, -<span class="num">5</span>), <span class="fn">mk_vector</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>) };<br/>
 <span class="in1"></span><span class="type">Sphere</span> <span class="var">s</span>;<br/>
 <span class="in1"></span><span class="var">s</span>.<span class="var">transform</span> = <span class="fn">translation</span>(<span class="num">0</span>, <span class="num">0</span>, <span class="num">1</span>);<br/>
+<span class="in1"></span><span class="var">s</span>.<span class="var">inv_transform</span> = <span class="fn">inv</span>(<span class="var">s</span>.<span class="var">transform</span>);<br/>
 <span class="in1"></span><span class="type">Intersection</span> <span class="var">i</span> { <span class="num">5</span>, &amp;<span class="var">s</span> };<br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">cmps</span> { <span class="fn">prepare_computation</span>(<span class="var">i</span>, <span class="var">r</span>) };<br/>
 <span class="in1"></span><span class="fn">assert</span>(<span class="var">cmps</span>.<span class="var">over_point</span>.<span class="var">z</span> &lt; -<span class="num">1e</span>-<span class="num">5</span>/<span class="num">2</span>);<br/>
