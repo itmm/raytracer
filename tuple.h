@@ -55,34 +55,34 @@ struct Tuple {
 #line 162
 #line 173
 #line 199
-#line 230
-#line 256
-#line 317
-#line 326
-#line 326
+#line 231
+#line 264
+#line 337
+#line 349
+#line 349
 constexpr auto operator*(float f, const Tuple &t) {
 	return Tuple {
 		f * t.x, f * t.y,
 		f * t.z, f * t.w
 	};
 }
-#line 317
-#line 378
+#line 337
+#line 415
 constexpr auto operator/(const Tuple &t, float f) {
 	return (1.0f/f) * t;
 }
-#line 317
+#line 337
 constexpr auto operator-(const Tuple &t) {
 	return -1.0f * t;
 }
-#line 256
+#line 264
 constexpr auto operator-(const Tuple &a, const Tuple &b) {
 	return Tuple {
 		a.x - b.x, a.y - b.y,
 		a.z - b.z, a.w - b.w
 	};
 }
-#line 230
+#line 231
 constexpr auto operator+(const Tuple &a, const Tuple &b) {
 	return Tuple {
 		a.x + b.x, a.y + b.y,
@@ -113,59 +113,59 @@ inline void tuple_tests() {
 #line 148
 #line 186
 #line 218
-#line 244
-#line 268
-#line 280
+#line 250
+#line 279
 #line 294
-#line 306
-#line 341
-#line 352
-#line 363
+#line 310
+#line 324
+#line 369
+#line 382
+#line 397
 	{ // dividing at tuple by a scalar
 		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
 		Tuple e { 0.5f, -1.0f, 1.5f, -2.0f };
 		assert(a/2.0f == e);
 	}
-#line 352
+#line 382
 	{ // multiplying a tuple by a fraction
 		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
 		Tuple e { 0.5f, -1.0f, 1.5f, -2.0f };
 		assert(0.5f * a == e);
 	}
-#line 341
+#line 369
 	{ // multiplying a tuple by a scalar
 		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
 		Tuple e { 3.5f, -7.0f, 10.5f, -14.0f };
 		assert(3.5f * a == e);
 	}
-#line 306
+#line 324
 	{ // negating a tuple
 		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
 		Tuple e { -1.0f, 2.0f, -3.0f, 4.0f };
 		assert(-a == e);
 	}
-#line 294
+#line 310
 	{ // subtracting a vector from zero vector
 		auto zero { mk_vector(0.0f, 0.0f, 0.0f) };
 		auto v { mk_vector(1.0f, -2.0f, 3.0f) };
 		auto e { mk_vector(-1.0f, 2.0f, -3.0f) };
 		assert(zero - v == e);
 	}
-#line 280
+#line 294
 	{ // subtracting two vectors
 		auto v1 { mk_vector(3.0f, 2.0f, 1.0f) };
 		auto v2 { mk_vector(5.0f, 6.0f, 7.0f) };
 		auto e { mk_vector(-2.0f, -4.0f, -6.0f) };
 		assert(v1 - v2 == e);
 	}
-#line 268
+#line 279
 	{ // subtracting a vector from a point
 		auto p { mk_point(3.0f, 2.0f, 1.0f) };
 		auto v { mk_vector(5.0f, 6.0f, 7.0f) };
 		auto e { mk_point(-2.0f, -4.0f, -6.0f) };
 		assert(p - v == e);
 	}
-#line 244
+#line 250
 	{ // subtracting two points
 		auto p1 { mk_point(3.0f, 2.0f, 1.0f) };
 		auto p2 { mk_point(5.0f, 6.0f, 7.0f) };

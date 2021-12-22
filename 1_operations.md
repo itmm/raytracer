@@ -2,7 +2,7 @@
 
 ## Adding Tuples
 
-in `tuple.h`:
+The next unit-test in `tuple.h` tries to add a tuple with a point:
 
 ```c++
 // ...
@@ -15,6 +15,7 @@ in `tuple.h`:
 	}
 // ...
 ```
+It fails, because the addition operation is not defined yet:
 
 ```c++
 // ...
@@ -28,7 +29,12 @@ constexpr auto operator+(const Tuple &a, const Tuple &b) {
 // ...
 ```
 
+Now the unit-test passes.
+
+
 ## Subtracting Tuples
+
+The next test tries to subtract two points. The result should be a vector:
 
 ```c++
 // ...
@@ -42,6 +48,8 @@ constexpr auto operator+(const Tuple &a, const Tuple &b) {
 // ...
 ```
 
+This test fails, because the subtraction operation is not defined yet:
+
 ```c++
 // ...
 // functions
@@ -54,6 +62,9 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 ```
 
+The next test validates that it is possible to subtract a vector from a
+point. The result is a point:
+
 ```c++
 // ...
 	// tuple-tests
@@ -65,6 +76,9 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 	}
 // ...
 ```
+
+This unit-test checks that two vectors can be subtracted from each other.
+The result is a vector:
 
 ```c++
 // ...
@@ -80,6 +94,8 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 
 ## Negating a Tuple
 
+Negating a tuple can be achieved by subtracting it from the zero vector:
+
 ```c++
 // ...
 	// tuple-tests
@@ -92,6 +108,8 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 ```
 
+But a faster way should be possible:
+
 ```c++
 // ...
 	// tuple-tests
@@ -103,6 +121,8 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 ```
 
+The test fails, because the negation operation is not defined yet:
+
 ```c++
 // ...
 // functions
@@ -111,6 +131,9 @@ constexpr auto operator-(const Tuple &t) {
 }
 // ...
 ```
+
+The test still fails, because the scalar multiplication (that is used
+by the negation) is not defined yet.
 
 ```c++
 // ...
@@ -124,8 +147,13 @@ constexpr auto operator*(float f, const Tuple &t) {
 // ...
 ```
 
+Now the test is running.
+
 
 ## Scalar Multiplication
+
+The scalar multiplication is already working, because it was needed to
+implement the negation:
 
 ```c++
 // ...
@@ -138,6 +166,8 @@ constexpr auto operator*(float f, const Tuple &t) {
 // ...
 ```
 
+It does not matter, if the scalar is only a fraction:
+
 ```c++
 // ...
 	// tuple-tests
@@ -149,6 +179,10 @@ constexpr auto operator*(float f, const Tuple &t) {
 // ...
 ```
 
+## Scalar Division
+
+But the direct division is not working yet:
+
 ```c++
 // ...
 	// tuple-tests
@@ -159,6 +193,9 @@ constexpr auto operator*(float f, const Tuple &t) {
 	}
 // ...
 ```
+
+So the division operation is implemented. As it uses the multiplication
+it must be inserted after the multiplication operation:
 
 ```c++
 // ...
