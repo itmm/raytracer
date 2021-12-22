@@ -212,87 +212,127 @@ constexpr auto operator/(const Tuple &t, float f) {
 
 ## Magnitude
 
-```
-@Add(functions)
-	inline constexpr float abs(const Tuple &t) {
-		return sqrtf(
-			t.x * t.x + t.y * t.y +
-			t.z * t.z + t.w * t.w
-		);
+Check if the magnitude of the first unit-vector is one:
+
+```c++
+// ...
+	// tuple-tests
+	{ // checking length of first unit-vector
+		auto v { mk_vector(1.0f, 0.0f, 0.0f) };
+		assert_eq(1.0f, abs(v));
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto v { mk_vector(1, 0, 0) };
-	assert_eq(1, abs(v));
-} @End(unit-tests)
+The test fails, because the function is not defined yet:
+
+```c++
+// ...
+// functions
+constexpr float abs(const Tuple &t) {
+	return sqrtf(
+		t.x * t.x + t.y * t.y +
+		t.z * t.z + t.w * t.w
+	);
+}
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto v { mk_vector(0, 1, 0) };
-	assert_eq(1, abs(v));
-} @End(unit-tests)
+Check the length of the other unit-vectors:
+
+```c++
+// ...
+	// tuple-tests
+	{ // checking length of second unit-vector
+		auto v { mk_vector(0.0f, 1.0f, 0.0f) };
+		assert_eq(1.0f, abs(v));
+	}
+	{ // checking length of third unit-vector
+		auto v { mk_vector(0.0f, 0.0f, 1.0f) };
+		assert_eq(1.0f, abs(v));
+	}
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto v { mk_vector(0, 0, 1) };
-	assert_eq(1, abs(v));
-} @End(unit-tests)
+The next two tests check vectors that are not unit-vectors:
+
+```c++
+// ...
+	// tuple-tests
+	{ // check length on non-unit vector
+		auto v { mk_vector(1.0f, 2.0f, 3.0f) };
+		assert_eq(sqrtf(14.0f), abs(v));
+	}
+	{ // check length of negated non-unit vector
+		auto v { mk_vector(-1.0f, -2.0f, -3.0f) };
+		assert_eq(sqrtf(14.0f), abs(v));
+	}
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto v { mk_vector(1, 2, 3) };
-	assert_eq(sqrtf(14), abs(v));
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto v { mk_vector(-1, -2, -3) };
-	assert_eq(sqrtf(14), abs(v));
-} @End(unit-tests)
-```
 
 # Normalization
 
-```
-@Add(functions)
-	inline constexpr Tuple norm(const Tuple &t) {
-		float m = abs(t);
-		return eq(m, 1) ? t : t/m;
+Try a simple normalization:
+
+```c++
+// ...
+	// tuple-tests
+	{ // normalize (4, 0, 0)
+		auto v { mk_vector(4.0f, 0.0f, 0.0f) };
+		auto e { mk_vector(1.0f, 0.0f, 0.0f) };
+		assert(norm(v) == e);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto v { mk_vector(4, 0, 0) };
-	auto e { mk_vector(1, 0, 0) };
-	assert(norm(v) == e);
-} @End(unit-tests)
+Of course, the test is not working, because the function is not defined yet:
+
+```c++
+// ...
+// functions
+// ...
+constexpr auto operator/(const Tuple &t, float f) {
+	// ...
+}
+constexpr Tuple norm(const Tuple &t) {
+	float m = abs(t);
+	return eq(m, 1.0f) ? t : t/m;
+}
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto v { mk_vector(1, 2, 3) };
-	auto e { mk_vector(
-		0.26726, 0.53452, 0.80178
-	) };
-	assert(norm(v) == e);
-} @End(unit-tests)
+The function must be put in the right place to see the division and length
+function.
+
+Now I can also test a different vector:
+
+```c++
+// ...
+	// tuple-tests
+	{ // normalizing (1, 2, 3)
+		auto v { mk_vector(1.0f, 2.0f, 3.0f) };
+		auto e { mk_vector(
+			0.26726f, 0.53452f, 0.80178f
+		) };
+		assert(norm(v) == e);
+	}
+// ...
 ```
 
+Just to be safe, another test verifies that the length of the result is
+right:
+
+```c++
+// ...
+	// tuple-tests
+	{ // length of norm vector
+		auto v { mk_vector(1.0f, 2.0f, 3.0f) };
+		assert_eq(1.0f, abs(norm(v)));
+	}
+// ...
 ```
-@Add(unit-tests) {
-	auto v { mk_vector(1, 2, 3) };
-	assert_eq(1, abs(norm(v)));
-} @End(unit-tests)
-```
+
 
 ## Dot Product
 

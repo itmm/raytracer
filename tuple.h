@@ -25,6 +25,14 @@
 #line 39
 #line 39
 #line 39
+#line 39
+#line 39
+#line 39
+#line 39
+#line 39
+#line 39
+#line 39
+#line 39
 #pragma once
 #line 92
 	
@@ -60,6 +68,15 @@ struct Tuple {
 #line 337
 #line 349
 #line 349
+#line 440
+#line 440
+constexpr float abs(const Tuple &t) {
+	return sqrtf(
+		t.x * t.x + t.y * t.y +
+		t.z * t.z + t.w * t.w
+	);
+}
+#line 349
 constexpr auto operator*(float f, const Tuple &t) {
 	return Tuple {
 		f * t.x, f * t.y,
@@ -70,6 +87,12 @@ constexpr auto operator*(float f, const Tuple &t) {
 #line 415
 constexpr auto operator/(const Tuple &t, float f) {
 	return (1.0f/f) * t;
+}
+#line 337
+#line 506
+constexpr Tuple norm(const Tuple &t) {
+	float m = abs(t);
+	return eq(m, 1.0f) ? t : t/m;
 }
 #line 337
 constexpr auto operator-(const Tuple &t) {
@@ -120,6 +143,54 @@ inline void tuple_tests() {
 #line 324
 #line 369
 #line 382
+#line 397
+#line 428
+#line 454
+#line 470
+#line 489
+#line 521
+#line 537
+	{ // length of norm vector
+		auto v { mk_vector(1.0f, 2.0f, 3.0f) };
+		assert_eq(1.0f, abs(norm(v)));
+	}
+#line 521
+	{ // normalizing (1, 2, 3)
+		auto v { mk_vector(1.0f, 2.0f, 3.0f) };
+		auto e { mk_vector(
+			0.26726f, 0.53452f, 0.80178f
+		) };
+		assert(norm(v) == e);
+	}
+#line 489
+	{ // normalize (4, 0, 0)
+		auto v { mk_vector(4.0f, 0.0f, 0.0f) };
+		auto e { mk_vector(1.0f, 0.0f, 0.0f) };
+		assert(norm(v) == e);
+	}
+#line 470
+	{ // check length on non-unit vector
+		auto v { mk_vector(1.0f, 2.0f, 3.0f) };
+		assert_eq(sqrtf(14.0f), abs(v));
+	}
+	{ // check length of negated non-unit vector
+		auto v { mk_vector(-1.0f, -2.0f, -3.0f) };
+		assert_eq(sqrtf(14.0f), abs(v));
+	}
+#line 454
+	{ // checking length of second unit-vector
+		auto v { mk_vector(0.0f, 1.0f, 0.0f) };
+		assert_eq(1.0f, abs(v));
+	}
+	{ // checking length of third unit-vector
+		auto v { mk_vector(0.0f, 0.0f, 1.0f) };
+		assert_eq(1.0f, abs(v));
+	}
+#line 428
+	{ // checking length of first unit-vector
+		auto v { mk_vector(1.0f, 0.0f, 0.0f) };
+		assert_eq(1.0f, abs(v));
+	}
 #line 397
 	{ // dividing at tuple by a scalar
 		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
