@@ -1,7 +1,0 @@
-Raytracer-Challenge
-===================
-
-See documentation at
-
-https://itmm.github.io/raytracer/
-
