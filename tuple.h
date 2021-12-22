@@ -33,6 +33,10 @@
 #line 39
 #line 39
 #line 39
+#line 39
+#line 39
+#line 39
+#line 39
 #pragma once
 #line 92
 	
@@ -69,6 +73,13 @@ struct Tuple {
 #line 349
 #line 349
 #line 440
+#line 440
+#line 565
+#line 565
+constexpr float dot(const Tuple &a, const Tuple &b) {
+	return a.x * b.x + a.y * b.y +
+		a.z * b.z + a.w * b.w;
+}
 #line 440
 constexpr float abs(const Tuple &t) {
 	return sqrtf(
@@ -113,8 +124,17 @@ constexpr auto operator+(const Tuple &a, const Tuple &b) {
 	};
 }
 #line 199
-inline constexpr auto mk_vector(float x, float y, float z) {
+constexpr auto mk_vector(float x, float y, float z) {
 	return Tuple { x, y, z, 0.0f };
+}
+#line 173
+#line 600
+constexpr auto cross(const Tuple &a, const Tuple &b) {
+	return mk_vector(
+		a.y * b.z - a.z * b.y,
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x
+	);
 }
 #line 173
 constexpr bool operator==(const Tuple &a, const Tuple &b) {
@@ -149,6 +169,22 @@ inline void tuple_tests() {
 #line 470
 #line 489
 #line 521
+#line 537
+#line 552
+#line 581
+	{ // test of cross product
+		auto a { mk_vector(1.0f, 2.0f, 3.0f) };
+		auto b { mk_vector(2.0f, 3.0f, 4.0f) };
+		auto e { mk_vector(-1.0f, 2.0f, -1.0f) };
+		assert(cross(a, b) == e);
+		assert(cross(b, a) == -e);
+	}
+#line 552
+	{ // test of dot product
+		auto a { mk_vector(1.0f, 2.0f, 3.0f) };
+		auto b { mk_vector(2.0f, 3.0f, 4.0f) };
+		assert_eq(20.0f, dot(a, b));
+	}
 #line 537
 	{ // length of norm vector
 		auto v { mk_vector(1.0f, 2.0f, 3.0f) };

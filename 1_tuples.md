@@ -176,7 +176,7 @@ Here also the factory function is missing:
 ```c++
 // ...
 // functions
-inline constexpr auto mk_vector(float x, float y, float z) {
+constexpr auto mk_vector(float x, float y, float z) {
 	return Tuple { x, y, z, 0.0f };
 }
 // ...

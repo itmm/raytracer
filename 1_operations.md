@@ -336,47 +336,67 @@ right:
 
 ## Dot Product
 
-```
-@Add(functions)
-	inline constexpr float dot(
-		const Tuple &a, const Tuple &b
-	) {
-		return a.x * b.x + a.y * b.y +
-			a.z * b.z + a.w * b.w;
+Nearly done. Now comes a unit-test for the dot product:
+
+```c++
+// ...
+	// tuple-tests
+	{ // test of dot product
+		auto a { mk_vector(1.0f, 2.0f, 3.0f) };
+		auto b { mk_vector(2.0f, 3.0f, 4.0f) };
+		assert_eq(20.0f, dot(a, b));
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto a { mk_vector(1, 2, 3) };
-	auto b { mk_vector(2, 3, 4) };
-	assert_eq(20, dot(a, b));
-} @End(unit-tests)
+Of course it fails, because the function is not defined yet:
+
+```c++
+// ...
+// functions
+constexpr float dot(const Tuple &a, const Tuple &b) {
+	return a.x * b.x + a.y * b.y +
+		a.z * b.z + a.w * b.w;
+}
+// ...
 ```
 
 ## Cross Product
 
-```
-@Add(functions)
-	inline constexpr auto cross(
-		const Tuple &a, const Tuple &b
-	) {
-		return mk_vector(
-			a.y * b.z - a.z * b.y,
-			a.z * b.x - a.x * b.z,
-			a.x * b.y - a.y * b.x
-		);
+Last function in this chapter is the cross product.
+Here is a unit-test for it:
+
+
+```c++
+// ...
+	// tuple-tests
+	{ // test of cross product
+		auto a { mk_vector(1.0f, 2.0f, 3.0f) };
+		auto b { mk_vector(2.0f, 3.0f, 4.0f) };
+		auto e { mk_vector(-1.0f, 2.0f, -1.0f) };
+		assert(cross(a, b) == e);
+		assert(cross(b, a) == -e);
 	}
-@End(functions)
+// ...
 ```
 
+As expected the test fails: the function is not defined yet.
+
+```c++
+// ...
+// functions
+// ...
+constexpr auto mk_vector(float x, float y, float z) {
+	// ...
+}
+constexpr auto cross(const Tuple &a, const Tuple &b) {
+	return mk_vector(
+		a.y * b.z - a.z * b.y,
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x
+	);
+}
+// ...
 ```
-@Add(unit-tests) {
-	auto a { mk_vector(1, 2, 3) };
-	auto b { mk_vector(2, 3, 4) };
-	auto e { mk_vector(-1, 2, -1) };
-	assert(cross(a, b) == e);
-	assert(cross(b, a) == -e);
-} @End(unit-tests)
-```
+
+And now all the test pass.
