@@ -8,9 +8,9 @@ in `tuple.h`:
 // ...
 	// tuple-tests
 	{ // adding two tuples
-		auto p { mk_point(3, -2, 5) };
-		auto v { mk_vector(-2, 3, 1) };
-		Tuple e { 1, 1, 6, 1 };
+		auto p { mk_point(3.0f, -2.0f, 5.0f) };
+		auto v { mk_vector(-2.0f, 3.0f, 1.0f) };
+		Tuple e { 1.0f, 1.0f, 6.0f, 1.0f };
 		assert(p + v == e);
 	}
 // ...
@@ -34,9 +34,9 @@ constexpr auto operator+(const Tuple &a, const Tuple &b) {
 // ...
 	// tuple-tests
 	{ // subtracting two points
-		auto p1 { mk_point(3, 2, 1) };
-		auto p2 { mk_point(5, 6, 7) };
-		auto e { mk_vector(-2, -4, -6) };
+		auto p1 { mk_point(3.0f, 2.0f, 1.0f) };
+		auto p2 { mk_point(5.0f, 6.0f, 7.0f) };
+		auto e { mk_vector(-2.0f, -4.0f, -6.0f) };
 		assert(p1 - p2 == e);
 	}
 // ...
@@ -58,9 +58,9 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 	// tuple-tests
 	{ // subtracting a vector from a point
-		auto p { mk_point(3, 2, 1) };
-		auto v { mk_vector(5, 6, 7) };
-		auto e { mk_point(-2, -4, -6) };
+		auto p { mk_point(3.0f, 2.0f, 1.0f) };
+		auto v { mk_vector(5.0f, 6.0f, 7.0f) };
+		auto e { mk_point(-2.0f, -4.0f, -6.0f) };
 		assert(p - v == e);
 	}
 // ...
@@ -70,9 +70,9 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 	// tuple-tests
 	{ // subtracting two vectors
-		auto v1 { mk_vector(3, 2, 1) };
-		auto v2 { mk_vector(5, 6, 7) };
-		auto e { mk_vector(-2, -4, -6) };
+		auto v1 { mk_vector(3.0f, 2.0f, 1.0f) };
+		auto v2 { mk_vector(5.0f, 6.0f, 7.0f) };
+		auto e { mk_vector(-2.0f, -4.0f, -6.0f) };
 		assert(v1 - v2 == e);
 	}
 // ...
@@ -84,9 +84,9 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 	// tuple-tests
 	{ // subtracting a vector from zero vector
-		auto zero { mk_vector(0, 0, 0) };
-		auto v { mk_vector(1, -2, 3) };
-		auto e { mk_vector(-1, 2, -3) };
+		auto zero { mk_vector(0.0f, 0.0f, 0.0f) };
+		auto v { mk_vector(1.0f, -2.0f, 3.0f) };
+		auto e { mk_vector(-1.0f, 2.0f, -3.0f) };
 		assert(zero - v == e);
 	}
 // ...
@@ -96,8 +96,8 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 	// tuple-tests
 	{ // negating a tuple
-		Tuple a { 1, -2, 3, -4 };
-		Tuple e { -1, 2, -3, 4 };
+		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
+		Tuple e { -1.0f, 2.0f, -3.0f, 4.0f };
 		assert(-a == e);
 	}
 // ...
@@ -107,7 +107,7 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 // ...
 // functions
 constexpr auto operator-(const Tuple &t) {
-	return -1 * t;
+	return -1.0f * t;
 }
 // ...
 ```
@@ -131,9 +131,9 @@ constexpr auto operator*(float f, const Tuple &t) {
 // ...
 	// tuple-tests
 	{ // multiplying a tuple by a scalar
-		Tuple a { 1, -2, 3, -4 };
-		Tuple e { 3.5, -7, 10.5, -14 };
-		assert(3.5 * a == e);
+		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
+		Tuple e { 3.5f, -7.0f, 10.5f, -14.0f };
+		assert(3.5f * a == e);
 	}
 // ...
 ```
@@ -142,9 +142,9 @@ constexpr auto operator*(float f, const Tuple &t) {
 // ...
 	// tuple-tests
 	{ // multiplying a tuple by a fraction
-		Tuple a { 1, -2, 3, -4 };
-		Tuple e { 0.5, -1, 1.5, -2 };
-		assert(0.5 * a == e);
+		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
+		Tuple e { 0.5f, -1.0f, 1.5f, -2.0f };
+		assert(0.5f * a == e);
 	}
 // ...
 ```
@@ -153,9 +153,9 @@ constexpr auto operator*(float f, const Tuple &t) {
 // ...
 	// tuple-tests
 	{ // dividing at tuple by a scalar
-		Tuple a { 1, -2, 3, -4 };
-		Tuple e { 0.5, -1, 1.5, -2 };
-		assert(a/2 == e);
+		Tuple a { 1.0f, -2.0f, 3.0f, -4.0f };
+		Tuple e { 0.5f, -1.0f, 1.5f, -2.0f };
+		assert(a/2.0f == e);
 	}
 // ...
 ```
@@ -168,7 +168,7 @@ constexpr auto operator*(float f, const Tuple &t) {
 	// ...
 }
 constexpr auto operator/(const Tuple &t, float f) {
-	return (1/f) * t;
+	return (1.0f/f) * t;
 }
 // ...
 ```

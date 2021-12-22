@@ -30,11 +30,11 @@ correctly identified as a point, not a vector:
 // ...
 	// tuple-tests
 	{ // a tuple with w == 1 is a point
-		Tuple a { 4.3, -4.2, 3.1, 1 };
-		assert_eq(a.x, 4.3);
-		assert_eq(a.y, -4.2);
-		assert_eq(a.z, 3.1);
-		assert(a.w == 1);
+		Tuple a { 4.3f, -4.2f, 3.1f, 1.0f };
+		assert_eq(a.x, 4.3f);
+		assert_eq(a.y, -4.2f);
+		assert_eq(a.z, 3.1f);
+		assert_eq(a.w, 1.0f);
 		assert(a.is_point());
 		assert(! a.is_vector());
 	}
@@ -72,7 +72,7 @@ And this function needs a function to compare them with a grain of salt:
 	
 #include <cmath>
 constexpr bool eq(float a, float b) {
-	return std::fabs(a - b) < 1e-5;
+	return std::fabs(a - b) < 1e-5f;
 }
 // ...
 ```
@@ -83,7 +83,7 @@ if the `w` component is `1`. Here is the code in `tuple.h`:
 // ...
 	// methods
 	constexpr bool is_point() const {
-		return eq(w, 1);
+		return eq(w, 1.0f);
 	}
 // ...
 ```
@@ -94,7 +94,7 @@ And a tuple is a vector if the `w` component is `0`. Here is the code in
 // ...
 	// methods
 	constexpr bool is_vector() const {
-		return eq(w, 0);
+		return eq(w, 0.0f);
 	}
 // ...
 ```
@@ -106,11 +106,11 @@ This time a vector is created:
 // ...
 	// tuple-tests
 	{ // a tuple with w == 0 is a vector
-		Tuple a { 4.3, -4.2, 3.1, 0 };
-		assert_eq(a.x, 4.3);
-		assert_eq(a.y, -4.2);
-		assert_eq(a.z, 3.1);
-		assert(a.w == 0);
+		Tuple a { 4.3f, -4.2f, 3.1f, 0.0f };
+		assert_eq(a.x, 4.3f);
+		assert_eq(a.y, -4.2f);
+		assert_eq(a.z, 3.1f);
+		assert_eq(a.w, 0.0f);
 		assert(! a.is_point());
 		assert(a.is_vector());
 	}
@@ -126,8 +126,8 @@ reference tuple.
 // ...
 	// tuple-tests
 	{ // make point
-		auto p { mk_point(4, -4, 3) };
-		Tuple e { 4, -4, 3, 1 };
+		auto p { mk_point(4.0f, -4.0f, 3.0f) };
+		Tuple e { 4.0f, -4.0f, 3.0f, 1.0f };
 		assert(p == e);
 	}
 // ...
@@ -140,7 +140,7 @@ point:
 // ...
 // functions
 constexpr auto mk_point(float x, float y, float z) {
-	return Tuple { x, y, z, 1 };
+	return Tuple { x, y, z, 1.0f };
 }
 // ...
 ```
@@ -164,8 +164,8 @@ The next test creates directly a vector:
 // ...
 	// tuple-tests
 	{ // make vector
-		auto v { mk_vector(4, -4, 3) };
-		Tuple e { 4, -4, 3, 0 };
+		auto v { mk_vector(4.0f, -4.0f, 3.0f) };
+		Tuple e { 4.0f, -4.0f, 3.0f, 0.0f };
 		assert(v == e);
 	}
 // ...
@@ -177,7 +177,7 @@ Here also the factory function is missing:
 // ...
 // functions
 inline constexpr auto mk_vector(float x, float y, float z) {
-	return Tuple { x, y, z, 0 };
+	return Tuple { x, y, z, 0.0f };
 }
 // ...
 ```
