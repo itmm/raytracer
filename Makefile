@@ -10,6 +10,7 @@ md-run.txt: $(SOURCEs)
 	date >$@
 
 raytracer: raytracer.cpp tuple.h
+	$(CXX) raytracer.cpp -o $@
 
 clean:
 	rm -f raytracer md-run.txt 

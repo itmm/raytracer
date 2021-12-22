@@ -1,12 +1,12 @@
-#line 6
-#line 19
+#line 10
+#line 28
 #include "tuple.h"
-#line 6
+#line 10
 static void run_tests() {
 	// unit-tests
-#line 22
+#line 31
 	tuple_tests();
-#line 8
+#line 12
 }
 
 int main(int argc, char **argv) {
