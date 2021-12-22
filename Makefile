@@ -1,6 +1,6 @@
 .PHONY = build-rt clean test test-rt
 
-SOURCEs = index.md 1_tuples.md 1_operations.md
+SOURCEs = README.md 1_tuples.md 1_operations.md
 
 build-rt: md-run.txt
 	$(MAKE) raytracer

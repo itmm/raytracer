@@ -185,4 +185,4 @@ inline constexpr auto mk_vector(float x, float y, float z) {
 Now the tests all pass.
 
 The journey continues in the file
-[](./1_operations.md).
+[1_operations.md](./1_operations.md).
