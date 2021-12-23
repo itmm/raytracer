@@ -1,106 +1,146 @@
 # Color Operations
 
-## Adding and Subtracting
+## Adding
 
-```
-@Add(functions)
-	inline auto operator+(
-		const Color &a, const Color &b
-	) {
-		return Color {
-			a.red + b.red,
-			a.green + b.green,
-			a.blue + b.blue
-		};
+The first test tries to add colors in `color.h`:
+
+
+```c++
+// ...
+	// color-tests
+	{ // add two colors
+		Color c1 { 0.9f, 0.6f, 0.75f };
+		Color c2 { 0.7f, 0.1f, 0.25f };
+		Color e { 1.6f, 0.7f, 1.0f };
+		assert(c1 + c2 == e);
 	}
-@End(functions)
+// ...
 ```
 
+Of course the operation must first be defined:
+
+```c++
+// ...
+struct Color {
+	// ...
+};
+inline auto operator+(const Color &a, const Color &b) {
+	return Color {
+		a.red + b.red,
+		a.green + b.green,
+		a.blue + b.blue
+	};
+}
+// ...
 ```
-@Add(functions)
-	inline bool operator==(
-		const Color &a, const Color &b
-	) {
-		return eq(a.red, b.red) &&
-			eq(a.green, b.green) &&
-			eq(a.blue, b.blue);
+
+Also equality must be implemented
+
+```c++
+// ...
+#include "tuple.h"
+inline bool operator==(const Color &a, const Color &b) {
+	return eq(a.red, b.red) &&
+		eq(a.green, b.green) &&
+		eq(a.blue, b.blue);
+}
+// ...
+```
+
+## Subtracting
+
+The following test checks, if subtraction is working:
+
+```c++
+// ...
+	// color-tests
+	{ // subtract two colors
+		Color c1 { 0.9f, 0.6f, 0.75f };
+		Color c2 { 0.7f, 0.1f, 0.25f };
+		Color e { 0.2f, 0.5f, 0.5f };
+		assert(c1 - c2 == e);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	Color c1 { 0.9, 0.6, 0.75 };
-	Color c2 { 0.7, 0.1, 0.25 };
-	Color e { 1.6, 0.7, 1 };
-	assert(c1 + c2 == e);
-} @End(unit-tests)
+Also the function must be declared first:
+
+```c++
+// ...
+struct Color {
+	// ...
+};
+inline auto operator-(const Color &a, const Color &b) {
+	return Color {
+		a.red - b.red,
+		a.green - b.green,
+		a.blue - b.blue
+	};
+}
+// ...
 ```
 
-```
-@Add(functions)
-	inline auto operator-(
-		const Color &a, const Color &b
-	) {
-		return Color {
-			a.red - b.red,
-			a.green - b.green,
-			a.blue - b.blue
-		};
+## Scalar Multiplication
+
+A test case for scalar multiplication:
+
+```c++
+// ...
+	// color-tests
+	{ // scalar multiplication
+		Color c { 0.2f, 0.3f, 0.4f };
+		Color e { 0.4f, 0.6f, 0.8f };
+		assert(c * 2.0f == e);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	Color c1 { 0.9, 0.6, 0.75 };
-	Color c2 { 0.7, 0.1, 0.25 };
-	Color e { 0.2, 0.5, 0.5 };
-	assert(c1 - c2 == e);
-} @End(unit-tests)
+Implement the missing function:
+
+```C++
+// ...
+struct Color {
+	// ...
+};
+inline auto operator*(const Color &c, float f) {
+	return Color {
+		c.red * f, c.green * f,
+		c.blue * f
+	};
+}
+// ...
 ```
 
-```
-@Add(functions)
-	inline auto operator*(
-		const Color &c, float f
-	) {
-		return Color {
-			c.red * f, c.green * f,
-			c.blue * f
-		};
+## Hadamard product
+
+Test case for multiplying two color component by component:
+
+```c++
+// ...
+	// color-tests
+	{ // hadamard product
+		Color c1 { 1.0f, 0.2f, 0.4f };
+		Color c2 { 0.9f, 1.0f, 0.1f };
+		Color e { 0.9f, 0.2f, 0.04f };
+		assert(c1 * c2 == e);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	Color c { 0.2, 0.3, 0.4 };
-	Color e { 0.4, 0.6, 0.8 };
-	assert(c * 2 == e);
-} @End(unit-tests)
-```
+Implement the function
 
-```
-@Add(functions)
-	inline auto operator*(
-		const Color &a, const Color &b
-	) {
-		return Color {
-			a.red * b.red,
-			a.green * b.green,
-			a.blue * b.blue
-		};
-	}
-@End(functions)
-```
-
-```
-@Add(unit-tests) {
-	Color c1 { 1, 0.2, 0.4 };
-	Color c2 { 0.9, 1, 0.1 };
-	Color e { 0.9, 0.2, 0.04 };
-	assert(c1 * c2 == e);
-} @End(unit-tests)
+```c++
+// ...
+struct Color {
+	// ...
+};
+inline auto operator*(const Color &a, const Color &b) {
+	return Color {
+		a.red * b.red,
+		a.green * b.green,
+		a.blue * b.blue
+	};
+}
+// ...
 ```
 

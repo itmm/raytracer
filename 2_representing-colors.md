@@ -28,10 +28,10 @@ A quick test asserts our expectations about color:
 // ...
 	// color-tests
 	{ // test specific color
-		Color c { -0.5, 0.4, 1.7 };
-		assert_eq(c.red, -0.5);
-		assert_eq(c.green, 0.4);
-		assert_eq(c.blue, 1.7);
+		Color c { -0.5f, 0.4f, 1.7f };
+		assert_eq(c.red, -0.5f);
+		assert_eq(c.green, 0.4f);
+		assert_eq(c.blue, 1.7f);
 	}
 // ...
 ```
