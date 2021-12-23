@@ -1,8 +1,11 @@
 .PHONY = build-rt clean test test-rt
 
-SOURCEs = README.md 1_tuples.md 1_operations.md
+SOURCEs = README.md \
+	1_tuples.md 1_operations.md \
+	2_representing-colors.md 2_color-operations.md
+
 CXXFLAGS += -Wall -pedantic --std=c++17
-CXXSOURCEs = raytracer.cpp tuple.h
+CXXSOURCEs = raytracer.cpp tuple.h color.h
 
 build-rt: md-run.txt
 	$(MAKE) raytracer

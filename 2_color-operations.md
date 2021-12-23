@@ -1,21 +1,4 @@
-# Colors
-
-```
-@Add(types)
-	struct Color {
-		float red, green, blue;
-	};
-@End(types)
-```
-
-```
-@Add(unit-tests) {
-	Color c { -0.5, 0.4, 1.7 };
-	assert_eq(c.red, -0.5);
-	assert_eq(c.green, 0.4);
-	assert_eq(c.blue, 1.7);
-} @End(unit-tests)
-```
+# Color Operations
 
 ## Adding and Subtracting
 

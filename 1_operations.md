@@ -400,3 +400,6 @@ constexpr auto cross(const Tuple &a, const Tuple &b) {
 ```
 
 And now all the test pass.
+
+The show continues on
+[2_representing-colors.md](./2_representing-colors.md)
