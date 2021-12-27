@@ -1,3 +1,5 @@
+#line 6 "3_creating-matrices.md"
+#include "matrix.h"
 #line 8 "2_ppm.md"
 #include "ppm.h"
 #line 6 "2_representing-colors.md"
@@ -7,6 +9,8 @@
 #line 10 "README.md"
 static void run_tests() {
 	// unit-tests
+#line 9 "3_creating-matrices.md"
+	matrix_tests();
 #line 11 "2_ppm.md"
 	ppm_tests();
 #line 9 "2_representing-colors.md"
