@@ -144,3 +144,6 @@ inline auto operator*(const Color &a, const Color &b) {
 // ...
 ```
 
+Continue on
+[2_ppm.md](./2_ppm.md)
+
