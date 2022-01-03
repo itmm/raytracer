@@ -4,6 +4,8 @@
 
 class Matrix {
 	public:
+#line 200
+		friend constexpr bool operator==(const Matrix &a, const Matrix &b);
 #line 154
 		// 3x3
 		constexpr Matrix(
@@ -49,11 +51,123 @@ class Matrix {
 	private:
 		float _v[16];
 };
-#line 18
+#line 61 "3_multiplying-matrices.md"
+inline constexpr float mult_line(const Matrix &a, const Matrix &b, int r, int c) {
+	return a(r, 0) * b(0, c) + a(r, 1) * b(1, c) +
+		a(r, 2) * b(2, c) + a(r, 3) * b(3, c);
+}
+#line 39
+inline constexpr Matrix operator*(const Matrix &a, const Matrix &b) {
+	return {
+		mult_line(a, b, 0, 0), mult_line(a, b, 0, 1),
+			mult_line(a, b, 0, 2), mult_line(a, b, 0, 3),
+		mult_line(a, b, 1, 0), mult_line(a, b, 1, 1),
+			mult_line(a, b, 1, 2), mult_line(a, b, 1, 3),
+		mult_line(a, b, 2, 0), mult_line(a, b, 2, 1),
+			mult_line(a, b, 2, 2), mult_line(a, b, 2, 3),
+		mult_line(a, b, 3, 0), mult_line(a, b, 3, 1),
+			mult_line(a, b, 3, 2), mult_line(a, b, 3, 3)
+	};
+}
+#line 18 "3_creating-matrices.md"
 #include "tuple.h"
+#line 108 "3_multiplying-matrices.md"
+inline constexpr float mult_line(const Matrix &a, const Tuple &t, int r) {
+	return a(r, 0) * t.x + a(r, 1) * t.y + a(r, 2) * t.z + a(r, 3) * t.w;
+}
+#line 94
+inline constexpr Tuple operator*(const Matrix &a, const Tuple &t) {
+	return {
+		mult_line(a, t, 0), mult_line(a, t, 1),
+			mult_line(a, t, 2), mult_line(a, t, 3)
+	};
+}
+#line 205 "3_creating-matrices.md"
+inline constexpr bool operator==(const Matrix &a, const Matrix &b) {
+	const float *ai = a._v;
+	const float *bi = b._v;
+	const float *ae = ai + 16;
+	for (; ai < ae; ++ai, ++bi) {
+		if (! eq(*ai, *bi)) {
+			return false;
+		}
+	}
+	return true;
+}
+#line 249
+inline constexpr bool operator!=(const Matrix &a, const Matrix &b) {
+	return !(a == b);
+}
+#line 19
 
 inline void matrix_tests() {
 	// matrix-tests
+#line 74 "3_multiplying-matrices.md"
+	{ // matrix/tuple multiplication
+		Matrix a {
+			1, 2, 3, 4,
+			2, 4, 4, 2,
+			8, 6, 4, 1,
+			0, 0, 0, 1
+		};
+		Tuple t { 1, 2, 3, 1 };
+		Tuple e { 18, 24, 33, 1 };
+		assert(a * t == e);
+	}
+#line 8
+	{ // matrix multiply
+		Matrix a {
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 8, 7, 6,
+			5, 4, 3, 2
+		};
+		Matrix b {
+			-2, 1, 2, 3,
+			3, 2, 1, -1,
+			4, 3, 6, 5,
+			1, 2, 7, 8
+		};
+		Matrix e {
+			20, 22, 50, 48,
+			44, 54, 114, 108,
+			40, 58, 110, 102,
+			16, 26, 46, 42
+		};
+		assert(a * b == e);
+	}
+#line 224 "3_creating-matrices.md"
+	{ // check for inequality
+		Matrix a {
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 8, 7, 6,
+			5, 4, 3, 2
+		};
+		Matrix b {
+			2, 3, 4, 5,
+			6, 7, 8, 9,
+			8, 7, 6, 5,
+			4, 3, 2, 1
+		};
+		assert(a != b);
+	}
+#line 176
+	{ // check for equality
+		Matrix a {
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 8, 7, 6,
+			5, 4, 3, 2
+		};
+		Matrix b {
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 8, 7, 6,
+			5, 4, 3, 2
+		};
+		assert(a == b);
+	}
 #line 135
 	{ // constructing 3x3 matrix
 		Matrix m {
