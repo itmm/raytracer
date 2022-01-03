@@ -175,16 +175,16 @@ Check two matrices for equality:
 	// matrix-tests
 	{ // check for equality
 		Matrix a {
-			1, 2, 3, 4,
-			5, 6, 7, 8,
-			9, 8, 7, 6,
-			5, 4, 3, 2
+			1.0f, 2.0f, 3.0f, 4.0f,
+			5.0f, 6.0f, 7.0f, 8.0f,
+			9.0f, 8.0f, 7.0f, 6.0f,
+			5.0f, 4.0f, 3.0f, 2.0f
 		};
 		Matrix b {
-			1, 2, 3, 4,
-			5, 6, 7, 8,
-			9, 8, 7, 6,
-			5, 4, 3, 2
+			1.0f, 2.0f, 3.0f, 4.0f,
+			5.0f, 6.0f, 7.0f, 8.0f,
+			9.0f, 8.0f, 7.0f, 6.0f,
+			5.0f, 4.0f, 3.0f, 2.0f
 		};
 		assert(a == b);
 	}
@@ -223,16 +223,16 @@ Check two matrices for inequality:
 	// matrix-tests
 	{ // check for inequality
 		Matrix a {
-			1, 2, 3, 4,
-			5, 6, 7, 8,
-			9, 8, 7, 6,
-			5, 4, 3, 2
+			1.0f, 2.0f, 3.0f, 4.0f,
+			5.0f, 6.0f, 7.0f, 8.0f,
+			9.0f, 8.0f, 7.0f, 6.0f,
+			5.0f, 4.0f, 3.0f, 2.0f
 		};
 		Matrix b {
-			2, 3, 4, 5,
-			6, 7, 8, 9,
-			8, 7, 6, 5,
-			4, 3, 2, 1
+			2.0f, 3.0f, 4.0f, 5.0f,
+			6.0f, 7.0f, 8.0f, 9.0f,
+			8.0f, 7.0f, 6.0f, 5.0f,
+			4.0f, 3.0f, 2.0f, 1.0f
 		};
 		assert(a != b);
 	}
@@ -253,5 +253,5 @@ inline constexpr bool operator!=(const Matrix &a, const Matrix &b) {
 ```
 
 Next comes
-[3_multiplying-matrices.md](3_multiplying-matrices.md).
+[3_multiplying-matrices.md](./3_multiplying-matrices.md).
 
