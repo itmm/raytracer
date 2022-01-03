@@ -48,4 +48,4 @@ Test multiplication with tuple:
 ```
 
 Continue in
-[3_transposing-matrices.md](./3-transposing-matrices.md).
+[3_transposing-matrices.md](./3_transposing-matrices.md).
