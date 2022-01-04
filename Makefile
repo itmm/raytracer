@@ -16,7 +16,7 @@ build-rt: md-run.txt
 	$(MAKE) raytracer
 
 md-run.txt: $(SOURCEs)
-	c-cat $^ | md-patcher
+	md-patcher $^
 	date >$@
 
 raytracer: $(CXXSOURCEs)
