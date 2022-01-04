@@ -1,12 +1,12 @@
-#line 17 "3_creating-matrices.md"
+#line 17 "./3_creating-matrices.md"
 #pragma once
 #line 52
 
 class Matrix {
 	public:
-#line 380 "3_inverting-matrices.md"
+#line 380 "./3_inverting-matrices.md"
 		Matrix() = default;
-#line 200 "3_creating-matrices.md"
+#line 200 "./3_creating-matrices.md"
 		friend constexpr bool operator==(const Matrix &a, const Matrix &b);
 #line 154
 		// 3x3
@@ -53,7 +53,7 @@ class Matrix {
 	private:
 		float _v[16];
 };
-#line 59 "3_inverting-matrices.md"
+#line 59 "./3_inverting-matrices.md"
 Matrix sub(Matrix a, int r, int c) {
 	while (r < 3) {
 		int i = r + 1;
@@ -112,7 +112,7 @@ inline float det4(const Matrix &a) {
 	float cf4 { cofactor4(a, 0, 3) };
 	return a(0, 0) * cf1 + a(0, 1) * cf2 + a(0, 2) * cf3 + a(0, 3) * cf4;
 }
-#line 34 "3_transposing-matrices.md"
+#line 34 "./3_transposing-matrices.md"
 inline constexpr Matrix trans(const Matrix &a) {
 	return {
 		a(0, 0), a(1, 0), a(2, 0), a(3, 0),
@@ -121,14 +121,14 @@ inline constexpr Matrix trans(const Matrix &a) {
 		a(0, 3), a(1, 3), a(2, 3), a(3, 3)
 	};
 }
-#line 27 "3_identity-matrix.md"
+#line 27 "./3_identity-matrix.md"
 constexpr Matrix identity {
 	1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f
 };
-#line 61 "3_multiplying-matrices.md"
+#line 61 "./3_multiplying-matrices.md"
 inline constexpr float mult_line(const Matrix &a, const Matrix &b, int r, int c) {
 	return a(r, 0) * b(0, c) + a(r, 1) * b(1, c) +
 		a(r, 2) * b(2, c) + a(r, 3) * b(3, c);
@@ -146,9 +146,9 @@ inline constexpr Matrix operator*(const Matrix &a, const Matrix &b) {
 			mult_line(a, b, 3, 2), mult_line(a, b, 3, 3)
 	};
 }
-#line 18 "3_creating-matrices.md"
+#line 18 "./3_creating-matrices.md"
 #include "tuple.h"
-#line 295 "3_inverting-matrices.md"
+#line 295 "./3_inverting-matrices.md"
 inline bool is_invertible(const Matrix &a) {
 	return ! eq(det4(a), 0.0f);
 }
@@ -168,7 +168,7 @@ Matrix inv(const Matrix &a) {
 	}
 	return res;
 }
-#line 108 "3_multiplying-matrices.md"
+#line 108 "./3_multiplying-matrices.md"
 inline constexpr float mult_line(const Matrix &a, const Tuple &t, int r) {
 	return a(r, 0) * t.x + a(r, 1) * t.y + a(r, 2) * t.z + a(r, 3) * t.w;
 }
@@ -179,7 +179,7 @@ inline constexpr Tuple operator*(const Matrix &a, const Tuple &t) {
 		mult_line(a, t, 2), mult_line(a, t, 3)
 	};
 }
-#line 205 "3_creating-matrices.md"
+#line 205 "./3_creating-matrices.md"
 inline constexpr bool operator==(const Matrix &a, const Matrix &b) {
 	const float *ai = a._v;
 	const float *bi = b._v;
@@ -199,7 +199,7 @@ inline constexpr bool operator!=(const Matrix &a, const Matrix &b) {
 
 inline void matrix_tests() {
 	// matrix-tests
-#line 437 "3_inverting-matrices.md"
+#line 437 "./3_inverting-matrices.md"
 	{ // multiply by inverse
 		Matrix a {
 			 3.0f, -9.0f,  7.0f,  3.0f,
@@ -376,7 +376,7 @@ inline void matrix_tests() {
 		};
 		assert_eq(17.0f, det2(a));
 	}
-#line 50 "3_transposing-matrices.md"
+#line 50 "./3_transposing-matrices.md"
 	{ // transpose identity matrix
 		assert(trans(identity) == identity);
 	}
@@ -396,7 +396,7 @@ inline void matrix_tests() {
 		};
 		assert(trans(a) == e);
 	}
-#line 41 "3_identity-matrix.md"
+#line 41 "./3_identity-matrix.md"
 	{ // tuple multiply with identity
 		Tuple t {
 			1.0f, 2.0f, 3.0f, 4.0f
@@ -413,7 +413,7 @@ inline void matrix_tests() {
 		};
 		assert(a * identity == a);
 	}
-#line 74 "3_multiplying-matrices.md"
+#line 74 "./3_multiplying-matrices.md"
 	{ // matrix/tuple multiplication
 		Matrix a {
 			1.0f, 2.0f, 3.0f, 4.0f,
@@ -447,7 +447,7 @@ inline void matrix_tests() {
 		};
 		assert(a * b == e);
 	}
-#line 224 "3_creating-matrices.md"
+#line 224 "./3_creating-matrices.md"
 	{ // check for inequality
 		Matrix a {
 			1.0f, 2.0f, 3.0f, 4.0f,
