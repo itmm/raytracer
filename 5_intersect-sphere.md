@@ -1,53 +1,5 @@
-# Rays and Spheres
+# Intersect a ray with a sphere
 
-```
-@Add(types)
-	struct Ray {
-		Tuple origin;
-		Tuple direction;
-		@put(methods);
-	};
-@End(types)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(1, 2, 3) };
-	auto d { mk_vector(4, 5, 6) };
-	Ray r { o, d };
-	assert(r.origin == o);
-	assert(r.direction == d);
-} @End(unit-tests)
-```
-
-```
-@def(methods)
-	constexpr auto pos(float t) const;
-@end(methods)
-```
-
-```
-@Add(functions)
-	constexpr auto Ray::pos(float t) const {
-		return origin + t * direction;
-	}
-@End(functions)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(2, 3, 4) };
-	auto d { mk_vector(1, 0, 0) };
-	Ray r { o, d };
-	assert(r.pos(0) == o);
-	auto e1 { mk_point(3, 3, 4) };
-	assert(r.pos(1) == e1);
-	auto e2 { mk_point(1, 3, 4) };
-	assert(r.pos(-1) == e2);
-	auto e3 { mk_point(4.5, 3, 4) };
-	assert(r.pos(2.5) == e3);
-} @End(unit-tests)
-```
 
 ```
 @Add(types)

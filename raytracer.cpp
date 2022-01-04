@@ -1,3 +1,7 @@
+#line 6 "./5_creating-rays.md"
+#include "ray.h"
+#line 6 "./4_translation.md"
+#include "transform.h"
 #line 6 "./3_creating-matrices.md"
 #include "matrix.h"
 #line 8 "./2_ppm.md"
@@ -9,6 +13,10 @@
 #line 10 "README.md"
 static void run_tests() {
 	// unit-tests
+#line 9 "./5_creating-rays.md"
+	ray_tests();
+#line 9 "./4_translation.md"
+	transform_tests();
 #line 9 "./3_creating-matrices.md"
 	matrix_tests();
 #line 11 "./2_ppm.md"
