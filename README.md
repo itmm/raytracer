@@ -13,6 +13,9 @@ static void run_tests() {
 
 int main(int argc, char **argv) {
 	run_tests();
+	#define MAIN 1
+	#if MAIN
+	#endif
 }
 ```
 

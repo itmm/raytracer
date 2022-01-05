@@ -11,7 +11,7 @@ Intersections::Intersections(std::initializer_list<Intersection> l):
 	std::sort(begin(), end());
 }
 #line 123
-inline constexpr Ray transform(const Ray &r, const Matrix &m) {
+Ray transform(const Ray &r, const Matrix &m) {
 	return {
 		m * r.origin,
 		m * r.direction

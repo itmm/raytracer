@@ -120,7 +120,7 @@ Add `transform` function in `sphere.cpp`:
 ```c++
 #include "sphere.h"
 
-inline constexpr Ray transform(const Ray &r, const Matrix &m) {
+Ray transform(const Ray &r, const Matrix &m) {
 	return {
 		m * r.origin,
 		m * r.direction
