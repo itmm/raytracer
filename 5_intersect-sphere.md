@@ -1,393 +1,232 @@
 # Intersect a ray with a sphere
 
 
+First we must establish the unit-tests in `raytracer.cpp`:
+
+```c++
+#include "sphere.h"
+// ...
+	// unit-tests
+	sphere_tests();
+// ...
 ```
-@Add(types)
-	@Put(needed by object);
-	struct Object {
-		Matrix transform = identity;
-		Matrix inv_transform = identity;
-		@Put(object attribs);
+
+As the function `sphere_tests` is only invoked once, it can be `inline`d and
+goes directly to the header `sphere.h`:
+
+```c++
+#pragma once
+#include "ray.h"
+
+inline void sphere_tests() {
+	// sphere-tests
+}
+```
+
+First a test to check a ray with two intersections:
+
+```c++
+// ...
+	// sphere-tests
+	{ // two intersections
+		auto o { mk_point(0.0f, 0.0f, -5.0f) };
+		auto d { mk_vector(0.0f, 0.0f, 1.0f) };
+		Ray r { o, d };
+		Sphere s;
+		auto xs { s.intersect(r) };
+		assert(xs.size() == 2);
+		assert_eq(xs[0].t, 4.0f);
+		assert_eq(xs[1].t, 6.0f);
+	}
+// ...
+```
+
+First define a sphere `struct`:
+
+```c++
+// ...
+#include "ray.h"
+#include "matrix.h"
+
+struct Object {
+	Matrix transform = identity;
+	Matrix inv_transform = identity;
+};
+struct Sphere: Object {
+};
+// ...
+```
+
+Define `intersect` method:
+
+```c++
+// ...
+struct Object {
+	virtual Intersections intersect(const Ray &r) = 0;
+	// ...
+};
+// ...
+struct Sphere: Object {
+	Intersections intersect(const Ray &r) override;
+};
+// ...
+```
+
+Add implementation of `intersect` in `sphere.cpp`:
+
+```c++
+#include "sphere.h"
+
+Intersections Sphere::intersect(const Ray &r) {
+	auto r2 { ::transform(r, inv_transform) };
+	auto s2r { r2.origin - mk_point(0.0f, 0.0f, 0.0f) };
+	auto a { dot(r2.direction, r2.direction) };
+	auto b { 2 * dot(r2.direction, s2r) };
+	auto c { dot(s2r, s2r) - 1 };
+	auto discr { b * b - 4.0f * a * c };
+	if (discr < 0) { 
+		return {};
+	}
+	auto sd { sqrtf(discr) };
+	return {
+		{(-b - sd)/(2.0f * a), this},
+		{(-b + sd)/(2.0f * a), this}
 	};
-	struct Sphere: Object {
-		@Put(sphere attribs);
+}
+```
+
+Define `Intersections` type in `sphere.h`:
+
+```c++
+// ...
+#include "matrix.h"
+#include <vector>
+
+struct Object;
+struct Intersection {
+	float t;
+	Object *object;
+};
+
+class Intersections: public std::vector<Intersection> {
+	public:
+		Intersections(std::initializer_list<Intersection> l);
+};
+// ...
+```
+
+Add `transform` function in `sphere.cpp`:
+
+```c++
+#include "sphere.h"
+
+inline constexpr Ray transform(const Ray &r, const Matrix &m) {
+	return {
+		m * r.origin,
+		m * r.direction
 	};
-@End(types)
+}
+// ...
 ```
 
-```
-@Add(includes)
-	#include <vector>
-@End(includes)
+Define `Intersections` constructor:
+
+
+```c++
+#include "sphere.h"
+#include <algorithm>
+
+Intersections::Intersections(std::initializer_list<Intersection> l):
+	std::vector<Intersection>(l)
+{
+	std::sort(begin(), end());
+}
+// ...
 ```
 
-```
-@Def(needed by object)
-	struct Object;
-	struct Intersection {
-		float t;
-		Object *object;
-	};
-@End(needed by object)
+Make `Intersection` comparable in `sphere.h`:
+
+```c++
+// ...
+struct Intersection {
+	// ...
+};
+
+inline bool operator<(const Intersection &a, const Intersection &b) {
+	return a.t < b.t;
+}
+// ...
 ```
 
-```
-@Add(needed by object)
-	class Intersections:
-		public std::vector<Intersection>
-	{
-		public:
-			@put(xs methods);
-	};
-@End(needed by object)
-```
+Unit-Test with one intersection:
 
-```
-@def(xs methods)
-	Intersections(std::initializer_list<Intersection> l);
-@end(xs methods)
-```
-
-```
-@Add(functions)
-	inline bool operator<(
-		const Intersection &a,
-		const Intersection &b
-	) {
-		return a.t < b.t;
+```c++
+// ...
+	// sphere-tests
+	{ // one intersection
+		auto o { mk_point(0.0f, 1.0f, -5.0f) };
+		auto d { mk_vector(0.0f, 0.0f, 1.0f) };
+		Ray r { o, d };
+		Sphere s;
+		auto xs { s.intersect(r) };
+		assert(xs.size() == 2);
+		assert_eq(xs[0].t, 5.0f);
+		assert_eq(xs[1].t, 5.0f);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(includes)
-	#include <algorithm>
-@End(includes)
-```
+Unit-Test with no intersections:
 
-```
-@Add(functions)
-	Intersections::Intersections(std::initializer_list<Intersection> l): std::vector<Intersection>(l) {
-		std::sort(begin(), end());
+```c++
+// ...
+	// sphere-tests
+	{ // no intersections
+		auto o { mk_point(0.0f, 2.0f, -5.0f) };
+		auto d { mk_vector(0.0f, 0.0f, 1.0f) };
+		Ray r { o, d };
+		Sphere s;
+		auto xs { s.intersect(r) };
+		assert(xs.size() == 0);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Def(object attribs)
-	virtual Intersections intersect(
-		const Ray &r
-	) = 0;
-@End(object attribs)
-```
+Ray starts inside a sphere:
 
-```
-@Def(sphere attribs)
-	Intersections intersect(
-		const Ray &r
-	) override;
-@End(sphere attribs)
-```
-
-```
-@Add(functions)
-	inline constexpr Ray transform(
-		const Ray &r, const Matrix &m
-	);
-
-	Intersections Sphere::intersect(
-		const Ray &r
-	) {
-		auto r2 { ::transform(r, inv_transform) };
-		auto s2r { r2.origin - mk_point(0, 0, 0) };
-		auto a { dot(r2.direction, r2.direction) };
-		auto b { 2 * dot(r2.direction, s2r) };
-		auto c { dot(s2r, s2r) - 1 };
-		auto discr { b * b - 4 * a * c };
-		if (discr < 0) { 
-			return {};
-		}
-		auto sd { sqrtf(discr) };
-		return {
-			{(-b - sd)/(2 * a), this},
-			{(-b + sd)/(2 * a), this}
-		};
+```c++
+// ...
+	// sphere-tests
+	{ // start inside
+		auto o { mk_point(0.0f, 0.0f, 0.0f) };
+		auto d { mk_vector(0.0f, 0.0f, 1.0f) };
+		Ray r { o, d };
+		Sphere s;
+		auto xs { s.intersect(r) };
+		assert(xs.size() == 2);
+		assert_eq(xs[0].t, -1.0f);
+		assert_eq(xs[1].t, 1.0f);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 0, -5) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 2);
-	assert_eq(xs[0].t, 4);
-	assert_eq(xs[1].t, 6);
-} @End(unit-tests)
-```
+Sphere is behind ray:
 
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 1, -5) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 2);
-	assert_eq(xs[0].t, 5);
-	assert_eq(xs[1].t, 5);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 2, -5) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 0);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 0, 0) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 2);
-	assert_eq(xs[0].t, -1);
-	assert_eq(xs[1].t, 1);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 0, 5) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 2);
-	assert_eq(xs[0].t, -6);
-	assert_eq(xs[1].t, -4);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	Sphere s;
-	Intersection i1 { 1, &s };
-	Intersection i2 { 2, &s };
-	Intersections xs { i1, i2 };
-	assert(xs.size() == 2);
-	assert_eq(xs[0].t, 1);
-	assert_eq(xs[1].t, 2);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 0, -5) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 2);
-	assert(xs[0].object == &s);
-	assert(xs[1].object == &s);
-} @End(unit-tests)
-```
-
-```
-@Add(functions)
-	auto hit(Intersections &xs) {
-		for (auto i = xs.begin(); i != xs.end(); ++i) {
-			if (i->t >= 0) { return i; }
-		}
-		return xs.end();
+```c++
+// ...
+	// sphere-tests
+	{ // sphere is behind ray
+		auto o { mk_point(0.0f, 0.0f, 5.0f) };
+		auto d { mk_vector(0.0f, 0.0f, 1.0f) };
+		Ray r { o, d };
+		Sphere s;
+		auto xs { s.intersect(r) };
+		assert(xs.size() == 2);
+		assert_eq(xs[0].t, -6.0f);
+		assert_eq(xs[1].t, -4.0f);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(functions)
-	inline constexpr bool operator==(
-		const Intersection &a,
-		const Intersection &b
-	) {
-		return
-			a.object == b.object &&
-				eq(a.t, b.t);
-	}
-@End(functions)
-```
+Continues in [5_tracking-intersections.md](./5_tracking-intersections.md).
 
-```
-@Add(unit-tests) {
-	Sphere s;
-	Intersection i1 { 1, &s };
-	Intersection i2 { 2, &s };
-	Intersections xs { i2, i1 };
-	auto i { hit(xs) };
-	assert(*i == i1);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	Sphere s;
-	Intersection i1 { -1, &s };
-	Intersection i2 { 1, &s };
-	Intersections xs { i2, i1 };
-	auto i { hit(xs) };
-	assert(*i == i2);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	Sphere s;
-	Intersection i1 { -2, &s };
-	Intersection i2 { -1, &s };
-	Intersections xs { i2, i1 };
-	auto i { hit(xs) };
-	assert(i == xs.end());
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	Sphere s;
-	Intersection i1 { 5, &s };
-	Intersection i2 { 7, &s };
-	Intersection i3 { -3, &s };
-	Intersection i4 { 2, &s };
-	Intersections xs { i1, i2, i3, i4 };
-	auto i { hit(xs) };
-	assert(*i == i4);
-} @End(unit-tests)
-```
-
-```
-@Add(functions)
-	inline constexpr Ray transform(
-		const Ray &r, const Matrix &m
-	) {
-		return {
-			m * r.origin,
-			m * r.direction
-		};
-	}
-@End(functions)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(1, 2, 3) };
-	auto d { mk_vector(0, 1, 0) };
-	Ray r { o, d };
-	auto m { translation(3, 4, 5) };
-	auto r2 { transform(r, m) };
-	auto eo { mk_point(4, 6, 8) };
-	assert(r2.origin == eo);
-	assert(r2.direction == d);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(1, 2, 3) };
-	auto d { mk_vector(0, 1, 0) };
-	Ray r { o, d };
-	auto m { scaling(2, 3, 4) };
-	auto r2 { transform(r, m) };
-	auto eo { mk_point(2, 6, 12) };
-	auto ed { mk_vector(0, 3, 0) };
-	assert(r2.origin == eo);
-	assert(r2.direction == ed);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	Sphere s;
-	assert(s.transform == identity);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	Sphere s;
-	auto m { translation(2, 3, 4) };
-	s.transform = m;
-	s.inv_transform = inv(m);
-	assert(s.transform == m);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 0, -5) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	s.transform = scaling(2, 2, 2);
-	s.inv_transform = inv(s.transform);
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 2);
-	assert_eq(xs[0].t, 3);
-	assert_eq(xs[1].t, 7);
-} @End(unit-tests)
-```
-
-```
-@Add(unit-tests) {
-	auto o { mk_point(0, 0, -5) };
-	auto d { mk_vector(0, 0, 1) };
-	Ray r { o, d };
-	Sphere s;
-	s.transform = translation(5, 0, 0);
-	s.inv_transform = inv(s.transform);
-	auto xs { s.intersect(r) };
-	assert(xs.size() == 0);
-} @End(unit-tests)
-```
-
-```
-@Add(includes)
-	#include <fstream>
-@End(includes)
-```
-
-```
-@Add(main)
-	#if 0
-	auto ray_origin { mk_point(0, 0, -5) };
-	float wall_z { 10 };
-	float wall_size { 7 };
-	int canvas_pixels { 100 };
-	float pixel_size { wall_size / canvas_pixels };
-	float half { wall_size / 2 };
-	Color red { 1, 0, 0 };
-	Color black { 0, 0, 0 };
-	Sphere shape;
-	std::ofstream o("ball.ppm");
-	mk_ppm(o, canvas_pixels, canvas_pixels,
-		[&](int x, int y) {
-			float world_y { half - pixel_size * y };
-			float world_x { -half + pixel_size * x };
-			auto pos { mk_point(world_x, world_y, wall_z) };
-			Ray r { ray_origin, norm(pos - ray_origin) };
-			auto xs { shape.intersect(r) };
-			return hit(xs) == xs.end() ? black : red;
-		}
-	);
-	#endif
-@End(main)
-```

@@ -1,3 +1,5 @@
+#line 7 "./5_intersect-sphere.md"
+#include "sphere.h"
 #line 6 "./5_creating-rays.md"
 #include "ray.h"
 #line 6 "./4_translation.md"
@@ -13,6 +15,8 @@
 #line 10 "README.md"
 static void run_tests() {
 	// unit-tests
+#line 10 "./5_intersect-sphere.md"
+	sphere_tests();
 #line 9 "./5_creating-rays.md"
 	ray_tests();
 #line 9 "./4_translation.md"

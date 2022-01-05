@@ -3,7 +3,8 @@
 SOURCEs = $(wildcard *.md)
 
 CXXFLAGS += -Wall -pedantic --std=c++17
-CXXSOURCEs = raytracer.cpp tuple.h color.h ppm.h matrix.h transform.h ray.h
+CXXSOURCEs = raytracer.cpp tuple.h color.h ppm.h matrix.h transform.h ray.h \
+	sphere.cpp sphere.h
 
 test: md-run.txt
 	$(MAKE) test-rt
@@ -16,7 +17,7 @@ md-run.txt: $(SOURCEs)
 	date >$@
 
 raytracer: $(CXXSOURCEs)
-	$(CXX) $(CXXFLAGS) raytracer.cpp -o $@
+	$(CXX) $(CXXFLAGS) raytracer.cpp sphere.cpp -o $@
 
 clean:
 	rm -f raytracer $(CXXSOURCEs) md-run.txt 

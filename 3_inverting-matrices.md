@@ -56,7 +56,7 @@ Implement `sub`:
 class Matrix {
 	// ...
 };
-Matrix sub(Matrix a, int r, int c) {
+inline Matrix sub(Matrix a, int r, int c) {
 	while (r < 3) {
 		int i = r + 1;
 		for (int k = 3; k >= 0; --k) {
@@ -354,7 +354,7 @@ inline bool is_invertible(const Matrix &a) {
 	// ...
 }
 #include <stdexcept>
-Matrix inv(const Matrix &a) {
+inline Matrix inv(const Matrix &a) {
 	Matrix res {};
 	float d { det4(a) };
 	if (eq(d, 0.0f)) {
