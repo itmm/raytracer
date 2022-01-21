@@ -34,3 +34,12 @@ Intersections Sphere::intersect(const Ray &r) {
 		{(-b + sd)/(2.0f * a), this}
 	};
 }
+#line 66 "./6_surface-normals.md"
+Tuple Sphere::normal_at(const Tuple &w) {
+	auto i { inv_transform };
+	auto o { i * w };
+	auto on { o - mk_point(0, 0, 0) };
+	auto wn { trans(i) * on };
+	wn.w = 0;
+	return norm(wn);
+}

@@ -29,3 +29,6 @@ Render a silhouette of a ball in `raytracer.cpp`:
 	#elif 0
 // ...
 ```
+
+Continue on [6_surface-normals.md](./6_surface-normals.md)
+

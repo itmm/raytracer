@@ -8,7 +8,9 @@
 Ray transform(const Ray &r, const Matrix &m);
 #line 103 "./5_intersect-sphere.md"
 #include <vector>
-#line 20
+#line 128 "./6_phong-reflection-model.md"
+#include "material.h"
+#line 20 "./5_intersect-sphere.md"
 
 #line 105
 struct Object;
@@ -40,20 +42,40 @@ inline auto hit(Intersections &xs) {
 }
 #line 51 "./5_intersect-sphere.md"
 struct Object {
-#line 65
+#line 131 "./6_phong-reflection-model.md"
+	Material material;
+#line 45 "./6_surface-normals.md"
+	virtual Tuple normal_at(const Tuple &w) = 0;
+#line 65 "./5_intersect-sphere.md"
 	virtual Intersections intersect(const Ray &r) = 0;
 #line 52
 	Matrix transform = identity;
 	Matrix inv_transform = identity;
 };
 struct Sphere: Object {
-#line 70
+#line 56 "./6_surface-normals.md"
+	Tuple normal_at(const Tuple &w) override;
+#line 70 "./5_intersect-sphere.md"
 	Intersections intersect(const Ray &r) override;
 #line 56
 };
 #line 21
 inline void sphere_tests() {
 	// sphere-tests
+#line 159 "./6_phong-reflection-model.md"
+	{ // assign material to sphere
+		Sphere s;
+		Material m;
+		m.ambient = 1;
+		s.material = m;
+		assert(s.material == m);
+	}
+#line 115
+	{ // sphere has default material
+		Sphere s;
+		Material m;
+		assert(s.material == m);
+	}
 #line 96 "./5_transforming-rays-and-spheres.md"
 	{ // translated sphere
 		auto o { mk_point(0.0f, 0.0f, -5.0f) };

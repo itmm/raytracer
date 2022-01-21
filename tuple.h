@@ -62,7 +62,11 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 		a.z - b.z, a.w - b.w
 	};
 }
-#line 23
+#line 24 "./6_reflecting-vectors.md"
+inline Tuple reflect(const Tuple &v, const Tuple &n) {
+	return v - 2 * dot(v, n) * n;
+}
+#line 23 "./1_operations.md"
 constexpr auto operator+(const Tuple &a, const Tuple &b) {
 	return Tuple {
 		a.x + b.x, a.y + b.y,
@@ -96,6 +100,21 @@ constexpr auto mk_point(float x, float y, float z) {
 #line 21
 inline void tuple_tests() {
 	// tuple-tests
+#line 35 "./6_reflecting-vectors.md"
+	{ // reflecting off slanted surface
+		auto v { mk_vector(0, -1, 0) };
+		float f { sqrtf(2)/2 };
+		auto n { mk_vector(f, f, 0) };
+		auto e { mk_vector(1, 0, 0) };
+		assert(reflect(v, n) == e);
+	}
+#line 8
+	{ // reflecting at 45 degrees
+		auto v { mk_vector(1, -1, 0) };
+		auto n { mk_vector(0, 1, 0) };
+		auto e { mk_vector(1, 1, 0) };
+		assert(reflect(v, n) == e);
+	}
 #line 373 "./1_operations.md"
 	{ // test of cross product
 		auto a { mk_vector(1.0f, 2.0f, 3.0f) };
