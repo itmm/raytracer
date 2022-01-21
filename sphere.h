@@ -52,6 +52,14 @@ struct Object {
 	Matrix transform = identity;
 	Matrix inv_transform = identity;
 };
+#line 127 "./7_building-a-world.md"
+
+inline bool operator==(const Object &a, const Object &b) {
+	return typeid(a) == typeid(b) &&
+		a.material == b.material &&
+		a.transform == b.transform;
+}
+#line 55 "./5_intersect-sphere.md"
 struct Sphere: Object {
 #line 56 "./6_surface-normals.md"
 	Tuple normal_at(const Tuple &w) override;

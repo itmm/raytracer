@@ -39,3 +39,5 @@ New rendering in `raytracer.cpp`:
 	#elif 0
 // ...
 ```
+
+Continue in [7_building-a-world.md](./7_building-a-world.md).

@@ -4,7 +4,7 @@ SOURCEs = $(wildcard *.md)
 
 CXXFLAGS += -Wall -pedantic --std=c++17
 CXXSOURCEs = raytracer.cpp tuple.h color.h ppm.h matrix.h transform.h ray.h \
-	sphere.cpp sphere.h normal.h light.h material.h
+	sphere.cpp sphere.h normal.h light.h material.h world.h
 
 test: md-run.txt
 	$(MAKE) test-rt

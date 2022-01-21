@@ -1,137 +1,192 @@
-# Making a Scene
+# Building a World
 
-```
-@Add(includes)
-	#include <memory>
-@End(includes)
-```
+First we must establish the unit-tests in `raytracer.cpp`:
 
-```
-@Add(types)
-	struct World {
-		std::vector<std::unique_ptr<Object>> objects;
-		std::vector<std::unique_ptr<Point_Light>> lights;
-	};
-@End(types)
+```c++
+#include "world.h"
+// ...
+	// unit-tests
+	world_tests();
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	World w;
-	assert(w.objects.empty());
-	assert(w.lights.empty());
-} @End(unit-tests)
+As the function `world_tests` is only invoked once, it can be `inline`d and
+goes directly to the header `world.h`:
+
+```c++
+#pragma once
+#include "sphere.h"
+#include "light.h"
+
+inline void world_tests() {
+	// world-tests
+}
 ```
 
-```
-@Def(point light elements)
-	Point_Light(
-		const Tuple &t, const Color &c
-	):
-		position {t}, 
-		intensity {c}
-	{}
-@End(point light elements)
-```
+First test that there can be an empty world:
 
-```
-@Add(functions)
-	World default_world() {
+```c++
+// ...
+	// world-tests
+	{ // empty world
 		World w;
-		w.lights.push_back(std::make_unique<Point_Light>(
-			mk_point(-10, 10, -10),
-			Color {1, 1, 1}
-		));
-		std::unique_ptr<Object> s1 { new Sphere() };
-		s1->material.color = { 0.8, 1, 0.6 };
-		s1->material.diffuse = 0.7;
-		s1->material.specular = 0.2;
-		w.objects.push_back(std::move(s1));
-		std::unique_ptr<Object> s2 { new Sphere() };
-		s2->transform = scaling(0.5, 0.5, 0.5);
-		s2->inv_transform = inv(s2->transform);
-		w.objects.push_back(std::move(s2));
-		return w;
+		assert(w.objects.empty());
+		assert(w.lights.empty());
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(functions)
-	bool operator==(
-		const Point_Light &a,
-		const Point_Light &b
-	) {
-		return a.position == b.position &&
-			a.intensity == b.intensity;
-	}
-@End(functions)
+Define the class:
+
+```c++
+// ...
+#include "light.h"
+#include <memory>
+
+struct World {
+	std::vector<std::unique_ptr<Object>> objects;
+	std::vector<std::unique_ptr<Point_Light>> lights;
+};
+// ...
 ```
 
-```
-@Add(functions)
-	bool operator==(
-		const Object &a,
-		const Object &b
-	) {
-		return typeid(a) == typeid(b) &&
-			a.material == b.material &&
-			a.transform == b.transform;
+Test the default world:
+
+```c++
+// ...
+	// world-tests
+	{ // test default world
+		auto w { default_world() };
+		Point_Light le { mk_point(-10, 10, -10), { 1, 1, 1 } };
+		assert(w.lights.size() >= 1);
+		assert(*w.lights[0] == le);
+		Sphere s1;
+		s1.material.color = { 0.8, 1, 0.6 };
+		s1.material.diffuse = 0.7;
+		s1.material.specular = 0.2;
+		assert(w.objects.size() >= 2);
+		assert(*w.objects[0] == s1);
+		Sphere s2;
+		s2.transform = scaling(0.5, 0.5, 0.5);
+		s2.inv_transform = inv(s2.transform);
+		assert(*w.objects[1] == s2);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto w { default_world() };
-	Point_Light le {
+Create the default world:
+
+```c++
+// ...
+struct World {
+	// ...
+};
+
+World default_world() {
+	World w;
+	w.lights.push_back(std::make_unique<Point_Light>(
 		mk_point(-10, 10, -10),
-		{ 1, 1, 1 }
-	};
-	assert(w.lights.size() >= 1);
-	assert(*w.lights[0] == le);
-	Sphere s1;
-	s1.material.color = { 0.8, 1, 0.6 };
-	s1.material.diffuse = 0.7;
-	s1.material.specular = 0.2;
-	assert(w.objects.size() >= 2);
-	assert(*w.objects[0] == s1);
-	Sphere s2;
-	s2.transform = scaling(0.5, 0.5, 0.5);
-	s2.inv_transform = inv(s2.transform);
-	assert(*w.objects[1] == s2);
-} @End(unit-tests)
+		Color {1, 1, 1}
+	));
+	std::unique_ptr<Object> s1 { new Sphere() };
+	s1->material.color = { 0.8, 1, 0.6 };
+	s1->material.diffuse = 0.7;
+	s1->material.specular = 0.2;
+	w.objects.push_back(std::move(s1));
+	std::unique_ptr<Object> s2 { new Sphere() };
+	s2->transform = scaling(0.5, 0.5, 0.5);
+	s2->inv_transform = inv(s2->transform);
+	w.objects.push_back(std::move(s2));
+	return w;
+}
+// ...
 ```
 
+Compare point lights in `light.h`:
+
+```c++
+// ...
+struct Point_Light {
+	// ...
+};
+
+inline bool operator==(const Point_Light &a, const Point_Light &b) {
+	return a.position == b.position &&
+		a.intensity == b.intensity;
+}
+// ...
 ```
-@Add(functions)
-	Intersections intersect_world(
-		const World &w, const Ray &r
-	) {
-		Intersections res {};
-		for (auto &o : w.objects) {
-			auto i { o->intersect(r) };
-			res.insert(res.end(), i.begin(), i.end());
-		}
-		std::sort(res.begin(), res.end());
-		return res;
+
+Compare objects in `sphere.h`:
+
+```c++
+// ...
+struct Object {
+	// ...
+};
+
+inline bool operator==(const Object &a, const Object &b) {
+	return typeid(a) == typeid(b) &&
+		a.material == b.material &&
+		a.transform == b.transform;
+}
+// ...
+```
+
+Constructor for point light in `light.h`:
+
+```c++
+// ...
+struct Point_Light {
+	Point_Light(const Tuple &t, const Color &c):
+		position {t}, intensity {c}
+	{}
+	// ...
+};
+// ...
+```
+
+Intersect the world with a ray in `world.h`:
+
+```c++
+// ...
+	// world-tests
+	{ // ray intersection
+		auto w { default_world() };
+		auto p { mk_point(0, 0, -5) };
+		auto v { mk_vector(0, 0, 1) };
+		Ray r { p, v };
+		auto xs { intersect_world(w, r) };
+		assert(xs.size() == 4);
+		assert_eq(xs[0].t, 4);
+		assert_eq(xs[1].t, 4.5);
+		assert_eq(xs[2].t, 5.5);
+		assert_eq(xs[3].t, 6);
 	}
-@End(functions)
+// ...
 ```
 
-```
-@Add(unit-tests) {
-	auto w { default_world() };
-	auto p { mk_point(0, 0, -5) };
-	auto v { mk_vector(0, 0, 1) };
-	Ray r { p, v };
-	auto xs { intersect_world(w, r) };
-	assert(xs.size() == 4);
-	assert_eq(xs[0].t, 4);
-	assert_eq(xs[1].t, 4.5);
-	assert_eq(xs[2].t, 5.5);
-	assert_eq(xs[3].t, 6);
-} @End(unit-tests)
+Define function for the intersection:
+
+```c++
+// ...
+struct World {
+	// ...
+};
+
+#include "ray.h"	
+#include <algorithm>
+
+Intersections intersect_world(const World &w, const Ray &r) {
+	Intersections res {};
+	for (auto &o : w.objects) {
+		auto i { o->intersect(r) };
+		res.insert(res.end(), i.begin(), i.end());
+	}
+	std::sort(res.begin(), res.end());
+	return res;
+}
+// ...
 ```
 
 ```

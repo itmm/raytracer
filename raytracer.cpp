@@ -1,3 +1,5 @@
+#line 6 "./7_building-a-world.md"
+#include "world.h"
 #line 56 "./6_phong-reflection-model.md"
 #include "material.h"
 #line 6
@@ -23,6 +25,8 @@
 #line 10 "README.md"
 static void run_tests() {
 	// unit-tests
+#line 9 "./7_building-a-world.md"
+	world_tests();
 #line 59 "./6_phong-reflection-model.md"
 	material_tests();
 #line 9
