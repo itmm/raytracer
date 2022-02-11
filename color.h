@@ -1,11 +1,11 @@
-#line 17 "./2_representing-colors.md"
+#line 17 "2_representing-colors.md"
 #pragma once
 #line 44
 
 struct Color {
 	float red, green, blue;
 };
-#line 137 "./2_color-operations.md"
+#line 137 "2_color-operations.md"
 inline auto operator*(const Color &a, const Color &b) {
 	return Color {
 		a.red * b.red,
@@ -36,19 +36,19 @@ inline auto operator+(const Color &a, const Color &b) {
 		a.blue + b.blue
 	};
 }
-#line 18 "./2_representing-colors.md"
+#line 18 "2_representing-colors.md"
 #include "tuple.h"
-#line 42 "./2_color-operations.md"
+#line 42 "2_color-operations.md"
 inline bool operator==(const Color &a, const Color &b) {
 	return eq(a.red, b.red) &&
 		eq(a.green, b.green) &&
 		eq(a.blue, b.blue);
 }
-#line 19 "./2_representing-colors.md"
+#line 19 "2_representing-colors.md"
 
 inline void color_tests() {
 	// color-tests
-#line 121 "./2_color-operations.md"
+#line 121 "2_color-operations.md"
 	{ // hadamard product
 		Color c1 { 1.0f, 0.2f, 0.4f };
 		Color c2 { 0.9f, 1.0f, 0.1f };
@@ -75,7 +75,7 @@ inline void color_tests() {
 		Color e { 1.6f, 0.7f, 1.0f };
 		assert(c1 + c2 == e);
 	}
-#line 30 "./2_representing-colors.md"
+#line 30 "2_representing-colors.md"
 	{ // test specific color
 		Color c { -0.5f, 0.4f, 1.7f };
 		assert_eq(c.red, -0.5f);

@@ -1,4 +1,4 @@
-#line 67 "./6_phong-reflection-model.md"
+#line 67 "6_phong-reflection-model.md"
 #pragma once
 #include "color.h"
 

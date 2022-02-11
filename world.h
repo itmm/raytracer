@@ -1,4 +1,4 @@
-#line 17 "./7_building-a-world.md"
+#line 17 "7_building-a-world.md"
 #pragma once
 #include "sphere.h"
 #include "light.h"

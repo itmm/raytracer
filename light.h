@@ -1,4 +1,4 @@
-#line 17 "./6_phong-reflection-model.md"
+#line 17 "6_phong-reflection-model.md"
 #pragma once
 #include "color.h"
 #line 174
@@ -7,22 +7,22 @@
 
 #line 46
 struct Point_Light {
-#line 141 "./7_building-a-world.md"
+#line 141 "7_building-a-world.md"
 	Point_Light(const Tuple &t, const Color &c):
 		position {t}, intensity {c}
 	{}
-#line 47 "./6_phong-reflection-model.md"
+#line 47 "6_phong-reflection-model.md"
 	Tuple position;
 	Color intensity;
 };
 #line 198
 
-#line 113 "./7_building-a-world.md"
+#line 113 "7_building-a-world.md"
 inline bool operator==(const Point_Light &a, const Point_Light &b) {
 	return a.position == b.position &&
 		a.intensity == b.intensity;
 }
-#line 199 "./6_phong-reflection-model.md"
+#line 199 "6_phong-reflection-model.md"
 Color lighting(
 	const Material &m, const Point_Light &l,
 	const Tuple &p, const Tuple &e, const Tuple &n,

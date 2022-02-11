@@ -1,8 +1,8 @@
-#line 17 "./4_translation.md"
+#line 17 "4_translation.md"
 #pragma once
 #include "matrix.h"
 
-#line 23 "./4_shearing.md"
+#line 23 "4_shearing.md"
 constexpr inline Matrix shearing(
 	float xy, float xz, float yx, float yz, float zx, float zy
 ) {
@@ -13,7 +13,7 @@ constexpr inline Matrix shearing(
 		0.0f, 0.0f, 0.0f, 1.0f
 	};
 }
-#line 115 "./4_rotation.md"
+#line 115 "4_rotation.md"
 constexpr inline Matrix rotate_z(float ang) {
 	float c { cosf(ang) };
 	float s { sinf(ang) };
@@ -46,7 +46,7 @@ constexpr inline Matrix rotate_x(float ang) {
 		0.0f, 0.0f, 0.0f, 1.0f
 	};
 }
-#line 23 "./4_scaling.md"
+#line 23 "4_scaling.md"
 constexpr inline Matrix scaling(float sx, float sy, float sz) {
 	return {
 		  sx, 0.0f, 0.0f, 0.0f,
@@ -55,7 +55,7 @@ constexpr inline Matrix scaling(float sx, float sy, float sz) {
 		0.0f, 0.0f, 0.0f, 1.0f
 	};
 }
-#line 45 "./4_translation.md"
+#line 45 "4_translation.md"
 constexpr inline Matrix translation(float dx, float dy, float dz) {
 	return {
 		1.0f, 0.0f, 0.0f,   dx,
@@ -67,7 +67,7 @@ constexpr inline Matrix translation(float dx, float dy, float dz) {
 #line 20
 inline void transform_tests() {
 	// transform-tests
-#line 31 "./4_combining.md"
+#line 31 "4_combining.md"
 	{ // chain in reverse order
 		auto p { mk_point(1.0f, 0.0f, 1.0f) };
 		auto a { rotate_x(M_PI/2.0f) };
@@ -93,7 +93,7 @@ inline void transform_tests() {
 		auto e4 { mk_point(15.0f, 0.0f, 7.0f) };
 		assert(p4 == e4);
 	}
-#line 97 "./4_shearing.md"
+#line 97 "4_shearing.md"
 	{ // move z in proportion to y
 		auto s { shearing(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f) };
 		auto p { mk_point(2.0f, 3.0f, 4.0f) };
@@ -135,7 +135,7 @@ inline void transform_tests() {
 		auto e { mk_point(5.0f, 3.0f, 4.0f) };
 		assert(s * p == e);
 	}
-#line 97 "./4_rotation.md"
+#line 97 "4_rotation.md"
 	{ // rotate around z-axis
 		auto p { mk_point(0.0f, 1.0f, 0.0f) };
 		auto hq { rotate_z(M_PI/4.0f) };
@@ -173,7 +173,7 @@ inline void transform_tests() {
 		assert(hq * p == he);
 		assert(fq * p == fe);
 	}
-#line 70 "./4_scaling.md"
+#line 70 "4_scaling.md"
 	{ // negative scaling
 		auto s { scaling(-1, 1, 1) };
 		auto p { mk_point(2, 3, 4) };
@@ -202,7 +202,7 @@ inline void transform_tests() {
 		auto e { mk_point(-8.0f, 18.0f, 32.0f) };
 		assert(s * p == e);
 	}
-#line 77 "./4_translation.md"
+#line 77 "4_translation.md"
 	{ // translate vector
 		auto t { translation(5.0f, -3.0f, 2.0f) };
 		auto v { mk_vector(-3.0f, 4.0f, 5.0f) };

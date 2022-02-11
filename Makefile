@@ -13,7 +13,7 @@ build-rt: md-run.txt
 	$(MAKE) raytracer
 
 md-run.txt: $(SOURCEs)
-	md-patcher README.md
+	mdp README.md
 	date >$@
 
 raytracer: $(CXXSOURCEs)

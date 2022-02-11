@@ -1,4 +1,4 @@
-#line 17 "./6_surface-normals.md"
+#line 17 "6_surface-normals.md"
 #pragma once
 #include "sphere.h"
 

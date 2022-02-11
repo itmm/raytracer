@@ -1,4 +1,4 @@
-#line 78 "./5_intersect-sphere.md"
+#line 78 "5_intersect-sphere.md"
 #include "sphere.h"
 #line 137
 #include <algorithm>
@@ -34,7 +34,7 @@ Intersections Sphere::intersect(const Ray &r) {
 		{(-b + sd)/(2.0f * a), this}
 	};
 }
-#line 66 "./6_surface-normals.md"
+#line 66 "6_surface-normals.md"
 Tuple Sphere::normal_at(const Tuple &w) {
 	auto i { inv_transform };
 	auto o { i * w };

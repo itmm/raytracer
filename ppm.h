@@ -1,4 +1,4 @@
-#line 19 "./2_ppm.md"
+#line 19 "2_ppm.md"
 #pragma once
 #line 61
 #include <iostream>

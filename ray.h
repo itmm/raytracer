@@ -1,4 +1,4 @@
-#line 43 "./5_creating-rays.md"
+#line 43 "5_creating-rays.md"
 #include "tuple.h"
 
 struct Ray {

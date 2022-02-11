@@ -1,4 +1,4 @@
-#line 19 "./1_tuples.md"
+#line 19 "1_tuples.md"
 #pragma once
 #line 72
 	
@@ -23,7 +23,7 @@ struct Tuple {
 #line 53
 };
 // functions
-#line 357 "./1_operations.md"
+#line 357 "1_operations.md"
 constexpr float dot(const Tuple &a, const Tuple &b) {
 	return a.x * b.x + a.y * b.y +
 		a.z * b.z + a.w * b.w;
@@ -62,22 +62,22 @@ constexpr auto operator-(const Tuple &a, const Tuple &b) {
 		a.z - b.z, a.w - b.w
 	};
 }
-#line 24 "./6_reflecting-vectors.md"
+#line 24 "6_reflecting-vectors.md"
 inline Tuple reflect(const Tuple &v, const Tuple &n) {
 	return v - 2 * dot(v, n) * n;
 }
-#line 23 "./1_operations.md"
+#line 23 "1_operations.md"
 constexpr auto operator+(const Tuple &a, const Tuple &b) {
 	return Tuple {
 		a.x + b.x, a.y + b.y,
 		a.z + b.z, a.w + b.w
 	};
 }
-#line 179 "./1_tuples.md"
+#line 179 "1_tuples.md"
 constexpr auto mk_vector(float x, float y, float z) {
 	return Tuple { x, y, z, 0.0f };
 }
-#line 392 "./1_operations.md"
+#line 392 "1_operations.md"
 constexpr auto cross(const Tuple &a, const Tuple &b) {
 	return mk_vector(
 		a.y * b.z - a.z * b.y,
@@ -85,7 +85,7 @@ constexpr auto cross(const Tuple &a, const Tuple &b) {
 		a.x * b.y - a.y * b.x
 	);
 }
-#line 153 "./1_tuples.md"
+#line 153 "1_tuples.md"
 constexpr bool operator==(const Tuple &a, const Tuple &b) {
 	return eq(a.x, b.x) && eq(a.y, b.y) &&
 		eq(a.z, b.z) && eq(a.w, b.w);
@@ -100,7 +100,7 @@ constexpr auto mk_point(float x, float y, float z) {
 #line 21
 inline void tuple_tests() {
 	// tuple-tests
-#line 35 "./6_reflecting-vectors.md"
+#line 35 "6_reflecting-vectors.md"
 	{ // reflecting off slanted surface
 		auto v { mk_vector(0, -1, 0) };
 		float f { sqrtf(2)/2 };
@@ -115,7 +115,7 @@ inline void tuple_tests() {
 		auto e { mk_vector(1, 1, 0) };
 		assert(reflect(v, n) == e);
 	}
-#line 373 "./1_operations.md"
+#line 373 "1_operations.md"
 	{ // test of cross product
 		auto a { mk_vector(1.0f, 2.0f, 3.0f) };
 		auto b { mk_vector(2.0f, 3.0f, 4.0f) };
@@ -230,7 +230,7 @@ inline void tuple_tests() {
 		Tuple e { 1.0f, 1.0f, 6.0f, 1.0f };
 		assert(p + v == e);
 	}
-#line 166 "./1_tuples.md"
+#line 166 "1_tuples.md"
 	{ // make vector
 		auto v { mk_vector(4.0f, -4.0f, 3.0f) };
 		Tuple e { 4.0f, -4.0f, 3.0f, 0.0f };
